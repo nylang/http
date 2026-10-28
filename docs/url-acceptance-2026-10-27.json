@@ -1,0 +1,89 @@
+{
+  "format": "nyra-http-url-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "phase": "H3b",
+  "packages": [
+    "http",
+    "http_tls"
+  ],
+  "scope": "Strict owned absolute HTTP(S) URL parsing, request association, bounded explicit DNS and sequential connection orchestration; local source candidates only",
+  "url_byte_limit": 8192,
+  "default_max_addresses": 16,
+  "hard_max_addresses": 64,
+  "profile": [
+    "Only absolute http/https, LDH DNS, strict IPv4 and bracketed unscoped IPv6; ports 1..65535",
+    "Normalize scheme/DNS case, IP text/default port and empty path; omit validated fragments; preserve path/query escapes and dot segments without decoding",
+    "Reject userinfo, trailing-dot DNS, IDNA conversion, legacy numeric IP, raw controls/non-ASCII/backslash, malformed escapes and routing/framing overrides",
+    "Generate Host and Content-Length; derive HTTPS SNI/certificate identity from the same URL; reject conflicting peer, ALPN and scheme before dialing",
+    "Caller-owned bounded AsyncResolver with call-local notification loop; numeric bypass and sequential OS-order attempts, no per-attempt deadline reset",
+    "Preserve original absolute controls through DNS/connect/TLS/body/shutdown; preserve typed Resolve/Connect errors; recheck controls before numeric dial errors and resolution result publication",
+    "Blocked OS DNS can outlive control return and retains its bounded slot until worker completion/Poll; release/recovery verified in the same pool",
+    "Ordinary native inputs for live/production consumers; separate test DNS adapter/getaddrinfo gate only for controlled failure consumers; plain HTTP remains free of TLS inputs"
+  ],
+  "tests_per_host": {
+    "core": 67,
+    "isolated_core_replays": 67,
+    "tcp_live": 27,
+    "https_live": 35,
+    "tcp_url_dns_controls": 9,
+    "https_url_dns_controls": 11
+  },
+  "remaining": [
+    "Relative-reference resolution, IDNA/trailing-dot policy beyond the strict profile",
+    "Happy Eyeballs and deterministic failed-first address fallback evidence",
+    "DNS notification allocation/native faults and exhaustive scheduling/resource interleavings",
+    "Streaming request producers/trailers, Expect/early-final handling, redirects/replay/credentials and pooling",
+    "macOS-x64/mobile execution, published compiler compatibility, SDK promotion, package origins/gitlinks/CI/releases"
+  ],
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "url-acceptance-2026-10-27-darwin-arm64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "core_tests": 67,
+      "isolated_replays": 67,
+      "tcp_live": 27,
+      "https_live": 35,
+      "tcp_url_dns_controls": 9,
+      "https_url_dns_controls": 11,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "linux-x86_64": {
+      "receipt": "url-acceptance-2026-10-27-linux-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 67,
+      "isolated_replays": 67,
+      "tcp_live": 27,
+      "https_live": 35,
+      "tcp_url_dns_controls": 9,
+      "https_url_dns_controls": 11,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "windows-x86_64": {
+      "receipt": "url-acceptance-2026-10-27-windows-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 67,
+      "isolated_replays": 67,
+      "tcp_live": 27,
+      "https_live": 35,
+      "tcp_url_dns_controls": 9,
+      "https_url_dns_controls": 11,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    }
+  }
+}

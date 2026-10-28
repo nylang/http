@@ -1,0 +1,2064 @@
+{
+  "format": "nyra-http-connected-clients-v1",
+  "status": "passed",
+  "host": "windows-x86_64",
+  "compiler_origin": "source-candidate",
+  "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+  "sdk_version": "1.0.1",
+  "sdk_manifest_sha256": "cac62ba3015c1568387c150aa079dae741e3a4814623846ae1a81915897d8a09",
+  "source_fallback_disabled": true,
+  "source_sha256": {
+    "http": {
+      "http.ny": "4c71aa2fec9616497cb4a935a8a610caff4a8863f9d2abb7ed1c6cd936ec7026",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "3eda9069d642bcb6f7aab868447cc9e8fa47829d9c60cafcd671c60ecaad86ff",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "c97bcb346deef152dc268de7f68a054a68ffaa0ee5279977390710a003d3f823",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "http_tls": {
+      "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+      "interface/http_tls.ni": "5b679174b581571445de74d6b76882b2d412b46bae65b22f4c40aeac85b1b313",
+      "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+      "private/http_tls.ny": "08742c1a06f20e3d1fbfd8ff6f249100b56fb1ed296d71dfa0a34d1279fbdf88"
+    },
+    "tls": {
+      "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+      "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+      "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+      "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+      "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+      "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+      "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+      "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+      "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+      "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+      "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+      "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+      "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+      "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+      "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+      "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+      "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+      "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+      "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+      "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+      "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+      "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+      "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+      "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+      "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+      "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+    }
+  },
+  "commands": [
+    {
+      "name": "core",
+      "command": [
+        "E:\\workspace\\nyra-ci\\python\\python.exe",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\http\\scripts\\accept.py",
+        "--sdk",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk",
+        "--compiler",
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "--net-core",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\net_core",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core"
+      ]
+    },
+    {
+      "name": "fixture",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-D_CRT_SECURE_NO_WARNINGS",
+        "-c",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\http\\tests\\data\\client_fixture.c",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixture.o"
+      ]
+    },
+    {
+      "name": "dns-test-native",
+      "command": [
+        "E:\\workspace\\nyra-ci\\python\\python.exe",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\scripts\\build_native.py",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-test-native",
+        "--cc",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+        "--ar",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-ar.exe",
+        "--cflag=-DNET_CORE_TEST_DNS",
+        "--cflag=-Dnet_core_os_wake_open=net_core_test_real_wake_open"
+      ]
+    },
+    {
+      "name": "dns-fixture",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-c",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\tests\\native\\n3_fixture.c",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-fixture.o"
+      ]
+    },
+    {
+      "name": "tcp-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-consumer\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-consumer-test.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\net-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi"
+      ]
+    },
+    {
+      "name": "plain-imports",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+        "-u",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-consumer-test.exe"
+      ]
+    },
+    {
+      "name": "tcp-url-control-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-consumer\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-url-control-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tcp-url-control.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-test-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-fixture.o"
+      ]
+    },
+    {
+      "name": "openssl-version",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+        "version"
+      ]
+    },
+    {
+      "name": "tls-native",
+      "command": [
+        "E:\\workspace\\nyra-ci\\python\\python.exe",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\tls\\scripts\\build_native.py",
+        "--openssl-root",
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tls-native",
+        "--cc",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+        "--ar",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-ar.exe"
+      ]
+    },
+    {
+      "name": "ca",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-days",
+        "2",
+        "-sha256",
+        "-subj",
+        "/CN=HTTP loopback ca",
+        "-keyout",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\ca.key",
+        "-out",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\ca.pem",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ]
+    },
+    {
+      "name": "wrong-ca",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-days",
+        "2",
+        "-sha256",
+        "-subj",
+        "/CN=HTTP loopback wrong-ca",
+        "-keyout",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\wrong-ca.key",
+        "-out",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\wrong-ca.pem",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ]
+    },
+    {
+      "name": "peer-key",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+        "req",
+        "-new",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-subj",
+        "/CN=localhost",
+        "-keyout",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\peer.key",
+        "-out",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\peer.csr"
+      ]
+    },
+    {
+      "name": "peer-cert",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+        "x509",
+        "-req",
+        "-in",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\peer.csr",
+        "-CA",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\ca.pem",
+        "-CAkey",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\ca.key",
+        "-CAcreateserial",
+        "-days",
+        "2",
+        "-sha256",
+        "-extfile",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\peer.ext",
+        "-out",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixtures\\peer.pem"
+      ]
+    },
+    {
+      "name": "https-production",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "precompile",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\project\\http_tls\\http_tls.ny",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-production-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-production"
+      ]
+    },
+    {
+      "name": "https-production-imports",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+        "-u",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-production\\lib\\libpackage.a"
+      ]
+    },
+    {
+      "name": "https-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-consumer\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-consumer-test.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\net-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tls-native\\libtls_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libssl.lib",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libcrypto.lib",
+        "--link-arg=-lgdi32",
+        "--link-arg=-ladvapi32",
+        "--link-arg=-lcrypt32",
+        "--link-arg=-luser32"
+      ]
+    },
+    {
+      "name": "https-url-control-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-consumer\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-url-control-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\https-url-control.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-test-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\tls-native\\libtls_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libssl.lib",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libcrypto.lib",
+        "--link-arg=-lgdi32",
+        "--link-arg=-ladvapi32",
+        "--link-arg=-lcrypt32",
+        "--link-arg=-luser32",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\dns-fixture.o"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 1.078,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "bd966e4d6f42b880d31440b7120bda1e65ad7b69f1508d43f80f26913037c54a",
+      "request_exact": true,
+      "response_bytes": 90
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.062,
+      "accepted": true,
+      "request_bytes": 20098,
+      "request_sha256": "3296cbd7e7b50e997bcde0e73613cccc7ea5d3aab956b6da05a37427dc7c9810",
+      "request_exact": true,
+      "response_bytes": 84
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "62805da4d10a35073fe60907e082299f80d1fb86c9e85dcc414d6ba8ddc67cbb",
+      "request_exact": true,
+      "response_bytes": 24
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "68a858834f1809d8bf69bd2355c0d2b3809ef1df2c0148cca2ba31cf61de0b49",
+      "request_exact": true,
+      "response_bytes": 44
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "47cec3ebb9914c8581a89d416e210214ed7860b8c81440d6e6dcd1e825a3836e",
+      "request_exact": true,
+      "response_bytes": 66
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "114d9f147c6f1eac46ee3fe89d4dfa8809cb298daa3935aba538c5d37dc8a296",
+      "request_exact": true,
+      "response_bytes": 32
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.0,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.015,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "c81215e6097ef74754fa4cf35098def53452ece711365b23dc161d1affe384ba",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.25,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "5f9d5a0510869128f14ae3fcc13a96c74377b21ccd69c67adf22379787fe4d2f",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.063,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "82aede2e4d38d059eb82fee1998844ebdf6bb4f53fa9c5d55bcabe1b1be23859",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "ebf8fcd6e0ca28dbb9ff2a2bfd58112458bd2595c291c177914128a433360840",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "2e7f680947abf259b58829fe4d02096335aa4629313179e86bc145d11c44cdb1",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "97a4e2bf3e69c377ef59dd0e21bd1efb50e99f83118a20d9485d4f75ea16fa6b",
+      "request_exact": true,
+      "response_bytes": 47
+    },
+    {
+      "transport": "tcp",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "4e747c609f3d6d871051351461684e52caa766f25a34fb82d9264266746c0c19",
+      "request_exact": true,
+      "response_bytes": 22
+    },
+    {
+      "transport": "tcp",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "5e4942c3619b80c185e23f62a71cd62686ff727422f250e75cc7869a6f13b926",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "53e68bbcb044b6829aa68d62bd53604f89935cd53865a81ceb8c87bcd0b919ef",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "9b45b1410d25e86fd8fe4f9a9454ddbff6cff9ea153c2e75c0eb9af62b817055",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "ee1ed6d18bc2909ecb5071287944bee4affd96eddfbb6f77d08273c19a8dd68e",
+      "request_exact": true,
+      "response_bytes": 40042
+    },
+    {
+      "transport": "tcp",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.062,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e892f5e897683e8dc7d393489afa3b0e32251c5d3bdc867adf12123048449930",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "4047a388a2bbaff9fb68a04666874a5f5b19712cb525de76c091d1a7decf24af",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.078,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "4ac90a5ab32c8a161d6b32cba104d5595810001a6fd337ba0b815059668eb179",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "request_bytes": 78,
+      "request_sha256": "4dbfb716a56a8e2e6cba6bff4ea9b68f1450ee95a59b44b8c6a84d5f08ee8640",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.063,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "c228c2ad6367c6428d7c1ef2bab01820278e6d8ffb5a0e81caf8fd94033d0985",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.078,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "13ca37bb0048bd138c0a7081e82952feb516fc9f35f9fe3d8b1e2e2446387679",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 1.594,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "093b06e7eaaa229badfc77f6e0faba4ad7cda3702a5e506c84917f960fc733e8",
+      "request_exact": true,
+      "response_bytes": 90,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.094,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 20098,
+      "request_sha256": "4041b7eedb4694a2e311b4f6519c6412c4e3f53c49698e2df56e412f73fe5cec",
+      "request_exact": true,
+      "response_bytes": 84,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "f6998ef1e36c6863ba2dfa2ff4794562eca5cbfc6251ea929b219abc93f674ca",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.046,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "c228c2ad6367c6428d7c1ef2bab01820278e6d8ffb5a0e81caf8fd94033d0985",
+      "request_exact": true,
+      "response_bytes": 44,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.063,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "1224a4a491b75aa5e0864dbf8b16e3a15ca9684f5adf4cb669d4ffb554e5ae6c",
+      "request_exact": true,
+      "response_bytes": 66,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.046,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "da4825c0e58d30bd34c0ab3ec5d0b4cd34cfea0f07e24e067697ca8be7b9c8cd",
+      "request_exact": true,
+      "response_bytes": 32,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "unauthenticated-eof",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "7af3ad3803971d919d16e71fb7ab8c8e3b8753fbbf16c728bcd30215d570a6a7",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "raw-eof"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.016,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.0,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.046,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "14c4334b8add0ef9c0747f6ca7d12423a978a3c5edf6a511f0382d78241e820f",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.25,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "5034ac197da6598fc616d1e6f41ae4ae39f66f2d5c40e15c9073b46eab877dd0",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "153e4b571f25d957be754d49ffc96b2aaada8dc3ffd4bea577c895a3449b73dd",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "host-peer-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.0,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 14,
+      "name": "certificate-name-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 15,
+      "name": "trust-unavailable",
+      "status": "passed",
+      "duration_seconds": 0.015,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 16,
+      "name": "alpn-offer-rejected",
+      "status": "passed",
+      "duration_seconds": 0.0,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.063,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "676a1b32838aa949fb2302c93c4eabb78f369eff7ec5c45bb7f786756055bc6f",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "e2a3d12bcfbcf4a4aa9fd66109a7e4a52a3f693b2f116a0e53cc2b217fc46cdf",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "95051bb3cb28c917facbbc4f631a706aaa902ca42d205aea3b6357c6693be56f",
+      "request_exact": true,
+      "response_bytes": 47,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "f1c7ea27ba906c9ea97257a04fd977c46709dea15bc499f0483f05125107021c",
+      "request_exact": true,
+      "response_bytes": 22,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+    },
+    {
+      "transport": "https",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "0de85fc7b20ba6afba7b7a76f9e499f5befb438ed8b24a3127314ba8b5ed361a",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "00d05eac455e7d218fefca1c6eb876725e9d9955281bdce772ac6e6efc2d85c5",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 24,
+      "name": "ipv6-identity",
+      "status": "passed",
+      "duration_seconds": 0.046,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 80,
+      "request_sha256": "da85cf5fcaed2717a5b0512dcaa8009e707094168848c4421adb694882548761",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "505750b0f66fc45a2259eb7dec419f3ba14ee1021a19d8154b67b84501b595b1",
+      "request_exact": true,
+      "expected_peer_error": "[WinError 10053] \u4f60\u7684\u4e3b\u673a\u4e2d\u7684\u8f6f\u4ef6\u4e2d\u6b62\u4e86\u4e00\u4e2a\u5df2\u5efa\u7acb\u7684\u8fde\u63a5\u3002"
+    },
+    {
+      "transport": "https",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.016,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.031,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "2d6173caeb49851843947d64099f72936062d216b9f2d10ddedde486d484b372",
+      "request_exact": true,
+      "response_bytes": 40042,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 31,
+      "name": "alpn-absent",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": null,
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "d4f6d7e476495aa733a99bffa0a5e4d823f51869ccd1ee98c0e4508ac93aa7c1",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 32,
+      "name": "certificate-untrusted",
+      "status": "passed",
+      "duration_seconds": 0.015,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+    },
+    {
+      "transport": "https",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.063,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "212a8c85cd1ba05ce2bcf48d0ad70fb5ddc9ec06b56167747318fe300a35fab7",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "2079646892372399ad8c82744ff7f7a01fa4c4163ef770868948b28b0381c7e4",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.094,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "d4ceb8a1d294b1a2c44981ab40d54e3257b4b7a65bef611c144c626dee5a40ad",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.062,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 78,
+      "request_sha256": "9c10ef65aa72d7177f7f221f2a938d25c404d5b697097a91355506a0dcabd56f",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.094,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "87ab9b114df7c74240ace288ea06e1c06fde179f6c9ce06372267363824dd6fc",
+      "request_exact": true,
+      "expected_peer_error": "[WinError 10053] \u4f60\u7684\u4e3b\u673a\u4e2d\u7684\u8f6f\u4ef6\u4e2d\u6b62\u4e86\u4e00\u4e2a\u5df2\u5efa\u7acb\u7684\u8fde\u63a5\u3002"
+    },
+    {
+      "transport": "https",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.063,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "171eefde96a9ade43b54ee06de5c678b41221cc0bbb74702e9af7c07dbb408fb",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    }
+  ],
+  "url_control_cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "peer-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "alpn-before-dns",
+      "status": "passed"
+    }
+  ],
+  "plain_tls_link_inputs": [],
+  "core": {
+    "format": "nyra-http-framing-acceptance-v1",
+    "status": "passed",
+    "host": "windows-x86_64",
+    "sdk_version": "1.0.1",
+    "sdk_manifest_sha256": "cac62ba3015c1568387c150aa079dae741e3a4814623846ae1a81915897d8a09",
+    "compiler_origin": "source-candidate",
+    "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+    "source_fallback_disabled": true,
+    "source_sha256": {
+      "http.ny": "4c71aa2fec9616497cb4a935a8a610caff4a8863f9d2abb7ed1c6cd936ec7026",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "3eda9069d642bcb6f7aab868447cc9e8fa47829d9c60cafcd671c60ecaad86ff",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "c97bcb346deef152dc268de7f68a054a68ffaa0ee5279977390710a003d3f823",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core_source_sha256": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "commands": [
+      {
+        "name": "net-native",
+        "command": [
+          "E:\\workspace\\nyra-ci\\python\\python.exe",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\scripts\\build_native.py",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\net-native"
+        ]
+      },
+      {
+        "name": "list",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "test",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\project\\http",
+          "--tag",
+          "http_core",
+          "--list"
+        ]
+      },
+      {
+        "name": "tests",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "test",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\project\\http",
+          "--tag",
+          "http_core",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\net-native\\libnet_core_native.a",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi",
+          "--report",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\tests.json"
+        ]
+      },
+      {
+        "name": "case-0",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "0"
+        ]
+      },
+      {
+        "name": "case-1",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "1"
+        ]
+      },
+      {
+        "name": "case-2",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "2"
+        ]
+      },
+      {
+        "name": "case-3",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "3"
+        ]
+      },
+      {
+        "name": "case-4",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "4"
+        ]
+      },
+      {
+        "name": "case-5",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "5"
+        ]
+      },
+      {
+        "name": "case-6",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "6"
+        ]
+      },
+      {
+        "name": "case-7",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "7"
+        ]
+      },
+      {
+        "name": "case-8",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "8"
+        ]
+      },
+      {
+        "name": "case-9",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "9"
+        ]
+      },
+      {
+        "name": "case-10",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "10"
+        ]
+      },
+      {
+        "name": "case-11",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "11"
+        ]
+      },
+      {
+        "name": "case-12",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "12"
+        ]
+      },
+      {
+        "name": "case-13",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "13"
+        ]
+      },
+      {
+        "name": "case-14",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "14"
+        ]
+      },
+      {
+        "name": "case-15",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "15"
+        ]
+      },
+      {
+        "name": "case-16",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "16"
+        ]
+      },
+      {
+        "name": "case-17",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "17"
+        ]
+      },
+      {
+        "name": "case-18",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "18"
+        ]
+      },
+      {
+        "name": "case-19",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "19"
+        ]
+      },
+      {
+        "name": "case-20",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "20"
+        ]
+      },
+      {
+        "name": "case-21",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "21"
+        ]
+      },
+      {
+        "name": "case-22",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "22"
+        ]
+      },
+      {
+        "name": "case-23",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "23"
+        ]
+      },
+      {
+        "name": "case-24",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "24"
+        ]
+      },
+      {
+        "name": "case-25",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "25"
+        ]
+      },
+      {
+        "name": "case-26",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "26"
+        ]
+      },
+      {
+        "name": "case-27",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "27"
+        ]
+      },
+      {
+        "name": "case-28",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "28"
+        ]
+      },
+      {
+        "name": "case-29",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "29"
+        ]
+      },
+      {
+        "name": "case-30",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "30"
+        ]
+      },
+      {
+        "name": "case-31",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "31"
+        ]
+      },
+      {
+        "name": "case-32",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "32"
+        ]
+      },
+      {
+        "name": "case-33",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "33"
+        ]
+      },
+      {
+        "name": "case-34",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "34"
+        ]
+      },
+      {
+        "name": "case-35",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "35"
+        ]
+      },
+      {
+        "name": "case-36",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "36"
+        ]
+      },
+      {
+        "name": "case-37",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "37"
+        ]
+      },
+      {
+        "name": "case-38",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "38"
+        ]
+      },
+      {
+        "name": "case-39",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "39"
+        ]
+      },
+      {
+        "name": "case-40",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "40"
+        ]
+      },
+      {
+        "name": "case-41",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "41"
+        ]
+      },
+      {
+        "name": "case-42",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "42"
+        ]
+      },
+      {
+        "name": "case-43",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "43"
+        ]
+      },
+      {
+        "name": "case-44",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "44"
+        ]
+      },
+      {
+        "name": "case-45",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "45"
+        ]
+      },
+      {
+        "name": "case-46",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "46"
+        ]
+      },
+      {
+        "name": "case-47",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "47"
+        ]
+      },
+      {
+        "name": "case-48",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "48"
+        ]
+      },
+      {
+        "name": "case-49",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "49"
+        ]
+      },
+      {
+        "name": "case-50",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "50"
+        ]
+      },
+      {
+        "name": "case-51",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "51"
+        ]
+      },
+      {
+        "name": "case-52",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "52"
+        ]
+      },
+      {
+        "name": "case-53",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "53"
+        ]
+      },
+      {
+        "name": "case-54",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "54"
+        ]
+      },
+      {
+        "name": "case-55",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "55"
+        ]
+      },
+      {
+        "name": "case-56",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "56"
+        ]
+      },
+      {
+        "name": "case-57",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "57"
+        ]
+      },
+      {
+        "name": "case-58",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "58"
+        ]
+      },
+      {
+        "name": "case-59",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "59"
+        ]
+      },
+      {
+        "name": "case-60",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "60"
+        ]
+      },
+      {
+        "name": "case-61",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "61"
+        ]
+      },
+      {
+        "name": "case-62",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "62"
+        ]
+      },
+      {
+        "name": "case-63",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "63"
+        ]
+      },
+      {
+        "name": "case-64",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "64"
+        ]
+      },
+      {
+        "name": "case-65",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "65"
+        ]
+      },
+      {
+        "name": "case-66",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\http-tests.exe",
+          "66"
+        ]
+      },
+      {
+        "name": "production",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "precompile",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\project\\http\\http.ny",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\production-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\production"
+        ]
+      },
+      {
+        "name": "production-imports",
+        "command": [
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+          "-u",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\production\\lib\\libpackage.a"
+        ]
+      },
+      {
+        "name": "consumer-build",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "build",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\consumer\\main.ny",
+          "--link",
+          "-O2",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\consumer-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\consumer-test.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\net-native\\libnet_core_native.a",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi"
+        ]
+      },
+      {
+        "name": "consumer",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-url-accepted\\core\\consumer-test.exe"
+        ]
+      }
+    ],
+    "scope": "Strict HTTP/1.x heads, streaming body decoding/writing and informational/final response sequencing; no network client",
+    "staged_manifest_sha256": {
+      "http": "e55a5a7781ca12efddad0fc5eedff883af875dfd62df546e4630752fa9edf401",
+      "net_core": "eb6ce0b9eff093c54ad8813e357b9ca13938ac2ecbb750f2e2ca003664d35266"
+    },
+    "case_names": [
+      "test_http_url_authority_and_defaults",
+      "test_http_url_ip_identity_and_ports",
+      "test_http_url_escaped_target_is_opaque",
+      "test_http_url_rejects_ambiguous_authority",
+      "test_http_url_controls_limits_and_default_value",
+      "test_http_url_owned_and_generated_request",
+      "test_http_url_reserved_fields_and_request_injection",
+      "test_http_url_dial_and_open_preflight_controls",
+      "test_http_client_exchange_smoke",
+      "test_http_client_partial_acknowledgement_and_owned_output",
+      "test_http_client_chunked_request_and_response_events",
+      "test_http_client_input_backpressure_and_eof",
+      "test_http_client_response_failures_preserve_stage",
+      "test_http_client_request_validation_and_retention_budget",
+      "test_http_client_incoming_backing_budget_and_identity",
+      "test_http_request_smoke",
+      "test_http_every_split_preserves_body_suffix",
+      "test_http_reused_input_and_owned_head",
+      "test_http_strict_line_and_field_syntax",
+      "test_http_duplicate_lengths_and_numeric_overflow",
+      "test_http_transfer_encoding_conflicts",
+      "test_http_host_validation",
+      "test_http_response_context_and_handoffs",
+      "test_http_connection_lifecycle",
+      "test_http_ordinary_duplicates_and_ows",
+      "test_http_limits_and_exact_boundaries",
+      "test_http_eof_at_every_prefix",
+      "test_http_target_and_version_profile",
+      "test_http_writer_request_roundtrip_and_ownership",
+      "test_http_writer_response_roundtrip",
+      "test_http_writer_injection_and_framing_rejection",
+      "test_http_writer_limits_and_defaults",
+      "test_http_binary_controls_and_obs_text",
+      "test_http_body_fixed_smoke",
+      "test_http_body_chunked_every_split",
+      "test_http_body_backpressure_and_pipeline",
+      "test_http_body_fixed_every_split_and_eof",
+      "test_http_body_chunked_eof_every_prefix",
+      "test_http_body_eof_delimited_and_budget",
+      "test_http_body_size_and_extension_rejection",
+      "test_http_body_cumulative_limits",
+      "test_http_body_forbidden_and_malformed_trailers",
+      "test_http_body_construction_and_handoffs",
+      "test_http_body_reused_byte_move_and_owned_trailer",
+      "test_http_body_binary_octets_and_extension_controls",
+      "test_http_response_sequence_smoke",
+      "test_http_body_writer_fixed_capacities",
+      "test_http_body_writer_fixed_shortage_and_excess",
+      "test_http_body_writer_absent_and_metadata_length",
+      "test_http_body_writer_eof_and_budget",
+      "test_http_body_writer_chunked_capacities_and_roundtrip",
+      "test_http_body_writer_large_chunk_bound",
+      "test_http_body_writer_owned_trailers_and_move",
+      "test_http_body_writer_trailer_declarations",
+      "test_http_body_writer_trailer_validation",
+      "test_http_body_writer_framing_budget",
+      "test_http_body_writer_announced_chunk_shortage_and_finish_drain",
+      "test_http_body_writer_finish_behind_pending_delimiter",
+      "test_http_body_writer_binary_and_trailer_count",
+      "test_http_response_sequence_every_split",
+      "test_http_response_informational_count_limits",
+      "test_http_response_aggregate_and_per_head_limits",
+      "test_http_response_eof_every_prefix",
+      "test_http_response_head_connect_and_101_context",
+      "test_http_response_owned_events_and_partial_next_head",
+      "test_http_response_malformed_and_sticky_aggregate_offset",
+      "test_http_response_borrowed_method_context_and_limits"
+    ],
+    "tests": {
+      "package": "http",
+      "status": "ok",
+      "passed": 67,
+      "failed": 0,
+      "ignored": 0,
+      "ran": 67,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "isolated_replays": 67,
+    "production_fixture_imports": [],
+    "tls_link_inputs": []
+  },
+  "staged_manifest_sha256": {
+    "http": "e55a5a7781ca12efddad0fc5eedff883af875dfd62df546e4630752fa9edf401",
+    "net_core": "eb6ce0b9eff093c54ad8813e357b9ca13938ac2ecbb750f2e2ca003664d35266",
+    "http_tls": "78beae6abbd51b600f9bbb738562792dfb2322f18011794aadb11e71240dcaa2",
+    "tls": "1ef26a2218e8118e08d22a668a72a29633eda9b836eac12209e7bd8c80645600"
+  },
+  "openssl": {
+    "version": "3.5.9",
+    "pin_sha256": "ec27a6fcd269a5aea2d04194af37d9069d2c103bad9f088b3cb44ade3e6e58eb",
+    "libraries_sha256": {
+      "libssl.lib": "271e1299c1b227104ca14e71e5e92e4384bbbbe1777b4c78d9dd7f61a3899790",
+      "libcrypto.lib": "e247ca8ce93ad287b9c5a7a35d5fcf5b7ca28aa8ab2252c0a83ebb711dc9ae87"
+    },
+    "server": "OpenSSL 3.0.16 11 Feb 2025",
+    "fixture_cli": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)"
+  },
+  "https_production_fixture_imports": []
+}

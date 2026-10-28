@@ -1,0 +1,2049 @@
+{
+  "format": "nyra-http-connected-clients-v1",
+  "status": "passed",
+  "host": "darwin-arm64",
+  "compiler_origin": "source-candidate",
+  "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+  "sdk_version": "1.0.0",
+  "sdk_manifest_sha256": "7b83f8b49a52fa6493ae0acae2035437061bd74070d6be0b23da0b18855a37fe",
+  "source_fallback_disabled": true,
+  "source_sha256": {
+    "http": {
+      "http.ny": "4c71aa2fec9616497cb4a935a8a610caff4a8863f9d2abb7ed1c6cd936ec7026",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "3eda9069d642bcb6f7aab868447cc9e8fa47829d9c60cafcd671c60ecaad86ff",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "c97bcb346deef152dc268de7f68a054a68ffaa0ee5279977390710a003d3f823",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "http_tls": {
+      "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+      "interface/http_tls.ni": "5b679174b581571445de74d6b76882b2d412b46bae65b22f4c40aeac85b1b313",
+      "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+      "private/http_tls.ny": "08742c1a06f20e3d1fbfd8ff6f249100b56fb1ed296d71dfa0a34d1279fbdf88"
+    },
+    "tls": {
+      "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+      "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+      "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+      "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+      "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+      "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+      "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+      "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+      "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+      "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+      "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+      "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+      "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+      "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+      "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+      "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+      "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+      "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+      "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+      "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+      "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+      "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+      "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+      "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+      "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+      "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+    }
+  },
+  "commands": [
+    {
+      "name": "core",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Work/Workspace/NyraLang/third_party/http/scripts/accept.py",
+        "--sdk",
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64",
+        "--compiler",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "--net-core",
+        "/Volumes/Work/Workspace/NyraLang/third_party/net_core",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core"
+      ]
+    },
+    {
+      "name": "fixture",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-D_CRT_SECURE_NO_WARNINGS",
+        "-c",
+        "/Volumes/Work/Workspace/NyraLang/third_party/http/tests/data/client_fixture.c",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixture.o"
+      ]
+    },
+    {
+      "name": "dns-test-native",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Work/Workspace/NyraLang/third_party/net_core/scripts/build_native.py",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-test-native",
+        "--cc",
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/clang",
+        "--ar",
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/llvm-ar",
+        "--cflag=-DNET_CORE_TEST_DNS"
+      ]
+    },
+    {
+      "name": "dns-fixture",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/clang",
+        "-std=c11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-c",
+        "/Volumes/Work/Workspace/NyraLang/third_party/net_core/tests/native/n3_fixture.c",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-fixture.o"
+      ]
+    },
+    {
+      "name": "tcp-build",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "build",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-objects",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-consumer-test",
+        "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/net-native/libnet_core_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixture.o",
+        "--link-arg=-lpthread"
+      ]
+    },
+    {
+      "name": "plain-imports",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/llvm-nm",
+        "-u",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-consumer-test"
+      ]
+    },
+    {
+      "name": "tcp-url-control-build",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "build",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-url-control-objects",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tcp-url-control",
+        "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-test-native/libnet_core_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-fixture.o"
+      ]
+    },
+    {
+      "name": "openssl-version",
+      "command": [
+        "openssl",
+        "version"
+      ]
+    },
+    {
+      "name": "tls-native",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Work/Workspace/NyraLang/third_party/tls/scripts/build_native.py",
+        "--openssl-root",
+        "/Volumes/Work/Workspace/NyraLang/cache/tls-openssl/build-01/openssl-3.5.9",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tls-native",
+        "--cc",
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/clang",
+        "--ar",
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/llvm-ar"
+      ]
+    },
+    {
+      "name": "ca",
+      "command": [
+        "openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-days",
+        "2",
+        "-sha256",
+        "-subj",
+        "/CN=HTTP loopback ca",
+        "-keyout",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/ca.key",
+        "-out",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/ca.pem",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ]
+    },
+    {
+      "name": "wrong-ca",
+      "command": [
+        "openssl",
+        "req",
+        "-x509",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-days",
+        "2",
+        "-sha256",
+        "-subj",
+        "/CN=HTTP loopback wrong-ca",
+        "-keyout",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/wrong-ca.key",
+        "-out",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/wrong-ca.pem",
+        "-addext",
+        "basicConstraints=critical,CA:TRUE"
+      ]
+    },
+    {
+      "name": "peer-key",
+      "command": [
+        "openssl",
+        "req",
+        "-new",
+        "-newkey",
+        "rsa:2048",
+        "-nodes",
+        "-subj",
+        "/CN=localhost",
+        "-keyout",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/peer.key",
+        "-out",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/peer.csr"
+      ]
+    },
+    {
+      "name": "peer-cert",
+      "command": [
+        "openssl",
+        "x509",
+        "-req",
+        "-in",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/peer.csr",
+        "-CA",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/ca.pem",
+        "-CAkey",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/ca.key",
+        "-CAcreateserial",
+        "-days",
+        "2",
+        "-sha256",
+        "-extfile",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/peer.ext",
+        "-out",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixtures/peer.pem"
+      ]
+    },
+    {
+      "name": "https-production",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "precompile",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/project/http_tls/http_tls.ny",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-production-objects",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-production"
+      ]
+    },
+    {
+      "name": "https-production-imports",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/llvm-nm",
+        "-u",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-production/lib/libpackage.a"
+      ]
+    },
+    {
+      "name": "https-build",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "build",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-objects",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-consumer-test",
+        "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/net-native/libnet_core_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tls-native/libtls_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/tls-openssl/build-01/openssl-3.5.9/libssl.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/tls-openssl/build-01/openssl-3.5.9/libcrypto.a"
+      ]
+    },
+    {
+      "name": "https-url-control-build",
+      "command": [
+        "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+        "build",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-url-control-objects",
+        "-o",
+        "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/https-url-control",
+        "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-test-native/libnet_core_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/tls-native/libtls_native.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/tls-openssl/build-01/openssl-3.5.9/libssl.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/tls-openssl/build-01/openssl-3.5.9/libcrypto.a",
+        "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/dns-fixture.o"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 0.401,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "356a6074fd676a5c50b4acfb32b1fd466d9d6bbf76ad1109b0da391e78a9cc7c",
+      "request_exact": true,
+      "response_bytes": 90
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.041,
+      "accepted": true,
+      "request_bytes": 20098,
+      "request_sha256": "8125f874c1ae92ceff32bda2023624eee102d1e75842828aaef4579fb6fbf7c8",
+      "request_exact": true,
+      "response_bytes": 84
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.041,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "829903ee2eece2892ca51c89e12ab25d403501b230096360356e858482737002",
+      "request_exact": true,
+      "response_bytes": 24
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "733c7b7c8adcdb921f9faaa936d6381451d23e7efc4abdae78f8cb30ceb3f785",
+      "request_exact": true,
+      "response_bytes": 44
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.039,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "0673e87d1e4009b552815b46897ba847053980c66601a28239156043978ba043",
+      "request_exact": true,
+      "response_bytes": 66
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.043,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "feaeab117cb349de2553d553810ba8a06aa0431fd9d9d5be23e2dec27263939f",
+      "request_exact": true,
+      "response_bytes": 32
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.014,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.013,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.04,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "2713ec143c05ce900e5bb2f075c8c0f5f849db39662da63d754b46cce2cf2605",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.275,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e190523c5d67479ae30401baadb2eac9aad6834525762ec31ed69003802131a6",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.043,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e85493d96c4d97f51df599864585d87f50f0d62a20314929f51f36811ee58d22",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "45e04942d081d73d5782c22bea49933976f83e3e8b1cfbd5d78c5c1453d62d70",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e1376c3a09834524aee32f12820552df84b05ba6883bd4fb267f03a39b7e7c5e",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.041,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "46a696172e12200da266f3fffb4a24279d6b217bb0e971fb04771ce912fa2a91",
+      "request_exact": true,
+      "response_bytes": 47
+    },
+    {
+      "transport": "tcp",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "9ecb5e369a2a7430df69b73c41402a6b3ae323806f85ab96433904227e65c3d5",
+      "request_exact": true,
+      "response_bytes": 22
+    },
+    {
+      "transport": "tcp",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.043,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "0e162fdfc8c6428a947be06da6048021d32bb429e157c0a73c44c35eb38cf993",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.043,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "fd1aaa8c15b2cc289db96245be244e4318b9bd8b4b92a82486e42b6ab19d7b2e",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.04,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "dce357b9f6536cbf211e07ab00ab77fc9ade5973697af6cbaa71ad3264224055",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.014,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.013,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "f8ce584815aa19efd273d0ed5b08a6c407b16c6f5aa111edeba99997c7b4baf9",
+      "request_exact": true,
+      "response_bytes": 40042
+    },
+    {
+      "transport": "tcp",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "fd0d48133ba3305ee7093b6b208b5a1ee63d1d31049a2b0848c98b7b73293c54",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "aacdcc0e1f9216097aa765dccc90c858d60fde84e2105511730349619dcdff6d",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.039,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e98688db73612e234222ab33b0c70beb50e754a1430ae19778aebe60e90976c2",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "request_bytes": 78,
+      "request_sha256": "108da8436d9fbb336c65df970c93894a596e312951534ae38c4c7bccc7049525",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.04,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "31014796b9bbbc595c3aa0aa7a4c5ce8852c4e2577a23c726ea094c8fa08e4e5",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.041,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "f0b430c5017e76ab36cad78e933fd182ca0a141b4ebadbaadeb48d2951629d93",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 0.483,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "d25521b7df999d41b0f0cbae16a4c294d389a2584b4d3302149bff15dd8a4e88",
+      "request_exact": true,
+      "response_bytes": 90,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.087,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 20098,
+      "request_sha256": "1ff2c185a3640586a72ba0513a078315b4b2bc08ca8f70882321592726da7616",
+      "request_exact": true,
+      "response_bytes": 84,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.052,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "8f69f95a7149aba887bc301088ea1040192057c52fcf57754498616d0bc70a75",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.05,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "0e7ab8d2affa3765152ecf26b75386019cb3eb4a4da4938fd333c4ebfa366879",
+      "request_exact": true,
+      "response_bytes": 44,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2841)"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.049,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "ed4536917a7ce7cd555dd3043b257c77e5f82cb658c199e06dc0525ab665879c",
+      "request_exact": true,
+      "response_bytes": 66,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.049,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "d52aef90002db526aa7dc359e2bf4617b7785919b7bb7cf00facf9be5b7de993",
+      "request_exact": true,
+      "response_bytes": 32,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "unauthenticated-eof",
+      "status": "passed",
+      "duration_seconds": 0.049,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "396af1392892bf251bbfbdf5eec3415e043f338685fcb4e647f74cdca27306f2",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "raw-eof"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.008,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.007,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "a3bc62368f66ac60a61ca5956af35cb28ea8b15350e8f290f55a897ed6361756",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.266,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "12ec254cfa6a047c8c9e28641cbe9629e61d8da0208f47b9edbb0d6de780a9a8",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.052,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "009abb985e6fbac50af8e02046004652c1acb6a282b04580c1754c02e77aa77b",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "host-peer-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.014,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 14,
+      "name": "certificate-name-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.014,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 15,
+      "name": "trust-unavailable",
+      "status": "passed",
+      "duration_seconds": 0.013,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 16,
+      "name": "alpn-offer-rejected",
+      "status": "passed",
+      "duration_seconds": 0.007,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "54c8440bb541bc1900df27ab567cc48caf4d0888710d7401511cc52d276d930f",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.048,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "4c2e998bc0d618d7011840cc7d88d0cda9b6d5a10e9ab71016da5fc77127068d",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.042,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "2c8639e6980dbb07f6c704aa239d6480f9d27ea84bec4145b890016f8e27949c",
+      "request_exact": true,
+      "response_bytes": 47,
+      "expected_peer_error": "[Errno 54] Connection reset by peer"
+    },
+    {
+      "transport": "https",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.043,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "b3ca01d679d73862347ad791c3e1f5680954e2262e2ebd61d99f298879bc0abc",
+      "request_exact": true,
+      "response_bytes": 22,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2841)"
+    },
+    {
+      "transport": "https",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.048,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "dabc4769c867934567467b2664af120c12aaac945d7c5f052827ccf57e66e312",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.048,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "e4ad0e8d711d32acdbb8dd79307c2aefd3fcc111f7f382369ad1811942f381b2",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 24,
+      "name": "ipv6-identity",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 80,
+      "request_sha256": "efe831692755940e6c8a4383aa08bede7013ba8889436c9fbbafe4647abfabac",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.05,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "fbc27d0f0eb9494dca8e2b867140a6e78875baa8f98899f4e26152d530ffb704",
+      "request_exact": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2841)"
+    },
+    {
+      "transport": "https",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.014,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.008,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.081,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "4a21f8b8ce7ff1bcf14f01fb5284e09cda17d0dc5352d77652ca31aa4eb7e74f",
+      "request_exact": true,
+      "response_bytes": 40042,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 31,
+      "name": "alpn-absent",
+      "status": "passed",
+      "duration_seconds": 0.047,
+      "accepted": true,
+      "alpn": null,
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "9b094d9957d649f2ca10da44852c20afd36cf25b08c907ac99e5420fb062faef",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 32,
+      "name": "certificate-untrusted",
+      "status": "passed",
+      "duration_seconds": 0.013,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)"
+    },
+    {
+      "transport": "https",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.045,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "cf8ea02792d2fc3220877872e7e93f9ae7fd1b74d5fd760ad58d4afef9cb29b2",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.041,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "9b7464ac692d1bf40a2f3606c39114898f38a4ef039c717189d76315a9653c8e",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.049,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "5c81765dfe257a392aaa8e9c0ad265f10730b8b141419d81fbd5a2e6296bd39e",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.048,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 78,
+      "request_sha256": "01cb93831418b030d12204ef41061221581e5b256352b65c5b08d74af31e377c",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.05,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "cf5d3e23781e0ad56dcef6531587a054e067ddd046e62684cb3edaf454ca8ab6",
+      "request_exact": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2841)"
+    },
+    {
+      "transport": "https",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.089,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "6c957a4185ca4001c7bb3368065c3908540fb6981bba7a9b2726911bbfc8aa8a",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    }
+  ],
+  "url_control_cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "peer-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "alpn-before-dns",
+      "status": "passed"
+    }
+  ],
+  "plain_tls_link_inputs": [],
+  "core": {
+    "format": "nyra-http-framing-acceptance-v1",
+    "status": "passed",
+    "host": "darwin-arm64",
+    "sdk_version": "1.0.0",
+    "sdk_manifest_sha256": "7b83f8b49a52fa6493ae0acae2035437061bd74070d6be0b23da0b18855a37fe",
+    "compiler_origin": "source-candidate",
+    "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+    "source_fallback_disabled": true,
+    "source_sha256": {
+      "http.ny": "4c71aa2fec9616497cb4a935a8a610caff4a8863f9d2abb7ed1c6cd936ec7026",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "3eda9069d642bcb6f7aab868447cc9e8fa47829d9c60cafcd671c60ecaad86ff",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "c97bcb346deef152dc268de7f68a054a68ffaa0ee5279977390710a003d3f823",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core_source_sha256": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "commands": [
+      {
+        "name": "net-native",
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Volumes/Work/Workspace/NyraLang/third_party/net_core/scripts/build_native.py",
+          "--out-dir",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/net-native"
+        ]
+      },
+      {
+        "name": "list",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+          "test",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/project/http",
+          "--tag",
+          "http_core",
+          "--list"
+        ]
+      },
+      {
+        "name": "tests",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+          "test",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/project/http",
+          "--tag",
+          "http_core",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/objects",
+          "-o",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/net-native/libnet_core_native.a",
+          "--link-arg=-lpthread",
+          "--report",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/tests.json"
+        ]
+      },
+      {
+        "name": "case-0",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "0"
+        ]
+      },
+      {
+        "name": "case-1",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "1"
+        ]
+      },
+      {
+        "name": "case-2",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "2"
+        ]
+      },
+      {
+        "name": "case-3",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "3"
+        ]
+      },
+      {
+        "name": "case-4",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "4"
+        ]
+      },
+      {
+        "name": "case-5",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "5"
+        ]
+      },
+      {
+        "name": "case-6",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "6"
+        ]
+      },
+      {
+        "name": "case-7",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "7"
+        ]
+      },
+      {
+        "name": "case-8",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "8"
+        ]
+      },
+      {
+        "name": "case-9",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "9"
+        ]
+      },
+      {
+        "name": "case-10",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "10"
+        ]
+      },
+      {
+        "name": "case-11",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "11"
+        ]
+      },
+      {
+        "name": "case-12",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "12"
+        ]
+      },
+      {
+        "name": "case-13",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "13"
+        ]
+      },
+      {
+        "name": "case-14",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "14"
+        ]
+      },
+      {
+        "name": "case-15",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "15"
+        ]
+      },
+      {
+        "name": "case-16",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "16"
+        ]
+      },
+      {
+        "name": "case-17",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "17"
+        ]
+      },
+      {
+        "name": "case-18",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "18"
+        ]
+      },
+      {
+        "name": "case-19",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "19"
+        ]
+      },
+      {
+        "name": "case-20",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "20"
+        ]
+      },
+      {
+        "name": "case-21",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "21"
+        ]
+      },
+      {
+        "name": "case-22",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "22"
+        ]
+      },
+      {
+        "name": "case-23",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "23"
+        ]
+      },
+      {
+        "name": "case-24",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "24"
+        ]
+      },
+      {
+        "name": "case-25",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "25"
+        ]
+      },
+      {
+        "name": "case-26",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "26"
+        ]
+      },
+      {
+        "name": "case-27",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "27"
+        ]
+      },
+      {
+        "name": "case-28",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "28"
+        ]
+      },
+      {
+        "name": "case-29",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "29"
+        ]
+      },
+      {
+        "name": "case-30",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "30"
+        ]
+      },
+      {
+        "name": "case-31",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "31"
+        ]
+      },
+      {
+        "name": "case-32",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "32"
+        ]
+      },
+      {
+        "name": "case-33",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "33"
+        ]
+      },
+      {
+        "name": "case-34",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "34"
+        ]
+      },
+      {
+        "name": "case-35",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "35"
+        ]
+      },
+      {
+        "name": "case-36",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "36"
+        ]
+      },
+      {
+        "name": "case-37",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "37"
+        ]
+      },
+      {
+        "name": "case-38",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "38"
+        ]
+      },
+      {
+        "name": "case-39",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "39"
+        ]
+      },
+      {
+        "name": "case-40",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "40"
+        ]
+      },
+      {
+        "name": "case-41",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "41"
+        ]
+      },
+      {
+        "name": "case-42",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "42"
+        ]
+      },
+      {
+        "name": "case-43",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "43"
+        ]
+      },
+      {
+        "name": "case-44",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "44"
+        ]
+      },
+      {
+        "name": "case-45",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "45"
+        ]
+      },
+      {
+        "name": "case-46",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "46"
+        ]
+      },
+      {
+        "name": "case-47",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "47"
+        ]
+      },
+      {
+        "name": "case-48",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "48"
+        ]
+      },
+      {
+        "name": "case-49",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "49"
+        ]
+      },
+      {
+        "name": "case-50",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "50"
+        ]
+      },
+      {
+        "name": "case-51",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "51"
+        ]
+      },
+      {
+        "name": "case-52",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "52"
+        ]
+      },
+      {
+        "name": "case-53",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "53"
+        ]
+      },
+      {
+        "name": "case-54",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "54"
+        ]
+      },
+      {
+        "name": "case-55",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "55"
+        ]
+      },
+      {
+        "name": "case-56",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "56"
+        ]
+      },
+      {
+        "name": "case-57",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "57"
+        ]
+      },
+      {
+        "name": "case-58",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "58"
+        ]
+      },
+      {
+        "name": "case-59",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "59"
+        ]
+      },
+      {
+        "name": "case-60",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "60"
+        ]
+      },
+      {
+        "name": "case-61",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "61"
+        ]
+      },
+      {
+        "name": "case-62",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "62"
+        ]
+      },
+      {
+        "name": "case-63",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "63"
+        ]
+      },
+      {
+        "name": "case-64",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "64"
+        ]
+      },
+      {
+        "name": "case-65",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "65"
+        ]
+      },
+      {
+        "name": "case-66",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/http-tests",
+          "66"
+        ]
+      },
+      {
+        "name": "production",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+          "precompile",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/project/http/http.ny",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/production-objects",
+          "-o",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/production"
+        ]
+      },
+      {
+        "name": "production-imports",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/hosts/darwin-arm64/llvm/bin/llvm-nm",
+          "-u",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/production/lib/libpackage.a"
+        ]
+      },
+      {
+        "name": "consumer-build",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-body-compiler-final/nyrac",
+          "build",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/consumer/main.ny",
+          "--link",
+          "-O2",
+          "--out-dir",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/consumer-objects",
+          "-o",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/consumer-test",
+          "--platform-archive=/Volumes/Work/Workspace/NyraLang/cache/net-core-ci-sdk/nyra-sdk-1.0.0-darwin-arm64/targets/darwin-arm64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/net-native/libnet_core_native.a",
+          "--link-arg=-lpthread"
+        ]
+      },
+      {
+        "name": "consumer",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-url-final/macos-accepted/core/consumer-test"
+        ]
+      }
+    ],
+    "scope": "Strict HTTP/1.x heads, streaming body decoding/writing and informational/final response sequencing; no network client",
+    "staged_manifest_sha256": {
+      "http": "0257eef113f5580b2088af89d0add0e15bd0a719f37939683df1bad85694740c",
+      "net_core": "d5f2b3155d6204041d7f8dc984930a3d98862abfc2879fd3e7cff733d286eff9"
+    },
+    "case_names": [
+      "test_http_url_authority_and_defaults",
+      "test_http_url_ip_identity_and_ports",
+      "test_http_url_escaped_target_is_opaque",
+      "test_http_url_rejects_ambiguous_authority",
+      "test_http_url_controls_limits_and_default_value",
+      "test_http_url_owned_and_generated_request",
+      "test_http_url_reserved_fields_and_request_injection",
+      "test_http_url_dial_and_open_preflight_controls",
+      "test_http_client_exchange_smoke",
+      "test_http_client_partial_acknowledgement_and_owned_output",
+      "test_http_client_chunked_request_and_response_events",
+      "test_http_client_input_backpressure_and_eof",
+      "test_http_client_response_failures_preserve_stage",
+      "test_http_client_request_validation_and_retention_budget",
+      "test_http_client_incoming_backing_budget_and_identity",
+      "test_http_request_smoke",
+      "test_http_every_split_preserves_body_suffix",
+      "test_http_reused_input_and_owned_head",
+      "test_http_strict_line_and_field_syntax",
+      "test_http_duplicate_lengths_and_numeric_overflow",
+      "test_http_transfer_encoding_conflicts",
+      "test_http_host_validation",
+      "test_http_response_context_and_handoffs",
+      "test_http_connection_lifecycle",
+      "test_http_ordinary_duplicates_and_ows",
+      "test_http_limits_and_exact_boundaries",
+      "test_http_eof_at_every_prefix",
+      "test_http_target_and_version_profile",
+      "test_http_writer_request_roundtrip_and_ownership",
+      "test_http_writer_response_roundtrip",
+      "test_http_writer_injection_and_framing_rejection",
+      "test_http_writer_limits_and_defaults",
+      "test_http_binary_controls_and_obs_text",
+      "test_http_body_fixed_smoke",
+      "test_http_body_chunked_every_split",
+      "test_http_body_backpressure_and_pipeline",
+      "test_http_body_fixed_every_split_and_eof",
+      "test_http_body_chunked_eof_every_prefix",
+      "test_http_body_eof_delimited_and_budget",
+      "test_http_body_size_and_extension_rejection",
+      "test_http_body_cumulative_limits",
+      "test_http_body_forbidden_and_malformed_trailers",
+      "test_http_body_construction_and_handoffs",
+      "test_http_body_reused_byte_move_and_owned_trailer",
+      "test_http_body_binary_octets_and_extension_controls",
+      "test_http_response_sequence_smoke",
+      "test_http_body_writer_fixed_capacities",
+      "test_http_body_writer_fixed_shortage_and_excess",
+      "test_http_body_writer_absent_and_metadata_length",
+      "test_http_body_writer_eof_and_budget",
+      "test_http_body_writer_chunked_capacities_and_roundtrip",
+      "test_http_body_writer_large_chunk_bound",
+      "test_http_body_writer_owned_trailers_and_move",
+      "test_http_body_writer_trailer_declarations",
+      "test_http_body_writer_trailer_validation",
+      "test_http_body_writer_framing_budget",
+      "test_http_body_writer_announced_chunk_shortage_and_finish_drain",
+      "test_http_body_writer_finish_behind_pending_delimiter",
+      "test_http_body_writer_binary_and_trailer_count",
+      "test_http_response_sequence_every_split",
+      "test_http_response_informational_count_limits",
+      "test_http_response_aggregate_and_per_head_limits",
+      "test_http_response_eof_every_prefix",
+      "test_http_response_head_connect_and_101_context",
+      "test_http_response_owned_events_and_partial_next_head",
+      "test_http_response_malformed_and_sticky_aggregate_offset",
+      "test_http_response_borrowed_method_context_and_limits"
+    ],
+    "tests": {
+      "package": "http",
+      "status": "ok",
+      "passed": 67,
+      "failed": 0,
+      "ignored": 0,
+      "ran": 67,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "isolated_replays": 67,
+    "production_fixture_imports": [],
+    "tls_link_inputs": []
+  },
+  "staged_manifest_sha256": {
+    "http": "0257eef113f5580b2088af89d0add0e15bd0a719f37939683df1bad85694740c",
+    "net_core": "d5f2b3155d6204041d7f8dc984930a3d98862abfc2879fd3e7cff733d286eff9",
+    "http_tls": "941375a8ad595e27c33caf6993a0fc86a35883161e9f3a0d0158529f0f2bfa27",
+    "tls": "4b7b796ad22b5e8a1d8ced2cd10d98bbf5d69ecc5239fe518f9f808731c996b0"
+  },
+  "openssl": {
+    "version": "3.5.9",
+    "pin_sha256": "ec27a6fcd269a5aea2d04194af37d9069d2c103bad9f088b3cb44ade3e6e58eb",
+    "libraries_sha256": {
+      "libssl.a": "2ea2bce75afb631120c765d24afb63fc52461cddc07fef155c955a31ac102752",
+      "libcrypto.a": "2042ed505b6769eaadb367b6946c01e3d8eea873b44b749d1694fcf3f8f05da9"
+    },
+    "server": "OpenSSL 3.6.4 25 Aug 2026",
+    "fixture_cli": "OpenSSL 4.0.3 29 Sep 2026 (Library: OpenSSL 4.0.3 29 Sep 2026)"
+  },
+  "https_production_fixture_imports": []
+}

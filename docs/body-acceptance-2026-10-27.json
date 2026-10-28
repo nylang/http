@@ -1,0 +1,76 @@
+{
+  "format": "nyra-http-body-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "package": "http",
+  "package_version": "0.1.0",
+  "phase": "H2-decoder",
+  "scope": "Local HTTP/1.x heads and shared streaming body decoder; no body writer, network client, SDK promotion or publication",
+  "protocol_reference": "https://www.rfc-editor.org/rfc/rfc9112.html#section-7.1",
+  "ownership": "Move-only decoder retaining bounded scratch/head/trailer metadata; caller-owned non-overlapping borrowed input/output spans; exact prefix progress; no body-sized allocation",
+  "default_limits": {
+    "decoded_bytes": 16777216,
+    "cumulative_framing_bytes": 1048576,
+    "line_bytes_excluding_crlf": 8192,
+    "trailers": 100
+  },
+  "hard_limits": {
+    "decoded_bytes": 9223372036837998591,
+    "cumulative_framing_bytes": 16777216,
+    "line_bytes_excluding_crlf": 65536,
+    "trailers": 128
+  },
+  "profile_limits": [
+    "Only fixed-length, chunked, EOF-delimited and absent bodies; Upgrade/Tunnel require explicit handoff",
+    "At most one contiguous payload span copied per Push; metadata-only progress supports zero output capacity",
+    "Errors write no output during that call; earlier successful body output remains incomplete until Complete; discard connection on any error",
+    "Chunk extensions validated and ignored; trailers published separately after completion, never merged with head",
+    "Known framing/routing/control/authentication/representation/cookie and Connection-nominated trailer names rejected; unknown trailers remain untrusted application metadata",
+    "Zero limit fields select defaults; body decoding does not decompress content",
+    "Body writing, informational response orchestration, TCP/TLS clients, URLs, redirects, pooling and mobile/macOS-x64 acceptance remain pending",
+    "No fuzzer/sanitizer, exhaustive allocation-fault, public compiler/SDK, independent CI or release claim",
+    "Local Git repository remains uncommitted; parent gitlink and assigned public origin remain pending"
+  ],
+  "compiler_fix": "Native selected variant-arm ownership correction; public SDK compilers remain affected",
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "body-acceptance-2026-10-27-darwin-arm64.json",
+      "tests": 30,
+      "isolated_replays": 30,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "linux-x86_64": {
+      "receipt": "body-acceptance-2026-10-27-linux-x86_64.json",
+      "tests": 30,
+      "isolated_replays": 30,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "windows-x86_64": {
+      "receipt": "body-acceptance-2026-10-27-windows-x86_64.json",
+      "tests": 30,
+      "isolated_replays": 30,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    }
+  }
+}

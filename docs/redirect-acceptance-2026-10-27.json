@@ -1,0 +1,89 @@
+{
+  "format": "nyra-http-redirect-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "phase": "H3c",
+  "packages": [
+    "http",
+    "http_tls"
+  ],
+  "scope": "Strict URI-reference resolution and explicit caller-driven redirect/replay coordinator; immutable request snapshots opened over existing TCP/verified HTTPS clients; source candidates only",
+  "default_max_redirects": 5,
+  "hard_max_redirects": 32,
+  "tests_per_host": {
+    "core": 76,
+    "isolated_core_replays": 76,
+    "baseline_live": 62,
+    "baseline_url_dns_controls": 20,
+    "tcp_redirects": 12,
+    "https_redirects": 13
+  },
+  "profile": [
+    "Follow only 301/302/303/307/308; missing Location is terminal/observable, duplicate Location fails closed",
+    "RFC3986 hierarchical references; validate before literal dot removal, preserve escapes, omit fragments; empty-path references retain the base path/query as appropriate",
+    "301/302 POST to GET; 303 to GET except HEAD; rewrite drops body/Content-* metadata; preserved unsafe method or nonempty body requires opt-in",
+    "Cross-origin default denied; when allowed permanently retain only Accept/Accept-Encoding/Accept-Language/User-Agent plus Content-Type/Encoding for preserved bodies",
+    "Strip Connection/hop/proxy fields and Connection-nominated names every hop; never restore credentials when returning to initial origin",
+    "HTTPS downgrade always rejected; independent hop bounds stop cycles and empty/fragment-only redirects",
+    "Original absolute deadline/shared cancellation covers snapshots and all opens; decision success/failure is checked before publication, first failure remains sticky",
+    "Snapshots own borrowed method/field strings and immutable body owners; consumer-retained snapshots are outside chain budgets",
+    "Caller associates the correct final response head; on true/error closes old client without body drain/reuse, then selects next transport explicitly; terminal false leaves body observable",
+    "Decision cursor performs no transfers and does not aggregate client stats; retain each hop event/error progress; network errors never become redirects/retries"
+  ],
+  "remaining": [
+    "Automatic-follow facade and mixed-protocol dispatcher acceptance",
+    "IDNA/trailing-dot policy, streaming body producers, Expect/early-final handling, cookie/auth refresh and pooling",
+    "Deterministic address fallback and broader native/notification/resource/scheduling faults, fuzzing/mobile/macOS-x64 execution",
+    "Published compiler/SDK compatibility/promotion, package initial commits/gitlinks/origins/CI/releases"
+  ],
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "redirect-acceptance-2026-10-27-darwin-arm64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "core_tests": 76,
+      "isolated_replays": 76,
+      "baseline_live": 62,
+      "baseline_url_dns_controls": 20,
+      "tcp_redirects": 12,
+      "https_redirects": 13,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "linux-x86_64": {
+      "receipt": "redirect-acceptance-2026-10-27-linux-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 76,
+      "isolated_replays": 76,
+      "baseline_live": 62,
+      "baseline_url_dns_controls": 20,
+      "tcp_redirects": 12,
+      "https_redirects": 13,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "windows-x86_64": {
+      "receipt": "redirect-acceptance-2026-10-27-windows-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 76,
+      "isolated_replays": 76,
+      "baseline_live": 62,
+      "baseline_url_dns_controls": 20,
+      "tcp_redirects": 12,
+      "https_redirects": 13,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    }
+  }
+}

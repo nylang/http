@@ -1,0 +1,2895 @@
+{
+  "format": "nyra-http-redirect-acceptance-v1",
+  "status": "passed",
+  "host": "windows-x86_64",
+  "source_sha256": {
+    "http": {
+      "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+      "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "http_tls": {
+      "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+      "interface/http_tls.ni": "b02bce72abfd3f8aab4d54c453b5eeebfc1eccc79f017bd799ed36aed82fa7ca",
+      "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+      "private/http_tls.ny": "1670bd1baa1c762b558b4b3b9f32924eeb98f52d0ad63a911def5d162afb5cd2"
+    },
+    "tls": {
+      "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+      "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+      "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+      "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+      "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+      "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+      "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+      "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+      "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+      "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+      "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+      "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+      "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+      "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+      "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+      "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+      "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+      "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+      "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+      "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+      "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+      "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+      "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+      "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+      "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+      "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+    }
+  },
+  "cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 3.015,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 62234,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 62234
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 2.0,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 62241,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 62241
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.125,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64696,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 64701,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 64702
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.125,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 64707,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 64712,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 64712,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 64712,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.141,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64719,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.109,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64724,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.141,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64729,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 64729
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.171,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64735,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.25,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64740,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.157,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 64746
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 2.968,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53645,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 53645,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 2.094,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53653,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 53653,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.125,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53660,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 55288,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 55289,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.141,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 55294,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 60673,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 60673,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 60673,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.156,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60680,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.157,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60685,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.141,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60690,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 60690,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60696,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.265,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60701,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.172,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60707,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "https-downgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.14,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 60712,
+          "old_connection_closed": true
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "name": "base",
+      "command": [
+        "E:\\workspace\\nyra-ci\\python\\python.exe",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\http\\scripts\\accept_clients.py",
+        "--sdk",
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk",
+        "--compiler",
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base",
+        "--http-tls",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\http_tls",
+        "--tls",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\tls",
+        "--openssl-root",
+        "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9"
+      ]
+    },
+    {
+      "name": "tcp-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\redirect-tcp\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\tcp-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\redirect-tcp.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi"
+      ]
+    },
+    {
+      "name": "plain-imports",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+        "-u",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\redirect-tcp.exe"
+      ]
+    },
+    {
+      "name": "https-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\redirect-https\\main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\https-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\redirect-https.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tls-native\\libtls_native.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libssl.lib",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libcrypto.lib",
+        "--link-arg=-lgdi32",
+        "--link-arg=-ladvapi32",
+        "--link-arg=-lcrypt32",
+        "--link-arg=-luser32"
+      ]
+    }
+  ],
+  "base": {
+    "format": "nyra-http-connected-clients-v1",
+    "status": "passed",
+    "host": "windows-x86_64",
+    "compiler_origin": "source-candidate",
+    "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+    "sdk_version": "1.0.1",
+    "sdk_manifest_sha256": "cac62ba3015c1568387c150aa079dae741e3a4814623846ae1a81915897d8a09",
+    "source_fallback_disabled": true,
+    "source_sha256": {
+      "http": {
+        "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+        "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+        "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+        "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+        "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+        "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+        "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+        "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+        "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+        "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+        "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+        "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+        "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+        "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+        "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+        "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+        "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+        "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+        "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+        "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+        "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+        "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+        "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+        "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+        "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+        "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+        "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+        "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+        "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+        "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+        "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+      },
+      "net_core": {
+        ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+        "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+        "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+        "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+        "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+        "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+        "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+        "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+        "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+        "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+        "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+        "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+        "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+        "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+        "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+        "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+        "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+        "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+        "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+        "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+        "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+        "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+        "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+        "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+        "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+        "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+        "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+        "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+        "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+        "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+        "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+        "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+        "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+        "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+        "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+        "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+        "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+        "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+        "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+        "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+      },
+      "http_tls": {
+        "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+        "interface/http_tls.ni": "b02bce72abfd3f8aab4d54c453b5eeebfc1eccc79f017bd799ed36aed82fa7ca",
+        "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+        "private/http_tls.ny": "1670bd1baa1c762b558b4b3b9f32924eeb98f52d0ad63a911def5d162afb5cd2"
+      },
+      "tls": {
+        "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+        "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+        "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+        "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+        "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+        "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+        "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+        "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+        "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+        "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+        "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+        "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+        "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+        "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+        "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+        "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+        "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+        "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+        "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+        "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+        "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+        "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+        "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+        "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+        "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+        "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+      }
+    },
+    "commands": [
+      {
+        "name": "core",
+        "command": [
+          "E:\\workspace\\nyra-ci\\python\\python.exe",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\http\\scripts\\accept.py",
+          "--sdk",
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk",
+          "--compiler",
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "--net-core",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\net_core",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core"
+        ]
+      },
+      {
+        "name": "fixture",
+        "command": [
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+          "-std=c11",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-D_CRT_SECURE_NO_WARNINGS",
+          "-c",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\http\\tests\\data\\client_fixture.c",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o"
+        ]
+      },
+      {
+        "name": "dns-test-native",
+        "command": [
+          "E:\\workspace\\nyra-ci\\python\\python.exe",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\scripts\\build_native.py",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-test-native",
+          "--cc",
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+          "--ar",
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-ar.exe",
+          "--cflag=-DNET_CORE_TEST_DNS",
+          "--cflag=-Dnet_core_os_wake_open=net_core_test_real_wake_open"
+        ]
+      },
+      {
+        "name": "dns-fixture",
+        "command": [
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+          "-std=c11",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-c",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\tests\\native\\n3_fixture.c",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-fixture.o"
+        ]
+      },
+      {
+        "name": "tcp-build",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "build",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-consumer\\main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-consumer-test.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi"
+        ]
+      },
+      {
+        "name": "plain-imports",
+        "command": [
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+          "-u",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-consumer-test.exe"
+        ]
+      },
+      {
+        "name": "tcp-url-control-build",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "build",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-consumer\\main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-url-control-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tcp-url-control.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-test-native\\libnet_core_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-fixture.o"
+        ]
+      },
+      {
+        "name": "openssl-version",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+          "version"
+        ]
+      },
+      {
+        "name": "tls-native",
+        "command": [
+          "E:\\workspace\\nyra-ci\\python\\python.exe",
+          "E:\\workspace\\tls-dev-20261027\\third_party\\tls\\scripts\\build_native.py",
+          "--openssl-root",
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tls-native",
+          "--cc",
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\clang.exe",
+          "--ar",
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-ar.exe"
+        ]
+      },
+      {
+        "name": "ca",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+          "req",
+          "-x509",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-days",
+          "2",
+          "-sha256",
+          "-subj",
+          "/CN=HTTP loopback ca",
+          "-keyout",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\ca.key",
+          "-out",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\ca.pem",
+          "-addext",
+          "basicConstraints=critical,CA:TRUE"
+        ]
+      },
+      {
+        "name": "wrong-ca",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+          "req",
+          "-x509",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-days",
+          "2",
+          "-sha256",
+          "-subj",
+          "/CN=HTTP loopback wrong-ca",
+          "-keyout",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\wrong-ca.key",
+          "-out",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\wrong-ca.pem",
+          "-addext",
+          "basicConstraints=critical,CA:TRUE"
+        ]
+      },
+      {
+        "name": "peer-key",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+          "req",
+          "-new",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-subj",
+          "/CN=localhost",
+          "-keyout",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\peer.key",
+          "-out",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\peer.csr"
+        ]
+      },
+      {
+        "name": "peer-cert",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\apps\\openssl.exe",
+          "x509",
+          "-req",
+          "-in",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\peer.csr",
+          "-CA",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\ca.pem",
+          "-CAkey",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\ca.key",
+          "-CAcreateserial",
+          "-days",
+          "2",
+          "-sha256",
+          "-extfile",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\peer.ext",
+          "-out",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixtures\\peer.pem"
+        ]
+      },
+      {
+        "name": "https-production",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "precompile",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\project\\http_tls\\http_tls.ny",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-production-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-production"
+        ]
+      },
+      {
+        "name": "https-production-imports",
+        "command": [
+          "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+          "-u",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-production\\lib\\libpackage.a"
+        ]
+      },
+      {
+        "name": "https-build",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "build",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-consumer\\main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-consumer-test.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tls-native\\libtls_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libssl.lib",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libcrypto.lib",
+          "--link-arg=-lgdi32",
+          "--link-arg=-ladvapi32",
+          "--link-arg=-lcrypt32",
+          "--link-arg=-luser32"
+        ]
+      },
+      {
+        "name": "https-url-control-build",
+        "command": [
+          "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+          "build",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-consumer\\main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-url-control-objects",
+          "-o",
+          "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\https-url-control.exe",
+          "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-test-native\\libnet_core_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\fixture.o",
+          "--link-arg=-lws2_32",
+          "--link-arg=-liphlpapi",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\tls-native\\libtls_native.a",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libssl.lib",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\openssl\\openssl-3.5.9\\libcrypto.lib",
+          "--link-arg=-lgdi32",
+          "--link-arg=-ladvapi32",
+          "--link-arg=-lcrypt32",
+          "--link-arg=-luser32",
+          "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\dns-fixture.o"
+        ]
+      }
+    ],
+    "cases": [
+      {
+        "transport": "tcp",
+        "case": 1,
+        "name": "fixed-informational",
+        "status": "passed",
+        "duration_seconds": 2.64,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "b5e9ed2d804f441328b3907ea441f0e422a4cf0f533c6cca43f6856bf59b046b",
+        "request_exact": true,
+        "response_bytes": 90
+      },
+      {
+        "transport": "tcp",
+        "case": 2,
+        "name": "chunked-upload-trailers",
+        "status": "passed",
+        "duration_seconds": 1.75,
+        "accepted": true,
+        "request_bytes": 20098,
+        "request_sha256": "e6facaf368e24a3960946be2cbe76c3419ea7908d3146667fa0d92d59682c1b9",
+        "request_exact": true,
+        "response_bytes": 84
+      },
+      {
+        "transport": "tcp",
+        "case": 3,
+        "name": "eof-body",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "4e7728ce2fc6b91d04451bae65778814a75768a485668e1ec72db9851c1a5f2a",
+        "request_exact": true,
+        "response_bytes": 24
+      },
+      {
+        "transport": "tcp",
+        "case": 4,
+        "name": "truncated-fixed",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "6f0859631f998ee80a6bf06ebeb23054126152b1e001db4c1d13deef6b0ec303",
+        "request_exact": true,
+        "response_bytes": 44
+      },
+      {
+        "transport": "tcp",
+        "case": 5,
+        "name": "framing-conflict",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "46792631985b484f247b780cc3d87c2087c051254434662a7cf3c935fb57f478",
+        "request_exact": true,
+        "response_bytes": 66
+      },
+      {
+        "transport": "tcp",
+        "case": 6,
+        "name": "upgrade-rejected",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "9e758b360d224ea98f1a27b5815eaa61f9533b547e0bbc9b72dc33eec244dcce",
+        "request_exact": true,
+        "response_bytes": 32
+      },
+      {
+        "transport": "tcp",
+        "case": 8,
+        "name": "cancelled-constructor",
+        "status": "passed",
+        "duration_seconds": 0.0,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 9,
+        "name": "expired-constructor",
+        "status": "passed",
+        "duration_seconds": 0.016,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 10,
+        "name": "cancel-buffered-body",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "43209f5a077c67a09139b1680c108c31b694b147c79e59aa518bab7e06f2b592",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 11,
+        "name": "expire-buffered-body",
+        "status": "passed",
+        "duration_seconds": 3.25,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "c4c4b24bc2d385a8d306f1c1c70e554acf23b18b66edcd6a942d334b1ab4899e",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 12,
+        "name": "retained-options",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "526aea5f4b76f9236e676f38fbc8a3ec49c38b85d0f3c0ab5148b34dde069fbf",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 17,
+        "name": "durable-completion",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "88e1f38a0837f78248b1eb69b4aa53fd0312b5cdbfae6575296397f83380bb35",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 18,
+        "name": "response-body-cap",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "f54beb7a5c60549284b42f6be88a917f0262ba8ee803704e59ef8d352761c33b",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 19,
+        "name": "informational-cap",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "a1fefbbb7e0cae046c06fbf328a10670d3cd668b8929cbead3f55127dfa3cc31",
+        "request_exact": true,
+        "response_bytes": 47
+      },
+      {
+        "transport": "tcp",
+        "case": 20,
+        "name": "missing-final",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "25b0b0fd976a4cad95df36a73c71c6db7e37ac58dc166614fbf5f03a535886e7",
+        "request_exact": true,
+        "response_bytes": 22
+      },
+      {
+        "transport": "tcp",
+        "case": 22,
+        "name": "ipv4-identity",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "62e5020d24e4147631c45b48af92707b7735c87f6bd937b67ac0cd17dd280e6b",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 23,
+        "name": "dns-case",
+        "status": "passed",
+        "duration_seconds": 0.079,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "0548ff95512a48865124ab5a00987f2313afbc6ccc35221bf41a0175cc74fbb6",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 25,
+        "name": "deadline-native-wait",
+        "status": "passed",
+        "duration_seconds": 1.046,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "15af2ce8bd46fd48f3360d8f7b2c16484e28a301909833ff9c5faa03dcf4e717",
+        "request_exact": true
+      },
+      {
+        "transport": "tcp",
+        "case": 27,
+        "name": "invalid-request-adoption",
+        "status": "passed",
+        "duration_seconds": 0.016,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 28,
+        "name": "expect-rejected",
+        "status": "passed",
+        "duration_seconds": 0.0,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 29,
+        "name": "streaming-large-response",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "684c75a13879abae4b9e744e72b147ed6fc52774d76c0afeb4da4c849302e647",
+        "request_exact": true,
+        "response_bytes": 40042
+      },
+      {
+        "transport": "tcp",
+        "case": 40,
+        "name": "url-dns-open",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "0f7be1f303ff2546a894748669167e3a27d2c57e10689471d23954338fc61b72",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 41,
+        "name": "url-numeric-bypass",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "67b0a569538966ea897616b63517fd05511d107bdb8032a8e70e22eb7c087c76",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 42,
+        "name": "url-unspecified-family",
+        "status": "passed",
+        "duration_seconds": 0.094,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "ed864bb3a7b96132289147c82be0e6b8a8dd370ecd02dda715ae9c24e7205839",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 43,
+        "name": "url-escaped-query",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "request_bytes": 78,
+        "request_sha256": "bb3cc01069d3353592f15fd11453f9c9c29613e04954f0bde77dc0dd3e1fe5f3",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 44,
+        "name": "url-native-deadline",
+        "status": "passed",
+        "duration_seconds": 1.094,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "8bd981c3b26f165b57d9170079edbe554853b1d3e6e8468f7770242e666cbd98",
+        "request_exact": true
+      },
+      {
+        "transport": "tcp",
+        "case": 45,
+        "name": "url-retained-options",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "0706b07812e468585859d08754c6a5645ca80902cb8ed0d65af6504890190a1b",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "https",
+        "case": 1,
+        "name": "fixed-informational",
+        "status": "passed",
+        "duration_seconds": 3.906,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "577db3ed7779e14ce1d0dcaaaed74dd87f8f0aa8bf36fe31359d18dbde843172",
+        "request_exact": true,
+        "response_bytes": 90,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 2,
+        "name": "chunked-upload-trailers",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 20098,
+        "request_sha256": "dbaafcb2cb14ed6fb7d115d3ca4cb894c968933c6bf96e82146a75dcceb7794e",
+        "request_exact": true,
+        "response_bytes": 84,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 3,
+        "name": "eof-body",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "5eeb874173bea5e5514d432650182d6a5efce098848c59f50cfb96c1982ac0a2",
+        "request_exact": true,
+        "response_bytes": 24,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 4,
+        "name": "truncated-fixed",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "92faa9150dc9afa9c44ea2baf8f74b7a1d88c3baaeba4fd34a14770c7a0ca7ea",
+        "request_exact": true,
+        "response_bytes": 44,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 5,
+        "name": "framing-conflict",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "fec72852f50ae92c4f279b8d955e305ba5e0863da4b5df87f10a28a791956379",
+        "request_exact": true,
+        "response_bytes": 66,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 6,
+        "name": "upgrade-rejected",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "30e0fd895d498040f2ea4ff9afd4c2763f055bdc5d6a39adba24fadd40d28c0c",
+        "request_exact": true,
+        "response_bytes": 32,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 7,
+        "name": "unauthenticated-eof",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "4de58be86eb7954880ed3b5d3b5351750502677c70882fd58fc13c00e6a451fd",
+        "request_exact": true,
+        "response_bytes": 24,
+        "closure": "raw-eof"
+      },
+      {
+        "transport": "https",
+        "case": 8,
+        "name": "cancelled-constructor",
+        "status": "passed",
+        "duration_seconds": 0.015,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 9,
+        "name": "expired-constructor",
+        "status": "passed",
+        "duration_seconds": 0.016,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 10,
+        "name": "cancel-buffered-body",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "c59cebbf4f9115b6b81d4b58c4aba2b21ff8210076b8aff58bede03b060afc5b",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 11,
+        "name": "expire-buffered-body",
+        "status": "passed",
+        "duration_seconds": 3.265,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "9347ab25ed9c2b043a8e6ec445634359040aba6056fc8041653b415141a40067",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 12,
+        "name": "retained-options",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "10b2ea6e81e0d831b6637c16c51b0da6b358eeabdb8e05d7dc01a30b1d66f870",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 13,
+        "name": "host-peer-mismatch",
+        "status": "passed",
+        "duration_seconds": 0.016,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 14,
+        "name": "certificate-name-mismatch",
+        "status": "passed",
+        "duration_seconds": 0.015,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 15,
+        "name": "trust-unavailable",
+        "status": "passed",
+        "duration_seconds": 0.0,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 16,
+        "name": "alpn-offer-rejected",
+        "status": "passed",
+        "duration_seconds": 0.0,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 17,
+        "name": "durable-completion",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "4decb8d18fcf80044fd0168e560ec96cf0228539727948482a5c13544f3147f6",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 18,
+        "name": "response-body-cap",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "d90b6d54bf256cadc30f86c8772f3d80b563dc671c7fd123bff48d8ff5225c3a",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 19,
+        "name": "informational-cap",
+        "status": "passed",
+        "duration_seconds": 0.079,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "c36d0c7cb6342d57d996fab55b4fec2d374bbaee8ae9fc2d86c25266755eb43c",
+        "request_exact": true,
+        "response_bytes": 47,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 20,
+        "name": "missing-final",
+        "status": "passed",
+        "duration_seconds": 0.062,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "32a2ef8448ff10cf6f6fb91450fac8199cd1bbdead1f6668becb655b34cc4dd5",
+        "request_exact": true,
+        "response_bytes": 22,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2706)"
+      },
+      {
+        "transport": "https",
+        "case": 22,
+        "name": "ipv4-identity",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "bb629b68c2297eb7719662626d58e07cf309d86e24921f01e2e2eabb04391f62",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 23,
+        "name": "dns-case",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "ca8f4ce3d449d17563edc0d18c6bb490cd8f886d2d493b7252447e7aa10b2b69",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 24,
+        "name": "ipv6-identity",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 80,
+        "request_sha256": "d24a949bb9e51603b4765a7c7ebdbad79b15c57a172b598814338c1f0303177f",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 25,
+        "name": "deadline-native-wait",
+        "status": "passed",
+        "duration_seconds": 1.078,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "b1835830653109cdd9f4b574a9d3fa9d4328a2b35057523703ccfea87321c272",
+        "request_exact": true,
+        "expected_peer_error": "[WinError 10053] \u4f60\u7684\u4e3b\u673a\u4e2d\u7684\u8f6f\u4ef6\u4e2d\u6b62\u4e86\u4e00\u4e2a\u5df2\u5efa\u7acb\u7684\u8fde\u63a5\u3002"
+      },
+      {
+        "transport": "https",
+        "case": 27,
+        "name": "invalid-request-adoption",
+        "status": "passed",
+        "duration_seconds": 0.015,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 28,
+        "name": "expect-rejected",
+        "status": "passed",
+        "duration_seconds": 0.016,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 29,
+        "name": "streaming-large-response",
+        "status": "passed",
+        "duration_seconds": 0.031,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "6018a20898c8aeafce769204746ae7ad13399818c0180126c976dda18872ecd0",
+        "request_exact": true,
+        "response_bytes": 40042,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 31,
+        "name": "alpn-absent",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "alpn": null,
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "33092fc7ad33faffbe980ee6f2b75f7bfbfec4c7852cdca80671b31e887b7dda",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 32,
+        "name": "certificate-untrusted",
+        "status": "passed",
+        "duration_seconds": 0.031,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)"
+      },
+      {
+        "transport": "https",
+        "case": 40,
+        "name": "url-dns-open",
+        "status": "passed",
+        "duration_seconds": 0.078,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "09d12840668b18e8f219f86e55d4d1c23dbd4ff0480f93c32fd65bb8f12afa63",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 41,
+        "name": "url-numeric-bypass",
+        "status": "passed",
+        "duration_seconds": 0.047,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "eaf3abe3081f1786564944f2060718be77fd336117c6bf7cfeddbb44bfb63d32",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 42,
+        "name": "url-unspecified-family",
+        "status": "passed",
+        "duration_seconds": 0.078,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "f440f5786401c80bc44c42bf7a3372cf74b82db9c49e42cd96cf40377c3d0839",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 43,
+        "name": "url-escaped-query",
+        "status": "passed",
+        "duration_seconds": 0.063,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 78,
+        "request_sha256": "eafe985a0a585815184c91b3bfef6e023827c992b12f76010860ecc18ed747cf",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 44,
+        "name": "url-native-deadline",
+        "status": "passed",
+        "duration_seconds": 1.093,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "11b8080915dc90c4bc3383cd63e6d79b78adf561da596caa8dc98a81aad40a89",
+        "request_exact": true,
+        "expected_peer_error": "[WinError 10053] \u4f60\u7684\u4e3b\u673a\u4e2d\u7684\u8f6f\u4ef6\u4e2d\u6b62\u4e86\u4e00\u4e2a\u5df2\u5efa\u7acb\u7684\u8fde\u63a5\u3002"
+      },
+      {
+        "transport": "https",
+        "case": 45,
+        "name": "url-retained-options",
+        "status": "passed",
+        "duration_seconds": 0.079,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "1060a93894e5f3f403f089a6f59255aed0f114b212b6fd133d48dd332d433558",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      }
+    ],
+    "url_control_cases": [
+      {
+        "transport": "tcp",
+        "case": 1,
+        "name": "dns-name-not-found",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 2,
+        "name": "blocked-dns-deadline",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 3,
+        "name": "blocked-dns-cancel",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 4,
+        "name": "expired-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 5,
+        "name": "closed-resolver",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 6,
+        "name": "reserved-host-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 7,
+        "name": "address-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 8,
+        "name": "scheme-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 11,
+        "name": "request-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 1,
+        "name": "dns-name-not-found",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 2,
+        "name": "blocked-dns-deadline",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 3,
+        "name": "blocked-dns-cancel",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 4,
+        "name": "expired-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 5,
+        "name": "closed-resolver",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 6,
+        "name": "reserved-host-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 7,
+        "name": "address-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 8,
+        "name": "scheme-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 11,
+        "name": "request-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 9,
+        "name": "peer-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 10,
+        "name": "alpn-before-dns",
+        "status": "passed"
+      }
+    ],
+    "plain_tls_link_inputs": [],
+    "core": {
+      "format": "nyra-http-framing-acceptance-v1",
+      "status": "passed",
+      "host": "windows-x86_64",
+      "sdk_version": "1.0.1",
+      "sdk_manifest_sha256": "cac62ba3015c1568387c150aa079dae741e3a4814623846ae1a81915897d8a09",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "source_fallback_disabled": true,
+      "source_sha256": {
+        "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+        "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+        "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+        "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+        "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+        "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+        "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+        "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+        "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+        "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+        "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+        "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+        "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+        "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+        "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+        "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+        "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+        "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+        "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+        "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+        "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+        "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+        "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+        "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+        "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+        "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+        "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+        "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+        "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+        "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+        "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+      },
+      "net_core_source_sha256": {
+        ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+        "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+        "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+        "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+        "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+        "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+        "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+        "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+        "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+        "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+        "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+        "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+        "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+        "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+        "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+        "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+        "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+        "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+        "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+        "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+        "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+        "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+        "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+        "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+        "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+        "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+        "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+        "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+        "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+        "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+        "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+        "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+        "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+        "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+        "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+        "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+        "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+        "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+        "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+        "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+      },
+      "commands": [
+        {
+          "name": "net-native",
+          "command": [
+            "E:\\workspace\\nyra-ci\\python\\python.exe",
+            "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\scripts\\build_native.py",
+            "--out-dir",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native"
+          ]
+        },
+        {
+          "name": "list",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+            "test",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\project\\http",
+            "--tag",
+            "http_core",
+            "--list"
+          ]
+        },
+        {
+          "name": "tests",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+            "test",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\project\\http",
+            "--tag",
+            "http_core",
+            "-O2",
+            "-j",
+            "4",
+            "--out-dir",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\objects",
+            "-o",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+            "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+            "--link-arg=-lws2_32",
+            "--link-arg=-liphlpapi",
+            "--report",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\tests.json"
+          ]
+        },
+        {
+          "name": "case-0",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "0"
+          ]
+        },
+        {
+          "name": "case-1",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "1"
+          ]
+        },
+        {
+          "name": "case-2",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "2"
+          ]
+        },
+        {
+          "name": "case-3",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "3"
+          ]
+        },
+        {
+          "name": "case-4",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "4"
+          ]
+        },
+        {
+          "name": "case-5",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "5"
+          ]
+        },
+        {
+          "name": "case-6",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "6"
+          ]
+        },
+        {
+          "name": "case-7",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "7"
+          ]
+        },
+        {
+          "name": "case-8",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "8"
+          ]
+        },
+        {
+          "name": "case-9",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "9"
+          ]
+        },
+        {
+          "name": "case-10",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "10"
+          ]
+        },
+        {
+          "name": "case-11",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "11"
+          ]
+        },
+        {
+          "name": "case-12",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "12"
+          ]
+        },
+        {
+          "name": "case-13",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "13"
+          ]
+        },
+        {
+          "name": "case-14",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "14"
+          ]
+        },
+        {
+          "name": "case-15",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "15"
+          ]
+        },
+        {
+          "name": "case-16",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "16"
+          ]
+        },
+        {
+          "name": "case-17",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "17"
+          ]
+        },
+        {
+          "name": "case-18",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "18"
+          ]
+        },
+        {
+          "name": "case-19",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "19"
+          ]
+        },
+        {
+          "name": "case-20",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "20"
+          ]
+        },
+        {
+          "name": "case-21",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "21"
+          ]
+        },
+        {
+          "name": "case-22",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "22"
+          ]
+        },
+        {
+          "name": "case-23",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "23"
+          ]
+        },
+        {
+          "name": "case-24",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "24"
+          ]
+        },
+        {
+          "name": "case-25",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "25"
+          ]
+        },
+        {
+          "name": "case-26",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "26"
+          ]
+        },
+        {
+          "name": "case-27",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "27"
+          ]
+        },
+        {
+          "name": "case-28",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "28"
+          ]
+        },
+        {
+          "name": "case-29",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "29"
+          ]
+        },
+        {
+          "name": "case-30",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "30"
+          ]
+        },
+        {
+          "name": "case-31",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "31"
+          ]
+        },
+        {
+          "name": "case-32",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "32"
+          ]
+        },
+        {
+          "name": "case-33",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "33"
+          ]
+        },
+        {
+          "name": "case-34",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "34"
+          ]
+        },
+        {
+          "name": "case-35",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "35"
+          ]
+        },
+        {
+          "name": "case-36",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "36"
+          ]
+        },
+        {
+          "name": "case-37",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "37"
+          ]
+        },
+        {
+          "name": "case-38",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "38"
+          ]
+        },
+        {
+          "name": "case-39",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "39"
+          ]
+        },
+        {
+          "name": "case-40",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "40"
+          ]
+        },
+        {
+          "name": "case-41",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "41"
+          ]
+        },
+        {
+          "name": "case-42",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "42"
+          ]
+        },
+        {
+          "name": "case-43",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "43"
+          ]
+        },
+        {
+          "name": "case-44",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "44"
+          ]
+        },
+        {
+          "name": "case-45",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "45"
+          ]
+        },
+        {
+          "name": "case-46",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "46"
+          ]
+        },
+        {
+          "name": "case-47",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "47"
+          ]
+        },
+        {
+          "name": "case-48",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "48"
+          ]
+        },
+        {
+          "name": "case-49",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "49"
+          ]
+        },
+        {
+          "name": "case-50",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "50"
+          ]
+        },
+        {
+          "name": "case-51",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "51"
+          ]
+        },
+        {
+          "name": "case-52",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "52"
+          ]
+        },
+        {
+          "name": "case-53",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "53"
+          ]
+        },
+        {
+          "name": "case-54",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "54"
+          ]
+        },
+        {
+          "name": "case-55",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "55"
+          ]
+        },
+        {
+          "name": "case-56",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "56"
+          ]
+        },
+        {
+          "name": "case-57",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "57"
+          ]
+        },
+        {
+          "name": "case-58",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "58"
+          ]
+        },
+        {
+          "name": "case-59",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "59"
+          ]
+        },
+        {
+          "name": "case-60",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "60"
+          ]
+        },
+        {
+          "name": "case-61",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "61"
+          ]
+        },
+        {
+          "name": "case-62",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "62"
+          ]
+        },
+        {
+          "name": "case-63",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "63"
+          ]
+        },
+        {
+          "name": "case-64",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "64"
+          ]
+        },
+        {
+          "name": "case-65",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "65"
+          ]
+        },
+        {
+          "name": "case-66",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "66"
+          ]
+        },
+        {
+          "name": "case-67",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "67"
+          ]
+        },
+        {
+          "name": "case-68",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "68"
+          ]
+        },
+        {
+          "name": "case-69",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "69"
+          ]
+        },
+        {
+          "name": "case-70",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "70"
+          ]
+        },
+        {
+          "name": "case-71",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "71"
+          ]
+        },
+        {
+          "name": "case-72",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "72"
+          ]
+        },
+        {
+          "name": "case-73",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "73"
+          ]
+        },
+        {
+          "name": "case-74",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "74"
+          ]
+        },
+        {
+          "name": "case-75",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\http-tests.exe",
+            "75"
+          ]
+        },
+        {
+          "name": "production",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+            "precompile",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\project\\http\\http.ny",
+            "-O2",
+            "-j",
+            "4",
+            "--out-dir",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\production-objects",
+            "-o",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\production"
+          ]
+        },
+        {
+          "name": "production-imports",
+          "command": [
+            "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+            "-u",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\production\\lib\\libpackage.a"
+          ]
+        },
+        {
+          "name": "consumer-build",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+            "build",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\consumer\\main.ny",
+            "--link",
+            "-O2",
+            "--out-dir",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\consumer-objects",
+            "-o",
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\consumer-test.exe",
+            "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+            "--link-arg=E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\net-native\\libnet_core_native.a",
+            "--link-arg=-lws2_32",
+            "--link-arg=-liphlpapi"
+          ]
+        },
+        {
+          "name": "consumer",
+          "command": [
+            "E:\\workspace\\tls-dev-20261027\\http-redirect-accepted\\base\\core\\consumer-test.exe"
+          ]
+        }
+      ],
+      "scope": "Strict HTTP/1.x heads, streaming body decoding/writing and informational/final response sequencing; no network client",
+      "staged_manifest_sha256": {
+        "http": "e55a5a7781ca12efddad0fc5eedff883af875dfd62df546e4630752fa9edf401",
+        "net_core": "eb6ce0b9eff093c54ad8813e357b9ca13938ac2ecbb750f2e2ca003664d35266"
+      },
+      "case_names": [
+        "test_http_redirect_reference_rfc_examples",
+        "test_http_redirect_resolution_validation_and_origin",
+        "test_http_redirect_post_rewrite_and_snapshot_lifetime",
+        "test_http_redirect_preserved_replay_requires_opt_in",
+        "test_http_redirect_cross_origin_filters_and_no_downgrade",
+        "test_http_redirect_limits_locations_and_terminal_response",
+        "test_http_redirect_method_status_matrix",
+        "test_http_redirect_same_origin_hop_fields_and_borrowed_sources",
+        "test_http_redirect_controls_defaults_and_sticky_invalid_input",
+        "test_http_url_authority_and_defaults",
+        "test_http_url_ip_identity_and_ports",
+        "test_http_url_escaped_target_is_opaque",
+        "test_http_url_rejects_ambiguous_authority",
+        "test_http_url_controls_limits_and_default_value",
+        "test_http_url_owned_and_generated_request",
+        "test_http_url_reserved_fields_and_request_injection",
+        "test_http_url_dial_and_open_preflight_controls",
+        "test_http_client_exchange_smoke",
+        "test_http_client_partial_acknowledgement_and_owned_output",
+        "test_http_client_chunked_request_and_response_events",
+        "test_http_client_input_backpressure_and_eof",
+        "test_http_client_response_failures_preserve_stage",
+        "test_http_client_request_validation_and_retention_budget",
+        "test_http_client_incoming_backing_budget_and_identity",
+        "test_http_request_smoke",
+        "test_http_every_split_preserves_body_suffix",
+        "test_http_reused_input_and_owned_head",
+        "test_http_strict_line_and_field_syntax",
+        "test_http_duplicate_lengths_and_numeric_overflow",
+        "test_http_transfer_encoding_conflicts",
+        "test_http_host_validation",
+        "test_http_response_context_and_handoffs",
+        "test_http_connection_lifecycle",
+        "test_http_ordinary_duplicates_and_ows",
+        "test_http_limits_and_exact_boundaries",
+        "test_http_eof_at_every_prefix",
+        "test_http_target_and_version_profile",
+        "test_http_writer_request_roundtrip_and_ownership",
+        "test_http_writer_response_roundtrip",
+        "test_http_writer_injection_and_framing_rejection",
+        "test_http_writer_limits_and_defaults",
+        "test_http_binary_controls_and_obs_text",
+        "test_http_body_fixed_smoke",
+        "test_http_body_chunked_every_split",
+        "test_http_body_backpressure_and_pipeline",
+        "test_http_body_fixed_every_split_and_eof",
+        "test_http_body_chunked_eof_every_prefix",
+        "test_http_body_eof_delimited_and_budget",
+        "test_http_body_size_and_extension_rejection",
+        "test_http_body_cumulative_limits",
+        "test_http_body_forbidden_and_malformed_trailers",
+        "test_http_body_construction_and_handoffs",
+        "test_http_body_reused_byte_move_and_owned_trailer",
+        "test_http_body_binary_octets_and_extension_controls",
+        "test_http_response_sequence_smoke",
+        "test_http_body_writer_fixed_capacities",
+        "test_http_body_writer_fixed_shortage_and_excess",
+        "test_http_body_writer_absent_and_metadata_length",
+        "test_http_body_writer_eof_and_budget",
+        "test_http_body_writer_chunked_capacities_and_roundtrip",
+        "test_http_body_writer_large_chunk_bound",
+        "test_http_body_writer_owned_trailers_and_move",
+        "test_http_body_writer_trailer_declarations",
+        "test_http_body_writer_trailer_validation",
+        "test_http_body_writer_framing_budget",
+        "test_http_body_writer_announced_chunk_shortage_and_finish_drain",
+        "test_http_body_writer_finish_behind_pending_delimiter",
+        "test_http_body_writer_binary_and_trailer_count",
+        "test_http_response_sequence_every_split",
+        "test_http_response_informational_count_limits",
+        "test_http_response_aggregate_and_per_head_limits",
+        "test_http_response_eof_every_prefix",
+        "test_http_response_head_connect_and_101_context",
+        "test_http_response_owned_events_and_partial_next_head",
+        "test_http_response_malformed_and_sticky_aggregate_offset",
+        "test_http_response_borrowed_method_context_and_limits"
+      ],
+      "tests": {
+        "package": "http",
+        "status": "ok",
+        "passed": 76,
+        "failed": 0,
+        "ignored": 0,
+        "ran": 76,
+        "skipped": 0,
+        "exit_code": 0
+      },
+      "isolated_replays": 76,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "staged_manifest_sha256": {
+      "http": "e55a5a7781ca12efddad0fc5eedff883af875dfd62df546e4630752fa9edf401",
+      "net_core": "eb6ce0b9eff093c54ad8813e357b9ca13938ac2ecbb750f2e2ca003664d35266",
+      "http_tls": "78beae6abbd51b600f9bbb738562792dfb2322f18011794aadb11e71240dcaa2",
+      "tls": "1ef26a2218e8118e08d22a668a72a29633eda9b836eac12209e7bd8c80645600"
+    },
+    "openssl": {
+      "version": "3.5.9",
+      "pin_sha256": "ec27a6fcd269a5aea2d04194af37d9069d2c103bad9f088b3cb44ade3e6e58eb",
+      "libraries_sha256": {
+        "libssl.lib": "271e1299c1b227104ca14e71e5e92e4384bbbbe1777b4c78d9dd7f61a3899790",
+        "libcrypto.lib": "e247ca8ce93ad287b9c5a7a35d5fcf5b7ca28aa8ab2252c0a83ebb711dc9ae87"
+      },
+      "server": "OpenSSL 3.0.16 11 Feb 2025",
+      "fixture_cli": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)"
+    },
+    "https_production_fixture_imports": []
+  }
+}

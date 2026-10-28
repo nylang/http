@@ -1,0 +1,316 @@
+{
+  "format": "nyra-http-head-acceptance-v1",
+  "status": "passed",
+  "host": "linux-x86_64",
+  "sdk_version": "1.0.1",
+  "sdk_manifest_sha256": "e8c00d1ba295a466707b128aec2b0906eec6741a2139916093f0cb9270404566",
+  "compiler_origin": "source-candidate",
+  "compiler_sha256": "99f4bd3238185b99a5840d0da96a463afae1a96eaaa06aae0a5a4a821d4f766a",
+  "source_fallback_disabled": true,
+  "source_sha256": {
+    "http.ny": "3a910b0981e4f05835b5c343a4a60b8f856668d3a8c0f7d4fab96842ad87805e",
+    "interface/http.ni": "cc69138ebb05412807d926103d77303952c8f244b0ed7eb12cd505c6129694a9",
+    "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+    "private/http.ny": "a55c7e42ba891de2e3f99407e248bc2b8d7cb9de860c9f79f78553e8cb8610a7",
+    "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+    "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+    "scripts/accept.py": "d71f0eec84dbb3a295152cc29bdb3250150bea3aac07fef4a3db69c460b6f388",
+    "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876"
+  },
+  "net_core_source_sha256": {
+    ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+    "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+    "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+    "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+    "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+    "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+    "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+    "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+    "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+    "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+    "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+    "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+    "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+    "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+    "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+    "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+    "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+    "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+    "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+    "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+    "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+    "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+    "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+    "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+    "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+    "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+    "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+    "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+    "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+    "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+    "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+    "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+    "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+    "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+    "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+    "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+    "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+    "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+    "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+    "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+  },
+  "commands": [
+    {
+      "name": "net-native",
+      "command": [
+        "/usr/bin/python3",
+        "/runner/tls-dev-20261027/third_party/net_core/scripts/build_native.py",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/net-native"
+      ]
+    },
+    {
+      "name": "list",
+      "command": [
+        "/runner/tls-dev-20261027/compiler",
+        "test",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/project/http",
+        "--tag",
+        "http_core",
+        "--list"
+      ]
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/runner/tls-dev-20261027/compiler",
+        "test",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/project/http",
+        "--tag",
+        "http_core",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/objects",
+        "-o",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/tls-dev-20261027/http-core-acceptance-final/net-native/libnet_core_native.a",
+        "--link-arg=-lpthread",
+        "--report",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/tests.json"
+      ]
+    },
+    {
+      "name": "case-0",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "0"
+      ]
+    },
+    {
+      "name": "case-1",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "1"
+      ]
+    },
+    {
+      "name": "case-2",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "2"
+      ]
+    },
+    {
+      "name": "case-3",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "3"
+      ]
+    },
+    {
+      "name": "case-4",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "4"
+      ]
+    },
+    {
+      "name": "case-5",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "5"
+      ]
+    },
+    {
+      "name": "case-6",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "6"
+      ]
+    },
+    {
+      "name": "case-7",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "7"
+      ]
+    },
+    {
+      "name": "case-8",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "8"
+      ]
+    },
+    {
+      "name": "case-9",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "9"
+      ]
+    },
+    {
+      "name": "case-10",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "10"
+      ]
+    },
+    {
+      "name": "case-11",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "11"
+      ]
+    },
+    {
+      "name": "case-12",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "12"
+      ]
+    },
+    {
+      "name": "case-13",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "13"
+      ]
+    },
+    {
+      "name": "case-14",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "14"
+      ]
+    },
+    {
+      "name": "case-15",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "15"
+      ]
+    },
+    {
+      "name": "case-16",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "16"
+      ]
+    },
+    {
+      "name": "case-17",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/http-tests",
+        "17"
+      ]
+    },
+    {
+      "name": "production",
+      "command": [
+        "/runner/tls-dev-20261027/compiler",
+        "precompile",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/project/http/http.ny",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/production-objects",
+        "-o",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/production"
+      ]
+    },
+    {
+      "name": "production-imports",
+      "command": [
+        "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-nm",
+        "-u",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/production/lib/libpackage.a"
+      ]
+    },
+    {
+      "name": "consumer-build",
+      "command": [
+        "/runner/tls-dev-20261027/compiler",
+        "build",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/consumer/main.ny",
+        "--link",
+        "-O2",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/consumer-objects",
+        "-o",
+        "/runner/tls-dev-20261027/http-core-acceptance-final/consumer-test",
+        "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/tls-dev-20261027/http-core-acceptance-final/net-native/libnet_core_native.a",
+        "--link-arg=-lpthread"
+      ]
+    },
+    {
+      "name": "consumer",
+      "command": [
+        "/runner/tls-dev-20261027/http-core-acceptance-final/consumer-test"
+      ]
+    }
+  ],
+  "scope": "Strict HTTP/1.x heads/framing plans only; no body decoder or network client",
+  "staged_manifest_sha256": {
+    "http": "cdc9c227c6a277b19c0177d1179056342e9821f59b47c384e9aa714c50be00c8",
+    "net_core": "223c6e87c645c6273e3751e1c0413a277e95da187c22ae2c73c63aecbd82162d"
+  },
+  "case_names": [
+    "test_http_request_smoke",
+    "test_http_every_split_preserves_body_suffix",
+    "test_http_reused_input_and_owned_head",
+    "test_http_strict_line_and_field_syntax",
+    "test_http_duplicate_lengths_and_numeric_overflow",
+    "test_http_transfer_encoding_conflicts",
+    "test_http_host_validation",
+    "test_http_response_context_and_handoffs",
+    "test_http_connection_lifecycle",
+    "test_http_ordinary_duplicates_and_ows",
+    "test_http_limits_and_exact_boundaries",
+    "test_http_eof_at_every_prefix",
+    "test_http_target_and_version_profile",
+    "test_http_writer_request_roundtrip_and_ownership",
+    "test_http_writer_response_roundtrip",
+    "test_http_writer_injection_and_framing_rejection",
+    "test_http_writer_limits_and_defaults",
+    "test_http_binary_controls_and_obs_text"
+  ],
+  "tests": {
+    "package": "http",
+    "status": "ok",
+    "passed": 18,
+    "failed": 0,
+    "ignored": 0,
+    "ran": 18,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "isolated_replays": 18,
+  "production_fixture_imports": [],
+  "tls_link_inputs": []
+}

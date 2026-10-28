@@ -1,0 +1,134 @@
+/** @brief One external connected-client loopback consumer; placeholders are filled by accept_clients.py. */
+import "stdlib:stdlib.ny";
+import "net_core:net_core.ny";
+import "http:http.ny";
+@@TLS_IMPORTS@@
+@extern("C") func HttpFixturePort() -> int32;
+@extern("C") func HttpFixtureCase() -> int32;
+@extern("C") func HttpFixtureCa() -> *const int8;
+@extern("C") func HttpFixtureCaLength() -> int32;
+func buffer(text: ref string) -> NetBuffer { return (NetBuffer.CopyFrom(NetBytes.FromString(text)).get_if<NetBuffer>()) as NetBuffer; }
+func expected(error: @@ERROR@@, n: int32) -> bool {
+  if error.protocol_error != nil {
+    let kind: HttpErrorKind = (error.protocol_error as HttpError).kind;
+    if n == 4 || n == 20 { return kind == HttpErrorKind.UnexpectedEof; }
+    if n == 5 || n == 27 { return kind == HttpErrorKind.InvalidFraming; }
+    if n == 6 || n == 16 || n == 28 { return kind == HttpErrorKind.Unsupported; }
+    if n == 13 { return kind == HttpErrorKind.InvalidArgument; }
+    if n == 18 || n == 19 { return kind == HttpErrorKind.LimitExceeded; }
+    return false;
+  }
+@@EXPECT_PROVIDER@@
+  return false;
+}
+func main() -> int32 {
+  let n: int32 = HttpFixtureCase();
+  let address: IpAddress = IpAddress.V4(127u8,0u8,0u8,1u8);
+  let endpoint: NetEndpoint = (NetEndpoint.New(address,HttpFixturePort()).get_if<NetEndpoint>()) as NetEndpoint;
+  var token: NetCancellation = NetCancellation.New();
+  var options: NetOperationOptions = NetOperationOptions{deadline: NetDeadline.After(NetClock.NowNanoseconds(),8000000000u64), cancellation: token};
+  var connection: TcpConnection = TcpConnection{};
+  if n < 40 {
+    var dial: Result<TcpConnection,NetError> = TcpConnection.Dial(endpoint,options);
+    if dial.IsErr() { Console.Eprintln("dial failed"); return 1; }
+    connection = move((dial.get_if<TcpConnection>()) as TcpConnection);
+  }
+  if n == 8 { token.Cancel(); }
+  if n == 9 { options.deadline = NetDeadline.At(0u64); }
+  if n == 11 { options.deadline = NetDeadline.After(NetClock.NowNanoseconds(),3000000000u64); }
+  if n == 25 || n == 44 { options.deadline = NetDeadline.After(NetClock.NowNanoseconds(),500000000u64); }
+  var host: string = "localhost";
+  if n == 14 { host = "wrong.test"; }
+  if n == 22 { host = "127.0.0.1"; }
+  if n == 23 { host = "LOCALHOST"; }
+  if n == 24 { host = "[0:0:0:0:0:0:0:1]"; }
+  // The connected API keeps dial/port policy explicit; Host uses the same fixture port.
+  let authority: string = host.Concat(":").Concat(endpoint.ToString().Substring(10,endpoint.ToString().length-10));
+  var request: string = "POST /resource HTTP/1.1\r\nHost: ".Concat(authority).Concat("\r\nContent-Length: 3\r\n\r\n");
+  var payload: string = "abc";
+  if n == 2 {
+    var large: StringBuffer = StringBuffer.NewWithCapacity(20000); var i: int32 = 0;
+    while i < 20000 { large.Append("q"); i = i+1; }
+    payload = large.Take(); request = "POST /resource HTTP/1.1\r\nHost: ".Concat(authority).Concat("\r\nTransfer-Encoding: chunked\r\n\r\n");
+  }
+  if n == 27 { payload = "ab"; }
+  if n == 28 { request = "POST /resource HTTP/1.1\r\nHost: ".Concat(authority).Concat("\r\nContent-Length: 3\r\nExpect: 100-continue\r\n\r\n"); }
+  var limits: HttpClientLimits = HttpClientLimits{};
+  if n == 18 { limits.body.max_body_bytes = 3u64; }
+  if n == 19 { limits.response.max_informational = 1; }
+@@CONFIG@@
+  var made: Result<@@CLIENT@@,@@ERROR@@> = @@ERROR@@{};
+  if n >= 40 {
+    var pool: Result<AsyncResolver,NetError> = AsyncResolver.New(1,2);
+    if pool.IsErr() { return 30; }
+    var resolver: AsyncResolver = move((pool.get_if<AsyncResolver>()) as AsyncResolver);
+    var dial_options: HttpDialOptions = HttpDialOptions{family: IpFamily.V4};
+    if n == 42 { dial_options.family = IpFamily.Unspecified; }
+    var url_host: string = "LOCALHOST";
+    if n == 41 { url_host = "127.0.0.1"; resolver.Close(); }
+    var target: string = "/resource#ignored";
+    if n == 43 { target = "/resource?x=%2f#ignored"; }
+    let text: string = "@@SCHEME@@://".Concat(url_host).Concat(":").Concat(endpoint.ToString().Substring(10,endpoint.ToString().length-10)).Concat(target);
+    let parsed: Result<HttpUrl,HttpError> = HttpUrl.Parse(text);
+    if parsed.IsErr() { return 31; }
+    let url: HttpUrl = (parsed.get_if<HttpUrl>()) as HttpUrl;
+    made = @@OPEN@@;
+  } else { made = @@CONSTRUCTOR@@; }
+  if n == 8 || n == 9 || n == 13 || n == 15 || n == 16 || n == 27 || n == 28 {
+    if made.IsOk() || !connection.IsOpen() || !expected((made.get_if<@@ERROR@@>()) as @@ERROR@@,n) { Console.Eprintln("constructor rejection/ownership mismatch"); return 2; }
+    return 0;
+  }
+  if made.IsErr() || connection.IsOpen() { Console.Eprintln("client construction/adoption failed"); return 3; }
+  var client: @@CLIENT@@ = move((made.get_if<@@CLIENT@@>()) as @@CLIENT@@);
+  if n == 12 || n == 45 { options.deadline = NetDeadline.At(0u64); options.cancellation = NetCancellation.New(); options.cancellation.Cancel(); }
+  var content: StringBuffer = StringBuffer.New(); var info: int32 = 0; var calls: int32 = 0;
+  var response_head: HttpHead = HttpHead{}; var final_stats: HttpClientStats = HttpClientStats{};
+  while calls < 10000 {
+    let result: Result<HttpClientEvent,@@ERROR@@> = client.Next(); calls = calls+1;
+    if result.IsErr() {
+      let error: @@ERROR@@ = (result.get_if<@@ERROR@@>()) as @@ERROR@@;
+      if !expected(error,n) { Console.Eprintln("unexpected client error"); return 4; }
+      if n != 14 && n != 32 && error.stats.request_bytes_sent == 0u64 { Console.Eprintln("committed request progress lost"); return 5; }
+      if (n == 14 || n == 32) && error.stats.request_bytes_sent != 0u64 { Console.Eprintln("HTTP sent before TLS verification"); return 6; }
+      if n == 4 && error.stage != HttpClientStage.ResponseBody { Console.Eprintln("body error stage lost"); return 7; }
+      let retry: Result<HttpClientEvent,@@ERROR@@> = client.Next();
+      if retry.IsOk() || ((retry.get_if<@@ERROR@@>()) as @@ERROR@@).stats.request_bytes_sent != error.stats.request_bytes_sent { return 8; }
+      if n == 4 && !content.Take().Equal("short") { Console.Eprintln("valid partial body lost"); return 9; }
+      return 0;
+    }
+    let event: HttpClientEvent = (result.get_if<HttpClientEvent>()) as HttpClientEvent;
+    final_stats = event.stats;
+    if event.kind == HttpClientEventKind.Informational { info = info+1; }
+    if event.kind == HttpClientEventKind.Head {
+      response_head = event.head;
+      if n == 10 { token.Cancel(); }
+      if n == 11 { Thread.Sleep(3200u32); }
+    }
+    if event.kind == HttpClientEventKind.Body {
+      if event.buffer.Len() > (16384 as intptr) { return 10; }
+      content.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8,event.buffer.Len() as int32));
+    }
+    if event.complete { break; }
+  }
+  if n == 4 || n == 5 || n == 6 || n == 7 || n == 10 || n == 11 || n == 14 || n == 18 || n == 19 || n == 20 || n == 25 || n == 32 || n == 44 { Console.Eprintln("failure incorrectly became successful completion"); return 11; }
+  if response_head.Status() != 200 || final_stats.request_bytes_sent == 0u64 || final_stats.response_bytes_received == 0u64 { return 12; }
+  let text: string = content.Take();
+  if n == 29 {
+    if text.length != 40000 || text.Substring(0,1).Equal("r") == false || text.Substring(39999,1).Equal("r") == false { return 13; }
+  } else if !text.Equal("hello") { Console.Eprintln("response payload mismatch"); return 14; }
+  if n == 1 && info != 2 { Console.Eprintln("informational response association lost"); return 15; }
+  if n == 2 {
+    let field: Result<HttpField,@@ERROR@@> = client.TrailerAt(0);
+    if field.IsErr() || !((field.get_if<HttpField>()) as HttpField).value.Equal("kept") { return 16; }
+  }
+  if n == 17 {
+    token.Cancel();
+    let durable: Result<HttpClientEvent,@@ERROR@@> = client.Next();
+    if durable.IsErr() || !((durable.get_if<HttpClientEvent>()) as HttpClientEvent).complete { return 17; }
+    client.Close(); return 0;
+  }
+@@SHUTDOWN@@
+  client.Close();
+  if !text.Substring(0,1).Equal("h") && n != 29 { return 18; }
+  return 0;
+}

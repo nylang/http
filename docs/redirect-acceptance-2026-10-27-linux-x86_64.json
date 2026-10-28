@@ -1,0 +1,2877 @@
+{
+  "format": "nyra-http-redirect-acceptance-v1",
+  "status": "passed",
+  "host": "linux-x86_64",
+  "source_sha256": {
+    "http": {
+      "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+      "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+      "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+      "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+      "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+      "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+      "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+      "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+      "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+      "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+      "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+      "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+    },
+    "net_core": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    },
+    "http_tls": {
+      "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+      "interface/http_tls.ni": "b02bce72abfd3f8aab4d54c453b5eeebfc1eccc79f017bd799ed36aed82fa7ca",
+      "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+      "private/http_tls.ny": "1670bd1baa1c762b558b4b3b9f32924eeb98f52d0ad63a911def5d162afb5cd2"
+    },
+    "tls": {
+      "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+      "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+      "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+      "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+      "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+      "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+      "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+      "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+      "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+      "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+      "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+      "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+      "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+      "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+      "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+      "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+      "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+      "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+      "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+      "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+      "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+      "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+      "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+      "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+      "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+      "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+    }
+  },
+  "cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 49665,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 49665
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 43343,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 43343
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 59707,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 60809,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 46915
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 56979,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 51187,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 51187,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 51187,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 57283,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 45015,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 39503,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 39503
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 51531,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.203,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 48159,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60791
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.191,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 36181,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 36181,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.193,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 40451,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 40451,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.149,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 57133,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 51505,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 45599,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 54107,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.237,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 55909,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 55909,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 55909,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 38777,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 45117,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.191,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 39891,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 39891,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 35253,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.247,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 43467,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.149,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 41147,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "https-downgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 36423,
+          "old_connection_closed": true
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "name": "base",
+      "command": [
+        "/usr/bin/python3",
+        "/runner/tls-dev-20261027/third_party/http/scripts/accept_clients.py",
+        "--sdk",
+        "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk",
+        "--compiler",
+        "/runner/tls-dev-20261027/http-body-compiler-final",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-redirect-accepted/base",
+        "--http-tls",
+        "/runner/tls-dev-20261027/third_party/http_tls",
+        "--tls",
+        "/runner/tls-dev-20261027/third_party/tls",
+        "--openssl-root",
+        "/runner/tls-dev-20261027/openssl/openssl-3.5.9"
+      ]
+    },
+    {
+      "name": "tcp-build",
+      "command": [
+        "/runner/tls-dev-20261027/http-body-compiler-final",
+        "build",
+        "/runner/tls-dev-20261027/http-redirect-accepted/base/redirect-tcp/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-redirect-accepted/tcp-objects",
+        "-o",
+        "/runner/tls-dev-20261027/http-redirect-accepted/redirect-tcp",
+        "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+        "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+        "--link-arg=-lpthread"
+      ]
+    },
+    {
+      "name": "plain-imports",
+      "command": [
+        "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-nm",
+        "-u",
+        "/runner/tls-dev-20261027/http-redirect-accepted/redirect-tcp"
+      ]
+    },
+    {
+      "name": "https-build",
+      "command": [
+        "/runner/tls-dev-20261027/http-body-compiler-final",
+        "build",
+        "/runner/tls-dev-20261027/http-redirect-accepted/base/redirect-https/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/tls-dev-20261027/http-redirect-accepted/https-objects",
+        "-o",
+        "/runner/tls-dev-20261027/http-redirect-accepted/redirect-https",
+        "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+        "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/tls-native/libtls_native.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libssl.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libcrypto.a",
+        "--link-arg=-ldl"
+      ]
+    }
+  ],
+  "base": {
+    "format": "nyra-http-connected-clients-v1",
+    "status": "passed",
+    "host": "linux-x86_64",
+    "compiler_origin": "source-candidate",
+    "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+    "sdk_version": "1.0.1",
+    "sdk_manifest_sha256": "e8c00d1ba295a466707b128aec2b0906eec6741a2139916093f0cb9270404566",
+    "source_fallback_disabled": true,
+    "source_sha256": {
+      "http": {
+        "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+        "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+        "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+        "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+        "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+        "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+        "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+        "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+        "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+        "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+        "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+        "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+        "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+        "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+        "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+        "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+        "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+        "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+        "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+        "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+        "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+        "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+        "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+        "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+        "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+        "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+        "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+        "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+        "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+        "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+        "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+      },
+      "net_core": {
+        ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+        "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+        "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+        "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+        "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+        "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+        "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+        "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+        "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+        "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+        "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+        "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+        "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+        "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+        "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+        "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+        "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+        "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+        "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+        "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+        "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+        "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+        "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+        "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+        "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+        "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+        "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+        "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+        "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+        "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+        "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+        "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+        "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+        "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+        "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+        "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+        "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+        "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+        "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+        "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+      },
+      "http_tls": {
+        "http_tls.ny": "bbad7b791b00beecf7378d89d6e9d21fa3a873721da37e92c4061c99b67e2eac",
+        "interface/http_tls.ni": "b02bce72abfd3f8aab4d54c453b5eeebfc1eccc79f017bd799ed36aed82fa7ca",
+        "package.yaml": "bb748a8062b4474ff2d2f3f8be96848778f108d6f6a55e510de5a8669dd4fc6b",
+        "private/http_tls.ny": "1670bd1baa1c762b558b4b3b9f32924eeb98f52d0ad63a911def5d162afb5cd2"
+      },
+      "tls": {
+        "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+        "interface/tls.ni": "71e3d3a3d1cd270138c46bb29be7fdced7ac8a86b075ca3e7c83158d35acdd57",
+        "package.yaml": "dbe74d60ea56c8d253eec3c5fd424835910353556514825c4e505a95c224e794",
+        "private/native/tls_engine.c": "d3995186540f7aa56be256dd205180f31abcc7861d655a124df77d1aff0149ce",
+        "private/native/tls_engine.h": "eeb56c105cb85da2442af36d9afa755a1605ec16a963afc058ec729dddbe5177",
+        "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+        "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+        "private/tls.ny": "3bd74f68ba3396822c28c18118fb91107ea25376af0ad0f5e264622ffe99ddf9",
+        "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+        "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+        "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+        "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+        "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+        "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+        "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+        "tests/engine_selftest.ny": "b0c41499d921e4862fbb17350fef1f49309ba10ae65f1bd494e07a3561e75f77",
+        "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+        "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+        "tests/native/engine_test.c": "67393a1447bff00044c50de1fb8339190e1ee37d46b5e4cbeb7d0f89b2b2290e",
+        "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+        "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+        "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+        "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+        "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+        "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+        "tls.ny": "e29bb6e377eb09dd4f9bf30386d9b3b78092c9b73c41f91b9649452bed083a00"
+      }
+    },
+    "commands": [
+      {
+        "name": "core",
+        "command": [
+          "/usr/bin/python3",
+          "/runner/tls-dev-20261027/third_party/http/scripts/accept.py",
+          "--sdk",
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk",
+          "--compiler",
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "--net-core",
+          "/runner/tls-dev-20261027/third_party/net_core",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/core"
+        ]
+      },
+      {
+        "name": "fixture",
+        "command": [
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-D_CRT_SECURE_NO_WARNINGS",
+          "-c",
+          "/runner/tls-dev-20261027/third_party/http/tests/data/client_fixture.c",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o"
+        ]
+      },
+      {
+        "name": "dns-test-native",
+        "command": [
+          "/usr/bin/python3",
+          "/runner/tls-dev-20261027/third_party/net_core/scripts/build_native.py",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/dns-test-native",
+          "--cc",
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/clang",
+          "--ar",
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-ar",
+          "--cflag=-DNET_CORE_TEST_DNS"
+        ]
+      },
+      {
+        "name": "dns-fixture",
+        "command": [
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/clang",
+          "-std=c11",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-c",
+          "/runner/tls-dev-20261027/third_party/net_core/tests/native/n3_fixture.c",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/dns-fixture.o"
+        ]
+      },
+      {
+        "name": "tcp-build",
+        "command": [
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "build",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-consumer/main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-objects",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-consumer-test",
+          "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+          "--link-arg=-lpthread"
+        ]
+      },
+      {
+        "name": "plain-imports",
+        "command": [
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-nm",
+          "-u",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-consumer-test"
+        ]
+      },
+      {
+        "name": "tcp-url-control-build",
+        "command": [
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "build",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-consumer/main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-url-control-objects",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tcp-url-control",
+          "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/dns-test-native/libnet_core_native.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+          "--link-arg=-lpthread",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/dns-fixture.o"
+        ]
+      },
+      {
+        "name": "openssl-version",
+        "command": [
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9/apps/openssl",
+          "version"
+        ]
+      },
+      {
+        "name": "tls-native",
+        "command": [
+          "/usr/bin/python3",
+          "/runner/tls-dev-20261027/third_party/tls/scripts/build_native.py",
+          "--openssl-root",
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/tls-native",
+          "--cc",
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/clang",
+          "--ar",
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-ar"
+        ]
+      },
+      {
+        "name": "ca",
+        "command": [
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9/apps/openssl",
+          "req",
+          "-x509",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-days",
+          "2",
+          "-sha256",
+          "-subj",
+          "/CN=HTTP loopback ca",
+          "-keyout",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/ca.key",
+          "-out",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/ca.pem",
+          "-addext",
+          "basicConstraints=critical,CA:TRUE"
+        ]
+      },
+      {
+        "name": "wrong-ca",
+        "command": [
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9/apps/openssl",
+          "req",
+          "-x509",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-days",
+          "2",
+          "-sha256",
+          "-subj",
+          "/CN=HTTP loopback wrong-ca",
+          "-keyout",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/wrong-ca.key",
+          "-out",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/wrong-ca.pem",
+          "-addext",
+          "basicConstraints=critical,CA:TRUE"
+        ]
+      },
+      {
+        "name": "peer-key",
+        "command": [
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9/apps/openssl",
+          "req",
+          "-new",
+          "-newkey",
+          "rsa:2048",
+          "-nodes",
+          "-subj",
+          "/CN=localhost",
+          "-keyout",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/peer.key",
+          "-out",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/peer.csr"
+        ]
+      },
+      {
+        "name": "peer-cert",
+        "command": [
+          "/runner/tls-dev-20261027/openssl/openssl-3.5.9/apps/openssl",
+          "x509",
+          "-req",
+          "-in",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/peer.csr",
+          "-CA",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/ca.pem",
+          "-CAkey",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/ca.key",
+          "-CAcreateserial",
+          "-days",
+          "2",
+          "-sha256",
+          "-extfile",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/peer.ext",
+          "-out",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/fixtures/peer.pem"
+        ]
+      },
+      {
+        "name": "https-production",
+        "command": [
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "precompile",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/project/http_tls/http_tls.ny",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-production-objects",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-production"
+        ]
+      },
+      {
+        "name": "https-production-imports",
+        "command": [
+          "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-nm",
+          "-u",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-production/lib/libpackage.a"
+        ]
+      },
+      {
+        "name": "https-build",
+        "command": [
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "build",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-consumer/main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-objects",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-consumer-test",
+          "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+          "--link-arg=-lpthread",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/tls-native/libtls_native.a",
+          "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libssl.a",
+          "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libcrypto.a",
+          "--link-arg=-ldl"
+        ]
+      },
+      {
+        "name": "https-url-control-build",
+        "command": [
+          "/runner/tls-dev-20261027/http-body-compiler-final",
+          "build",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-consumer/main.ny",
+          "--link",
+          "-O2",
+          "-j",
+          "4",
+          "--out-dir",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-url-control-objects",
+          "-o",
+          "/runner/tls-dev-20261027/http-redirect-accepted/base/https-url-control",
+          "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/dns-test-native/libnet_core_native.a",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/fixture.o",
+          "--link-arg=-lpthread",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/tls-native/libtls_native.a",
+          "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libssl.a",
+          "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libcrypto.a",
+          "--link-arg=-ldl",
+          "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/dns-fixture.o"
+        ]
+      }
+    ],
+    "cases": [
+      {
+        "transport": "tcp",
+        "case": 1,
+        "name": "fixed-informational",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "0b5c20de568acc3608d8a589934a11edd591e725faabac1fdb55b60bf35d8347",
+        "request_exact": true,
+        "response_bytes": 90
+      },
+      {
+        "transport": "tcp",
+        "case": 2,
+        "name": "chunked-upload-trailers",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 20098,
+        "request_sha256": "c0c77b1ddf05490e7fa127c0e18239eaa4bef41fc798c836686c9baecb04452f",
+        "request_exact": true,
+        "response_bytes": 84
+      },
+      {
+        "transport": "tcp",
+        "case": 3,
+        "name": "eof-body",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "6a5cdb812045f15b18c43e1668880ce2d99b95288b9f4b0a1f69e0aeecb7f19f",
+        "request_exact": true,
+        "response_bytes": 24
+      },
+      {
+        "transport": "tcp",
+        "case": 4,
+        "name": "truncated-fixed",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "4e5dd3b614d1f1847f252e497454edbfc4cb3ddffb50466dd544a8a7a5d1b628",
+        "request_exact": true,
+        "response_bytes": 44
+      },
+      {
+        "transport": "tcp",
+        "case": 5,
+        "name": "framing-conflict",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "4604516639672fce8511f79d4d7816607338559604f997127fff512c4158567a",
+        "request_exact": true,
+        "response_bytes": 66
+      },
+      {
+        "transport": "tcp",
+        "case": 6,
+        "name": "upgrade-rejected",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "543934a1b090343048ba138af8ecd28840c07b37cc2508a545e1d3c14676cf5b",
+        "request_exact": true,
+        "response_bytes": 32
+      },
+      {
+        "transport": "tcp",
+        "case": 8,
+        "name": "cancelled-constructor",
+        "status": "passed",
+        "duration_seconds": 0.001,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 9,
+        "name": "expired-constructor",
+        "status": "passed",
+        "duration_seconds": 0.001,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 10,
+        "name": "cancel-buffered-body",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "9ac5d6f0c25a912599cd27ba6e25b075cc1dbe71a543a8f771b8d5f417a02aa4",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 11,
+        "name": "expire-buffered-body",
+        "status": "passed",
+        "duration_seconds": 3.235,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "cfac1354cdc0cbdcc065217ab2e0bcaf5d937a9c4407ae825dd2c58bd279c009",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 12,
+        "name": "retained-options",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "f8eac829b980f6ad51974293923aa031d7d51a3b4a5806e1ee2b870efdbb5917",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 17,
+        "name": "durable-completion",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "aa04670332f088104264dc0d3499a679c0ecbbfbb144edd478c81c25e294e086",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 18,
+        "name": "response-body-cap",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "98dcb475cfe5153c7537e1f96e8941699e232af5b5972b5fb249cd0f62c581a5",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 19,
+        "name": "informational-cap",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "144e9349775eff40af5b2439a47d1ffb890b6a9309880f25037b1ea003ca18e9",
+        "request_exact": true,
+        "response_bytes": 47
+      },
+      {
+        "transport": "tcp",
+        "case": 20,
+        "name": "missing-final",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "ed6ac903ee525c2ce5f8b48efa4597cce95dfed03bacfcc2d0a7fc4e7e9b2664",
+        "request_exact": true,
+        "response_bytes": 22
+      },
+      {
+        "transport": "tcp",
+        "case": 22,
+        "name": "ipv4-identity",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "eac7c263070700d4c1a43d0178f2ad28ee5733cff2c4aef942b94ee3daf86874",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 23,
+        "name": "dns-case",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "977e1cdf5d2c0fc515db37b0793a172512ab56ab51cb5d8f326f5415bce02074",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 25,
+        "name": "deadline-native-wait",
+        "status": "passed",
+        "duration_seconds": 1.027,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "a6ae1c460b9bc8827ed0a50b578d9335a00c1b6f8f6fbaf6aad59b273cc6d7a5",
+        "request_exact": true
+      },
+      {
+        "transport": "tcp",
+        "case": 27,
+        "name": "invalid-request-adoption",
+        "status": "passed",
+        "duration_seconds": 0.002,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 28,
+        "name": "expect-rejected",
+        "status": "passed",
+        "duration_seconds": 0.001,
+        "accepted": true,
+        "request_bytes": 0
+      },
+      {
+        "transport": "tcp",
+        "case": 29,
+        "name": "streaming-large-response",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "2cec7ddc229739fc70acac96d774b02c5ab3431e8b8f95ea504c7dd939f0b762",
+        "request_exact": true,
+        "response_bytes": 40042
+      },
+      {
+        "transport": "tcp",
+        "case": 40,
+        "name": "url-dns-open",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "56c3595a7480938485458b5d5fdea079bf80f1138c4ede070d1b44ee0bb43280",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 41,
+        "name": "url-numeric-bypass",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "8d89c51820883a16541ddfdf695d2f4fa79f5753cc7e1d05236d43f2db04d8b9",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 42,
+        "name": "url-unspecified-family",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "25d2c3356a61d79135cc0031aeec31ada8bc5c264083d9d942895555b537cc53",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 43,
+        "name": "url-escaped-query",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 78,
+        "request_sha256": "bed7664c9216db9131574faa47ec18b92c7365f2fd1ffbf6a101d32cd8166c18",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "tcp",
+        "case": 44,
+        "name": "url-native-deadline",
+        "status": "passed",
+        "duration_seconds": 1.027,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "de26125d37eab99c9f234d4f3b599db8e1ae5556a9493dc5b8dff3905e6f39d5",
+        "request_exact": true
+      },
+      {
+        "transport": "tcp",
+        "case": 45,
+        "name": "url-retained-options",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "request_bytes": 72,
+        "request_sha256": "498ca266b710412f2a8a2196cadc0cf38c5ab3dd8c8045430b3b4b542cf54cd6",
+        "request_exact": true,
+        "response_bytes": 43
+      },
+      {
+        "transport": "https",
+        "case": 1,
+        "name": "fixed-informational",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "d77fcf39e0f1021afbb41d64d9072c8e37bf622ca5951e1aee6a8dcdb03ac9a3",
+        "request_exact": true,
+        "response_bytes": 90,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 2,
+        "name": "chunked-upload-trailers",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 20098,
+        "request_sha256": "0a4686c0501e1d9bb8dfb7850e3068017495017b2c406b880c1b82229f7ea676",
+        "request_exact": true,
+        "response_bytes": 84,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 3,
+        "name": "eof-body",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "028708ef878b977b32d132e53fd120a46a07baecdc2d25d406ba88c531dda9ec",
+        "request_exact": true,
+        "response_bytes": 24,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 4,
+        "name": "truncated-fixed",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "4324235df25d617ecd9bb3d5e64c5c531125ad7d03cfc82fc541ca67c25de6bd",
+        "request_exact": true,
+        "response_bytes": 44,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 5,
+        "name": "framing-conflict",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "9ae59e7de83cc2fae6dd99f4e91becd9691e1d7880a01637a693d58908cef5ef",
+        "request_exact": true,
+        "response_bytes": 66,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 6,
+        "name": "upgrade-rejected",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "5d9a4e431da38e0b2c7caeb2060fbadd90e92d1cc5902e960d2adc2c2a6224e2",
+        "request_exact": true,
+        "response_bytes": 32,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 7,
+        "name": "unauthenticated-eof",
+        "status": "passed",
+        "duration_seconds": 0.032,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "1ea2ed3a9f0934d7693d3451ec8e596f71ce039087d7fd55cbe2e87690ad5843",
+        "request_exact": true,
+        "response_bytes": 24,
+        "closure": "raw-eof"
+      },
+      {
+        "transport": "https",
+        "case": 8,
+        "name": "cancelled-constructor",
+        "status": "passed",
+        "duration_seconds": 0.002,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 9,
+        "name": "expired-constructor",
+        "status": "passed",
+        "duration_seconds": 0.002,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 10,
+        "name": "cancel-buffered-body",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "c54fd587e7eb216f3de45aa64486be5224ae44b10e52585fcd770eedf20a0cdc",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 11,
+        "name": "expire-buffered-body",
+        "status": "passed",
+        "duration_seconds": 3.286,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "c96f38c7df07f9a8502aa0da04e5afac3cf80caa00c8635acf69ba7cc57cf941",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 12,
+        "name": "retained-options",
+        "status": "passed",
+        "duration_seconds": 0.066,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "5161e76df4a064c8efb3beb286f5bc002664f0841288f999c52081512a0fabdd",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 13,
+        "name": "host-peer-mismatch",
+        "status": "passed",
+        "duration_seconds": 0.004,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 14,
+        "name": "certificate-name-mismatch",
+        "status": "passed",
+        "duration_seconds": 0.008,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 15,
+        "name": "trust-unavailable",
+        "status": "passed",
+        "duration_seconds": 0.003,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 16,
+        "name": "alpn-offer-rejected",
+        "status": "passed",
+        "duration_seconds": 0.002,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 17,
+        "name": "durable-completion",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "ce1b32e0e6076c96d75e9c3a99dc435a78234adf1303cfc4fc803a67e19cff5c",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 18,
+        "name": "response-body-cap",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "3877497847deeeea503db76f3e371bcb49558fb4ccf38b2ded82a36564e69b40",
+        "request_exact": true,
+        "response_bytes": 43,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 19,
+        "name": "informational-cap",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "764ad11e06211809648aa4943f12847bfab6c31a73259e44ee8ebf7a6e47de43",
+        "request_exact": true,
+        "response_bytes": 47,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 20,
+        "name": "missing-final",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "21cab47249b0160b71c13cdaa8e3204f1608a089870acbba2cfc171b1ab935c3",
+        "request_exact": true,
+        "response_bytes": 22,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 22,
+        "name": "ipv4-identity",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "dcfa5a6ab342af1d32d880954ed3d00aded9591681c51d373bf3c2cc3f8e3009",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 23,
+        "name": "dns-case",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "19270bccb5a4f097ca90de88c03b7f0cde8f7781ab32e42a6b177917c01eec04",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 24,
+        "name": "ipv6-identity",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 80,
+        "request_sha256": "807ca11968b44a90c24711fdfd67de41f740e993a6d639b91e230969d73cea02",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 25,
+        "name": "deadline-native-wait",
+        "status": "passed",
+        "duration_seconds": 1.03,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "a939988ce382880f49832fe9d171999ca27cfc4b34695b692e8f9491164af9d3",
+        "request_exact": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 27,
+        "name": "invalid-request-adoption",
+        "status": "passed",
+        "duration_seconds": 0.004,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 28,
+        "name": "expect-rejected",
+        "status": "passed",
+        "duration_seconds": 0.002,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 29,
+        "name": "streaming-large-response",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "6817e88b45db6f1032b33541790ec1f1819527a2fd4321424e83b9b1b53edd16",
+        "request_exact": true,
+        "response_bytes": 40042,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 31,
+        "name": "alpn-absent",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": null,
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "2519a1d19b138a421da79f3780595ab090fbc5ff2e7a8d1656f517f9a28180a8",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 32,
+        "name": "certificate-untrusted",
+        "status": "passed",
+        "duration_seconds": 0.008,
+        "accepted": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+      },
+      {
+        "transport": "https",
+        "case": 40,
+        "name": "url-dns-open",
+        "status": "passed",
+        "duration_seconds": 0.065,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "4eedd38a88c8d7e7e5e125f62b0ac53342c0c3a89e6daf7443eafe6af0b39e50",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 41,
+        "name": "url-numeric-bypass",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "0572db6464ce00f5072f2355fcf1f1b84edc6e76dab625f67f35ba2d8689d86d",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 42,
+        "name": "url-unspecified-family",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "6cae828f3b59a4b1c46a96c27120b313992918b134a81834c0f6b14baa53238b",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 43,
+        "name": "url-escaped-query",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 78,
+        "request_sha256": "c6f2585a6c172ea0d99cf62fadd2d60c858b66e5a711d081e7df240ab553cc22",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      },
+      {
+        "transport": "https",
+        "case": 44,
+        "name": "url-native-deadline",
+        "status": "passed",
+        "duration_seconds": 1.031,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "d823a56df456ec5663dbc0fed330412e0810233a1a0707fe71348a05a703ca36",
+        "request_exact": true,
+        "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+      },
+      {
+        "transport": "https",
+        "case": 45,
+        "name": "url-retained-options",
+        "status": "passed",
+        "duration_seconds": 0.064,
+        "accepted": true,
+        "alpn": "http/1.1",
+        "tls_version": "TLSv1.3",
+        "request_bytes": 72,
+        "request_sha256": "b7a72969e155e0c73769476060adcb0ab65b9f4a0def9a6b8456b5bc06c39658",
+        "request_exact": true,
+        "response_bytes": 43,
+        "closure": "close-notify"
+      }
+    ],
+    "url_control_cases": [
+      {
+        "transport": "tcp",
+        "case": 1,
+        "name": "dns-name-not-found",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 2,
+        "name": "blocked-dns-deadline",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 3,
+        "name": "blocked-dns-cancel",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 4,
+        "name": "expired-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 5,
+        "name": "closed-resolver",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 6,
+        "name": "reserved-host-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 7,
+        "name": "address-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 8,
+        "name": "scheme-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "tcp",
+        "case": 11,
+        "name": "request-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 1,
+        "name": "dns-name-not-found",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 2,
+        "name": "blocked-dns-deadline",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 3,
+        "name": "blocked-dns-cancel",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 4,
+        "name": "expired-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 5,
+        "name": "closed-resolver",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 6,
+        "name": "reserved-host-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 7,
+        "name": "address-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 8,
+        "name": "scheme-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 11,
+        "name": "request-cap-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 9,
+        "name": "peer-before-dns",
+        "status": "passed"
+      },
+      {
+        "transport": "https",
+        "case": 10,
+        "name": "alpn-before-dns",
+        "status": "passed"
+      }
+    ],
+    "plain_tls_link_inputs": [],
+    "core": {
+      "format": "nyra-http-framing-acceptance-v1",
+      "status": "passed",
+      "host": "linux-x86_64",
+      "sdk_version": "1.0.1",
+      "sdk_manifest_sha256": "e8c00d1ba295a466707b128aec2b0906eec6741a2139916093f0cb9270404566",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "source_fallback_disabled": true,
+      "source_sha256": {
+        "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+        "interface/client.ni": "fcd3e7545f8c3c20cf08e73c2a5c46c7540b935f3aa357971b2f6e0b5726e57b",
+        "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+        "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+        "interface/url.ni": "619a02f2fac91fe8d188c2c09d28a61f32e8894cd248b52bb0c1fd2b533316a4",
+        "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+        "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+        "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+        "private/client.ny": "bf0fa06c5d9b89d015873d2a577eabbc7113428624f46f3cc264ae0588175963",
+        "private/exchange.ny": "f5a246942447e33aa4e1a905950aa029885cf8fb54c892e58123b3b7838469cd",
+        "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+        "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+        "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+        "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+        "private/tcp_client.ny": "657bb4bb1211e8aad810b50dd073e5a21741844f728ef3bfbc48ebb64ba89da9",
+        "private/url.ny": "11c00496d2539c741bc4750c8cba47bf18bd3c98848df9db29ba1ecdf7f56835",
+        "private/url_dial.ny": "a768745978479a416c2732fae40d6f2b4d8ac6f837b39bf9879b1a3bb31144e5",
+        "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+        "scripts/accept.py": "d1414d02eac9b10116a417855bd0354cfed4ae773aca0c9858af47063736d267",
+        "scripts/accept_clients.py": "29075a0cf2094e299dd5821a4a9fd17a75a7ebcb61961b3a8677f9ec8cc9f995",
+        "scripts/accept_redirects.py": "1596b6abbc28c0fd414ad95f64dd2cfe45e22641c5de95544092d1f453d39a8a",
+        "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+        "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+        "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+        "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+        "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+        "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+        "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+        "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+        "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+        "tests/url_selftest.ny": "34c545ab44436cb188804d84c881802b0837ca69d0bafb5b9e15aef4f712d69a"
+      },
+      "net_core_source_sha256": {
+        ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+        "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+        "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+        "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+        "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+        "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+        "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+        "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+        "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+        "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+        "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+        "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+        "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+        "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+        "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+        "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+        "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+        "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+        "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+        "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+        "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+        "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+        "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+        "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+        "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+        "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+        "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+        "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+        "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+        "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+        "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+        "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+        "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+        "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+        "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+        "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+        "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+        "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+        "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+        "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+      },
+      "commands": [
+        {
+          "name": "net-native",
+          "command": [
+            "/usr/bin/python3",
+            "/runner/tls-dev-20261027/third_party/net_core/scripts/build_native.py",
+            "--out-dir",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native"
+          ]
+        },
+        {
+          "name": "list",
+          "command": [
+            "/runner/tls-dev-20261027/http-body-compiler-final",
+            "test",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/project/http",
+            "--tag",
+            "http_core",
+            "--list"
+          ]
+        },
+        {
+          "name": "tests",
+          "command": [
+            "/runner/tls-dev-20261027/http-body-compiler-final",
+            "test",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/project/http",
+            "--tag",
+            "http_core",
+            "-O2",
+            "-j",
+            "4",
+            "--out-dir",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/objects",
+            "-o",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+            "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+            "--link-arg=-lpthread",
+            "--report",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/tests.json"
+          ]
+        },
+        {
+          "name": "case-0",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "0"
+          ]
+        },
+        {
+          "name": "case-1",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "1"
+          ]
+        },
+        {
+          "name": "case-2",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "2"
+          ]
+        },
+        {
+          "name": "case-3",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "3"
+          ]
+        },
+        {
+          "name": "case-4",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "4"
+          ]
+        },
+        {
+          "name": "case-5",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "5"
+          ]
+        },
+        {
+          "name": "case-6",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "6"
+          ]
+        },
+        {
+          "name": "case-7",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "7"
+          ]
+        },
+        {
+          "name": "case-8",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "8"
+          ]
+        },
+        {
+          "name": "case-9",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "9"
+          ]
+        },
+        {
+          "name": "case-10",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "10"
+          ]
+        },
+        {
+          "name": "case-11",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "11"
+          ]
+        },
+        {
+          "name": "case-12",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "12"
+          ]
+        },
+        {
+          "name": "case-13",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "13"
+          ]
+        },
+        {
+          "name": "case-14",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "14"
+          ]
+        },
+        {
+          "name": "case-15",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "15"
+          ]
+        },
+        {
+          "name": "case-16",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "16"
+          ]
+        },
+        {
+          "name": "case-17",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "17"
+          ]
+        },
+        {
+          "name": "case-18",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "18"
+          ]
+        },
+        {
+          "name": "case-19",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "19"
+          ]
+        },
+        {
+          "name": "case-20",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "20"
+          ]
+        },
+        {
+          "name": "case-21",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "21"
+          ]
+        },
+        {
+          "name": "case-22",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "22"
+          ]
+        },
+        {
+          "name": "case-23",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "23"
+          ]
+        },
+        {
+          "name": "case-24",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "24"
+          ]
+        },
+        {
+          "name": "case-25",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "25"
+          ]
+        },
+        {
+          "name": "case-26",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "26"
+          ]
+        },
+        {
+          "name": "case-27",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "27"
+          ]
+        },
+        {
+          "name": "case-28",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "28"
+          ]
+        },
+        {
+          "name": "case-29",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "29"
+          ]
+        },
+        {
+          "name": "case-30",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "30"
+          ]
+        },
+        {
+          "name": "case-31",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "31"
+          ]
+        },
+        {
+          "name": "case-32",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "32"
+          ]
+        },
+        {
+          "name": "case-33",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "33"
+          ]
+        },
+        {
+          "name": "case-34",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "34"
+          ]
+        },
+        {
+          "name": "case-35",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "35"
+          ]
+        },
+        {
+          "name": "case-36",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "36"
+          ]
+        },
+        {
+          "name": "case-37",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "37"
+          ]
+        },
+        {
+          "name": "case-38",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "38"
+          ]
+        },
+        {
+          "name": "case-39",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "39"
+          ]
+        },
+        {
+          "name": "case-40",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "40"
+          ]
+        },
+        {
+          "name": "case-41",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "41"
+          ]
+        },
+        {
+          "name": "case-42",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "42"
+          ]
+        },
+        {
+          "name": "case-43",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "43"
+          ]
+        },
+        {
+          "name": "case-44",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "44"
+          ]
+        },
+        {
+          "name": "case-45",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "45"
+          ]
+        },
+        {
+          "name": "case-46",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "46"
+          ]
+        },
+        {
+          "name": "case-47",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "47"
+          ]
+        },
+        {
+          "name": "case-48",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "48"
+          ]
+        },
+        {
+          "name": "case-49",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "49"
+          ]
+        },
+        {
+          "name": "case-50",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "50"
+          ]
+        },
+        {
+          "name": "case-51",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "51"
+          ]
+        },
+        {
+          "name": "case-52",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "52"
+          ]
+        },
+        {
+          "name": "case-53",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "53"
+          ]
+        },
+        {
+          "name": "case-54",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "54"
+          ]
+        },
+        {
+          "name": "case-55",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "55"
+          ]
+        },
+        {
+          "name": "case-56",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "56"
+          ]
+        },
+        {
+          "name": "case-57",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "57"
+          ]
+        },
+        {
+          "name": "case-58",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "58"
+          ]
+        },
+        {
+          "name": "case-59",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "59"
+          ]
+        },
+        {
+          "name": "case-60",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "60"
+          ]
+        },
+        {
+          "name": "case-61",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "61"
+          ]
+        },
+        {
+          "name": "case-62",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "62"
+          ]
+        },
+        {
+          "name": "case-63",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "63"
+          ]
+        },
+        {
+          "name": "case-64",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "64"
+          ]
+        },
+        {
+          "name": "case-65",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "65"
+          ]
+        },
+        {
+          "name": "case-66",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "66"
+          ]
+        },
+        {
+          "name": "case-67",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "67"
+          ]
+        },
+        {
+          "name": "case-68",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "68"
+          ]
+        },
+        {
+          "name": "case-69",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "69"
+          ]
+        },
+        {
+          "name": "case-70",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "70"
+          ]
+        },
+        {
+          "name": "case-71",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "71"
+          ]
+        },
+        {
+          "name": "case-72",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "72"
+          ]
+        },
+        {
+          "name": "case-73",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "73"
+          ]
+        },
+        {
+          "name": "case-74",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "74"
+          ]
+        },
+        {
+          "name": "case-75",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/http-tests",
+            "75"
+          ]
+        },
+        {
+          "name": "production",
+          "command": [
+            "/runner/tls-dev-20261027/http-body-compiler-final",
+            "precompile",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/project/http/http.ny",
+            "-O2",
+            "-j",
+            "4",
+            "--out-dir",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/production-objects",
+            "-o",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/production"
+          ]
+        },
+        {
+          "name": "production-imports",
+          "command": [
+            "/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/hosts/linux-x86_64/llvm/bin/llvm-nm",
+            "-u",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/production/lib/libpackage.a"
+          ]
+        },
+        {
+          "name": "consumer-build",
+          "command": [
+            "/runner/tls-dev-20261027/http-body-compiler-final",
+            "build",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/consumer/main.ny",
+            "--link",
+            "-O2",
+            "--out-dir",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/consumer-objects",
+            "-o",
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/consumer-test",
+            "--platform-archive=/runner/_work/_tool/nyra-sdk/1.0.1/linux-x86_64/sdk/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+            "--link-arg=/runner/tls-dev-20261027/http-redirect-accepted/base/core/net-native/libnet_core_native.a",
+            "--link-arg=-lpthread"
+          ]
+        },
+        {
+          "name": "consumer",
+          "command": [
+            "/runner/tls-dev-20261027/http-redirect-accepted/base/core/consumer-test"
+          ]
+        }
+      ],
+      "scope": "Strict HTTP/1.x heads, streaming body decoding/writing and informational/final response sequencing; no network client",
+      "staged_manifest_sha256": {
+        "http": "cdc9c227c6a277b19c0177d1179056342e9821f59b47c384e9aa714c50be00c8",
+        "net_core": "223c6e87c645c6273e3751e1c0413a277e95da187c22ae2c73c63aecbd82162d"
+      },
+      "case_names": [
+        "test_http_redirect_reference_rfc_examples",
+        "test_http_redirect_resolution_validation_and_origin",
+        "test_http_redirect_post_rewrite_and_snapshot_lifetime",
+        "test_http_redirect_preserved_replay_requires_opt_in",
+        "test_http_redirect_cross_origin_filters_and_no_downgrade",
+        "test_http_redirect_limits_locations_and_terminal_response",
+        "test_http_redirect_method_status_matrix",
+        "test_http_redirect_same_origin_hop_fields_and_borrowed_sources",
+        "test_http_redirect_controls_defaults_and_sticky_invalid_input",
+        "test_http_url_authority_and_defaults",
+        "test_http_url_ip_identity_and_ports",
+        "test_http_url_escaped_target_is_opaque",
+        "test_http_url_rejects_ambiguous_authority",
+        "test_http_url_controls_limits_and_default_value",
+        "test_http_url_owned_and_generated_request",
+        "test_http_url_reserved_fields_and_request_injection",
+        "test_http_url_dial_and_open_preflight_controls",
+        "test_http_client_exchange_smoke",
+        "test_http_client_partial_acknowledgement_and_owned_output",
+        "test_http_client_chunked_request_and_response_events",
+        "test_http_client_input_backpressure_and_eof",
+        "test_http_client_response_failures_preserve_stage",
+        "test_http_client_request_validation_and_retention_budget",
+        "test_http_client_incoming_backing_budget_and_identity",
+        "test_http_request_smoke",
+        "test_http_every_split_preserves_body_suffix",
+        "test_http_reused_input_and_owned_head",
+        "test_http_strict_line_and_field_syntax",
+        "test_http_duplicate_lengths_and_numeric_overflow",
+        "test_http_transfer_encoding_conflicts",
+        "test_http_host_validation",
+        "test_http_response_context_and_handoffs",
+        "test_http_connection_lifecycle",
+        "test_http_ordinary_duplicates_and_ows",
+        "test_http_limits_and_exact_boundaries",
+        "test_http_eof_at_every_prefix",
+        "test_http_target_and_version_profile",
+        "test_http_writer_request_roundtrip_and_ownership",
+        "test_http_writer_response_roundtrip",
+        "test_http_writer_injection_and_framing_rejection",
+        "test_http_writer_limits_and_defaults",
+        "test_http_binary_controls_and_obs_text",
+        "test_http_body_fixed_smoke",
+        "test_http_body_chunked_every_split",
+        "test_http_body_backpressure_and_pipeline",
+        "test_http_body_fixed_every_split_and_eof",
+        "test_http_body_chunked_eof_every_prefix",
+        "test_http_body_eof_delimited_and_budget",
+        "test_http_body_size_and_extension_rejection",
+        "test_http_body_cumulative_limits",
+        "test_http_body_forbidden_and_malformed_trailers",
+        "test_http_body_construction_and_handoffs",
+        "test_http_body_reused_byte_move_and_owned_trailer",
+        "test_http_body_binary_octets_and_extension_controls",
+        "test_http_response_sequence_smoke",
+        "test_http_body_writer_fixed_capacities",
+        "test_http_body_writer_fixed_shortage_and_excess",
+        "test_http_body_writer_absent_and_metadata_length",
+        "test_http_body_writer_eof_and_budget",
+        "test_http_body_writer_chunked_capacities_and_roundtrip",
+        "test_http_body_writer_large_chunk_bound",
+        "test_http_body_writer_owned_trailers_and_move",
+        "test_http_body_writer_trailer_declarations",
+        "test_http_body_writer_trailer_validation",
+        "test_http_body_writer_framing_budget",
+        "test_http_body_writer_announced_chunk_shortage_and_finish_drain",
+        "test_http_body_writer_finish_behind_pending_delimiter",
+        "test_http_body_writer_binary_and_trailer_count",
+        "test_http_response_sequence_every_split",
+        "test_http_response_informational_count_limits",
+        "test_http_response_aggregate_and_per_head_limits",
+        "test_http_response_eof_every_prefix",
+        "test_http_response_head_connect_and_101_context",
+        "test_http_response_owned_events_and_partial_next_head",
+        "test_http_response_malformed_and_sticky_aggregate_offset",
+        "test_http_response_borrowed_method_context_and_limits"
+      ],
+      "tests": {
+        "package": "http",
+        "status": "ok",
+        "passed": 76,
+        "failed": 0,
+        "ignored": 0,
+        "ran": 76,
+        "skipped": 0,
+        "exit_code": 0
+      },
+      "isolated_replays": 76,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "staged_manifest_sha256": {
+      "http": "cdc9c227c6a277b19c0177d1179056342e9821f59b47c384e9aa714c50be00c8",
+      "net_core": "223c6e87c645c6273e3751e1c0413a277e95da187c22ae2c73c63aecbd82162d",
+      "http_tls": "fdf6ec4c58f99c19e6c05eadd8ba193efc3c1785d853c32785eea54fde30c702",
+      "tls": "3f15dda6c70b69e4ef1f3724d471bd46322f8c51ce28cf978cbc0bd0bfcb360f"
+    },
+    "openssl": {
+      "version": "3.5.9",
+      "pin_sha256": "ec27a6fcd269a5aea2d04194af37d9069d2c103bad9f088b3cb44ade3e6e58eb",
+      "libraries_sha256": {
+        "libssl.a": "f355167951857505b5b0305fd2e8ea8f224fa29d780211175d32767b07234727",
+        "libcrypto.a": "32af35c4402f018e652cd692f0a4b14472e37453c71761b0e9e428d8cfe20dd8"
+      },
+      "server": "OpenSSL 3.0.13 30 Jan 2024",
+      "fixture_cli": "OpenSSL 3.5.9 29 Sep 2026 (Library: OpenSSL 3.5.9 29 Sep 2026)"
+    },
+    "https_production_fixture_imports": []
+  }
+}

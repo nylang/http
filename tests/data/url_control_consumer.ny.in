@@ -1,0 +1,72 @@
+/** @brief External URL/DNS admission and blocked-resolver control acceptance. */
+import "stdlib:stdlib.ny";
+import "net_core:net_core.ny";
+import "http:http.ny";
+@@TLS_IMPORTS@@
+@extern("C") func HttpFixtureCase() -> int32;
+@extern("C") func net_core_test_dns_reset() -> int32;
+@extern("C") func net_core_test_dns_entered() -> int32;
+@extern("C") func net_core_test_dns_active() -> int32;
+@extern("C") func net_core_test_dns_release() -> void;
+func main() -> int32 {
+  let n: int32 = HttpFixtureCase();
+  if net_core_test_dns_reset() != 0 { return 1; }
+  var made_pool: Result<AsyncResolver,NetError> = AsyncResolver.New(1,1);
+  if made_pool.IsErr() { return 2; }
+  var resolver: AsyncResolver = move((made_pool.get_if<AsyncResolver>()) as AsyncResolver);
+  var token: NetCancellation = NetCancellation.New();
+  var options: NetOperationOptions = NetOperationOptions{deadline: NetDeadline.After(NetClock.NowNanoseconds(),3000000000u64),cancellation: token};
+  var address: string = "@@SCHEME@@://net-core-gated.invalid:1/";
+  if n == 8 { address = "@@OTHER_SCHEME@@://net-core-gated.invalid:1/"; }
+  if n == 1 { address = "@@SCHEME@@://net-core-failed.invalid:1/"; }
+  if n == 2 { options.deadline = NetDeadline.After(NetClock.NowNanoseconds(),150000000u64); }
+  var thread: Thread = Thread{};
+  if n == 3 {
+    var spawned: Result<Thread,ThreadError> = Thread.Spawn(lambda [copy token] () -> void {
+      var i: int32 = 0; while net_core_test_dns_entered() == 0 && i < 1000 { Thread.Sleep(1u32); i = i+1; }
+      token.Cancel();
+    });
+    if spawned.IsErr() { return 3; } thread = move((spawned.get_if<Thread>()) as Thread);
+  }
+  if n == 4 { options.deadline = NetDeadline.At(0u64); }
+  if n == 5 { resolver.Close(); }
+  var fields: owned <HttpField>[] = new <HttpField>[0];
+  if n == 6 { fields = new <HttpField>[1]; fields[0] = HttpField{name: "Host",value: "evil"}; }
+  var dial: HttpDialOptions = HttpDialOptions{family: IpFamily.V4};
+  if n == 7 { dial.max_addresses = 65; }
+  var limits: HttpClientLimits = HttpClientLimits{}; if n == 11 { limits.max_retained_request_bytes = 1; }
+  @@CONFIG@@
+  let url: HttpUrl = (HttpUrl.Parse(address).get_if<HttpUrl>()) as HttpUrl;
+  let started: uint64 = NetClock.NowNanoseconds();
+  var opened: Result<@@CLIENT@@,@@ERROR@@> = @@OPEN@@;
+  let elapsed: uint64 = NetClock.NowNanoseconds()-started;
+  if n == 3 { let joined: Result<Unit,ThreadError> = thread.Join(); if joined.IsErr() { return 4; } }
+  if opened.IsOk() || elapsed > 2000000000u64 { Console.Eprintln("Open failed to return under original DNS controls"); net_core_test_dns_release(); return 5; }
+  let error: @@ERROR@@ = (opened.get_if<@@ERROR@@>()) as @@ERROR@@;
+  if error.stats.request_bytes_sent != 0u64 { return 6; }
+  if n == 6 || n == 7 || n == 8 || n == 9 || n == 10 || n == 11 {
+    var kind: HttpErrorKind = HttpErrorKind.InvalidArgument; if n == 11 { kind = HttpErrorKind.LimitExceeded; } if n == 10 { kind = HttpErrorKind.Unsupported; } if n == 8 { kind = @@SCHEME_ERROR@@; }
+    if error.protocol_error == nil || (error.protocol_error as HttpError).kind != kind || net_core_test_dns_entered() != 0 || resolver.PendingCount() != 0 { return 7; }
+    return 0;
+  }
+  if error.stage != HttpClientStage.Resolve { Console.Eprintln("DNS failure stage lost"); return 8; }
+  @@NETWORK_ERROR@@
+  var expected: NetErrorKind = NetErrorKind.NameNotFound;
+  if n == 2 || n == 4 { expected = NetErrorKind.TimedOut; }
+  if n == 3 { expected = NetErrorKind.Cancelled; }
+  if n == 5 { expected = NetErrorKind.Closed; }
+  if network.kind != expected { Console.Eprintln("DNS typed failure lost"); return 9; }
+  if n == 2 || n == 3 {
+    if net_core_test_dns_entered() != 1 || net_core_test_dns_active() != 1 || resolver.PendingCount() != 1 { Console.Eprintln("blocked OS lookup was not retained independently of returned control error"); return 10; }
+    net_core_test_dns_release();
+    var i: int32 = 0; while resolver.PendingCount() != 0 && i < 2000 { let p: Result<int32,NetError> = resolver.Poll(); if p.IsErr() { return 11; } Thread.Sleep(1u32); i = i+1; }
+    if resolver.PendingCount() != 0 { return 12; }
+    let queued: Result<AsyncFuture<NetResolution>,NetError> = resolver.ResolveAsync("127.0.0.1",80,IpFamily.V4,1,NetOperationOptions{});
+    if queued.IsErr() { return 13; }
+    let future: AsyncFuture<NetResolution> = (queued.get_if<AsyncFuture<NetResolution>>()) as AsyncFuture<NetResolution>;
+    i = 0; while !future.is_completed && i < 2000 { let p: Result<int32,NetError> = resolver.Poll(); if p.IsErr() { return 14; } Thread.Sleep(1u32); i = i+1; }
+    if !future.is_completed { return 15; }
+    let done: Result<NetResolution,AsyncError> = future.GetResult(); if done.IsErr() || ((done.get_if<NetResolution>()) as NetResolution).error != nil { return 16; }
+  } else if resolver.PendingCount() != 0 { return 17; }
+  return 0;
+}

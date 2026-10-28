@@ -1,0 +1,595 @@
+{
+  "format": "nyra-http-framing-acceptance-v1",
+  "status": "passed",
+  "host": "windows-x86_64",
+  "sdk_version": "1.0.1",
+  "sdk_manifest_sha256": "cac62ba3015c1568387c150aa079dae741e3a4814623846ae1a81915897d8a09",
+  "compiler_origin": "source-candidate",
+  "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+  "source_fallback_disabled": true,
+  "source_sha256": {
+    "http.ny": "3a910b0981e4f05835b5c343a4a60b8f856668d3a8c0f7d4fab96842ad87805e",
+    "interface/http.ni": "3eda9069d642bcb6f7aab868447cc9e8fa47829d9c60cafcd671c60ecaad86ff",
+    "package.yaml": "b835fc015de4c6dabaedcf78e62b4b624f2a7dbea2c9216a16e9966117ca63e6",
+    "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+    "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+    "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+    "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+    "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+    "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+    "scripts/accept.py": "567b37d50c48c600a51982a777749469b7ab25564c4cd88621c473096c0deb01",
+    "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+    "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+    "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876"
+  },
+  "net_core_source_sha256": {
+    ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+    "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+    "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+    "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+    "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+    "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+    "package.yaml": "3bd6b97785f89a3b6e54f048e2182addd644f19c1cd94d99408f8f08941a548e",
+    "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+    "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+    "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+    "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+    "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+    "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+    "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+    "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+    "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+    "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+    "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+    "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+    "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+    "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+    "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+    "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+    "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+    "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+    "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+    "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+    "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+    "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+    "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+    "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+    "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+    "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+    "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+    "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+    "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+    "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+    "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+    "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+    "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+  },
+  "commands": [
+    {
+      "name": "net-native",
+      "command": [
+        "E:\\workspace\\nyra-ci\\python\\python.exe",
+        "E:\\workspace\\tls-dev-20261027\\third_party\\net_core\\scripts\\build_native.py",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\net-native"
+      ]
+    },
+    {
+      "name": "list",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "test",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\project\\http",
+        "--tag",
+        "http_core",
+        "--list"
+      ]
+    },
+    {
+      "name": "tests",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "test",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\project\\http",
+        "--tag",
+        "http_core",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\net-native\\libnet_core_native.a",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi",
+        "--report",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\tests.json"
+      ]
+    },
+    {
+      "name": "case-0",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "0"
+      ]
+    },
+    {
+      "name": "case-1",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "1"
+      ]
+    },
+    {
+      "name": "case-2",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "2"
+      ]
+    },
+    {
+      "name": "case-3",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "3"
+      ]
+    },
+    {
+      "name": "case-4",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "4"
+      ]
+    },
+    {
+      "name": "case-5",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "5"
+      ]
+    },
+    {
+      "name": "case-6",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "6"
+      ]
+    },
+    {
+      "name": "case-7",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "7"
+      ]
+    },
+    {
+      "name": "case-8",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "8"
+      ]
+    },
+    {
+      "name": "case-9",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "9"
+      ]
+    },
+    {
+      "name": "case-10",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "10"
+      ]
+    },
+    {
+      "name": "case-11",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "11"
+      ]
+    },
+    {
+      "name": "case-12",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "12"
+      ]
+    },
+    {
+      "name": "case-13",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "13"
+      ]
+    },
+    {
+      "name": "case-14",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "14"
+      ]
+    },
+    {
+      "name": "case-15",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "15"
+      ]
+    },
+    {
+      "name": "case-16",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "16"
+      ]
+    },
+    {
+      "name": "case-17",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "17"
+      ]
+    },
+    {
+      "name": "case-18",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "18"
+      ]
+    },
+    {
+      "name": "case-19",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "19"
+      ]
+    },
+    {
+      "name": "case-20",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "20"
+      ]
+    },
+    {
+      "name": "case-21",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "21"
+      ]
+    },
+    {
+      "name": "case-22",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "22"
+      ]
+    },
+    {
+      "name": "case-23",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "23"
+      ]
+    },
+    {
+      "name": "case-24",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "24"
+      ]
+    },
+    {
+      "name": "case-25",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "25"
+      ]
+    },
+    {
+      "name": "case-26",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "26"
+      ]
+    },
+    {
+      "name": "case-27",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "27"
+      ]
+    },
+    {
+      "name": "case-28",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "28"
+      ]
+    },
+    {
+      "name": "case-29",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "29"
+      ]
+    },
+    {
+      "name": "case-30",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "30"
+      ]
+    },
+    {
+      "name": "case-31",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "31"
+      ]
+    },
+    {
+      "name": "case-32",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "32"
+      ]
+    },
+    {
+      "name": "case-33",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "33"
+      ]
+    },
+    {
+      "name": "case-34",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "34"
+      ]
+    },
+    {
+      "name": "case-35",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "35"
+      ]
+    },
+    {
+      "name": "case-36",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "36"
+      ]
+    },
+    {
+      "name": "case-37",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "37"
+      ]
+    },
+    {
+      "name": "case-38",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "38"
+      ]
+    },
+    {
+      "name": "case-39",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "39"
+      ]
+    },
+    {
+      "name": "case-40",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "40"
+      ]
+    },
+    {
+      "name": "case-41",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "41"
+      ]
+    },
+    {
+      "name": "case-42",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "42"
+      ]
+    },
+    {
+      "name": "case-43",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "43"
+      ]
+    },
+    {
+      "name": "case-44",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "44"
+      ]
+    },
+    {
+      "name": "case-45",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "45"
+      ]
+    },
+    {
+      "name": "case-46",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "46"
+      ]
+    },
+    {
+      "name": "case-47",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "47"
+      ]
+    },
+    {
+      "name": "case-48",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "48"
+      ]
+    },
+    {
+      "name": "case-49",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "49"
+      ]
+    },
+    {
+      "name": "case-50",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "50"
+      ]
+    },
+    {
+      "name": "case-51",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\http-tests.exe",
+        "51"
+      ]
+    },
+    {
+      "name": "production",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "precompile",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\project\\http\\http.ny",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\production-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\production"
+      ]
+    },
+    {
+      "name": "production-imports",
+      "command": [
+        "E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\hosts\\windows-x86_64\\llvm\\bin\\llvm-nm.exe",
+        "-u",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\production\\lib\\libpackage.a"
+      ]
+    },
+    {
+      "name": "consumer-build",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-body-compiler-final.exe",
+        "build",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\consumer\\main.ny",
+        "--link",
+        "-O2",
+        "--out-dir",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\consumer-objects",
+        "-o",
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\consumer-test.exe",
+        "--platform-archive=E:\\workspace\\nyra-ci\\runner\\_work\\_tool\\nyra-sdk\\1.0.1\\windows-x86_64\\sdk\\targets\\windows-x86_64\\stdlib\\lib\\libnyra_platform.a",
+        "--link-arg=E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\net-native\\libnet_core_native.a",
+        "--link-arg=-lws2_32",
+        "--link-arg=-liphlpapi"
+      ]
+    },
+    {
+      "name": "consumer",
+      "command": [
+        "E:\\workspace\\tls-dev-20261027\\http-framing-acceptance-final\\consumer-test.exe"
+      ]
+    }
+  ],
+  "scope": "Strict HTTP/1.x heads, streaming body decoding/writing and informational/final response sequencing; no network client",
+  "staged_manifest_sha256": {
+    "http": "e55a5a7781ca12efddad0fc5eedff883af875dfd62df546e4630752fa9edf401",
+    "net_core": "eb6ce0b9eff093c54ad8813e357b9ca13938ac2ecbb750f2e2ca003664d35266"
+  },
+  "case_names": [
+    "test_http_request_smoke",
+    "test_http_every_split_preserves_body_suffix",
+    "test_http_reused_input_and_owned_head",
+    "test_http_strict_line_and_field_syntax",
+    "test_http_duplicate_lengths_and_numeric_overflow",
+    "test_http_transfer_encoding_conflicts",
+    "test_http_host_validation",
+    "test_http_response_context_and_handoffs",
+    "test_http_connection_lifecycle",
+    "test_http_ordinary_duplicates_and_ows",
+    "test_http_limits_and_exact_boundaries",
+    "test_http_eof_at_every_prefix",
+    "test_http_target_and_version_profile",
+    "test_http_writer_request_roundtrip_and_ownership",
+    "test_http_writer_response_roundtrip",
+    "test_http_writer_injection_and_framing_rejection",
+    "test_http_writer_limits_and_defaults",
+    "test_http_binary_controls_and_obs_text",
+    "test_http_body_fixed_smoke",
+    "test_http_body_chunked_every_split",
+    "test_http_body_backpressure_and_pipeline",
+    "test_http_body_fixed_every_split_and_eof",
+    "test_http_body_chunked_eof_every_prefix",
+    "test_http_body_eof_delimited_and_budget",
+    "test_http_body_size_and_extension_rejection",
+    "test_http_body_cumulative_limits",
+    "test_http_body_forbidden_and_malformed_trailers",
+    "test_http_body_construction_and_handoffs",
+    "test_http_body_reused_byte_move_and_owned_trailer",
+    "test_http_body_binary_octets_and_extension_controls",
+    "test_http_response_sequence_smoke",
+    "test_http_body_writer_fixed_capacities",
+    "test_http_body_writer_fixed_shortage_and_excess",
+    "test_http_body_writer_absent_and_metadata_length",
+    "test_http_body_writer_eof_and_budget",
+    "test_http_body_writer_chunked_capacities_and_roundtrip",
+    "test_http_body_writer_large_chunk_bound",
+    "test_http_body_writer_owned_trailers_and_move",
+    "test_http_body_writer_trailer_declarations",
+    "test_http_body_writer_trailer_validation",
+    "test_http_body_writer_framing_budget",
+    "test_http_body_writer_announced_chunk_shortage_and_finish_drain",
+    "test_http_body_writer_finish_behind_pending_delimiter",
+    "test_http_body_writer_binary_and_trailer_count",
+    "test_http_response_sequence_every_split",
+    "test_http_response_informational_count_limits",
+    "test_http_response_aggregate_and_per_head_limits",
+    "test_http_response_eof_every_prefix",
+    "test_http_response_head_connect_and_101_context",
+    "test_http_response_owned_events_and_partial_next_head",
+    "test_http_response_malformed_and_sticky_aggregate_offset",
+    "test_http_response_borrowed_method_context_and_limits"
+  ],
+  "tests": {
+    "package": "http",
+    "status": "ok",
+    "passed": 52,
+    "failed": 0,
+    "ignored": 0,
+    "ran": 52,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "isolated_replays": 52,
+  "production_fixture_imports": [],
+  "tls_link_inputs": []
+}

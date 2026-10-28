@@ -1,0 +1,80 @@
+{
+  "format": "nyra-http-client-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "phase": "H3a",
+  "packages": [
+    "http",
+    "http_tls"
+  ],
+  "scope": "Connected single-request HTTP/1.1 TCP/verified HTTPS; bounded immutable request and streaming owned response; local source candidates only",
+  "request_default_retained_bytes": 16777216,
+  "request_hard_retained_bytes": 1073741824,
+  "transport_block_bytes": 16384,
+  "tests_per_host": {
+    "core": 59,
+    "isolated_core_replays": 59,
+    "tcp_loopback": 21,
+    "https_loopback": 29
+  },
+  "profile": [
+    "Validate controls/request/identity before socket adoption; failed admission leaves caller connection intact",
+    "Same exchange/head/body grammar for TCP and TLS; plain production/consumer imports have no TLS symbols or link inputs",
+    "One copied absolute deadline and shared cancellation across connected operations, including buffered response event publication and explicit TLS shutdown",
+    "Committed plaintext HTTP acceptance/receive counts and original typed transport/TLS errors survive retirement",
+    "Only authenticated TLS close_notify completes EOF-delimited responses; raw TLS EOF remains UnexpectedEof",
+    "Owned response heads/body/trailers survive client retirement; completion durable until Close/Shutdown; no connection reuse",
+    "Pinned client OpenSSL 3.5.9 static headers/libraries; certificate CLI and Python peer providers recorded separately"
+  ],
+  "remaining": [
+    "URI/URL normalization, DNS/dial orchestration and end-to-end convenience API",
+    "Streaming request producers/trailers, early-final upload handling and Expect gating",
+    "Redirect/replay/cross-origin credentials, pooling, upgrades/tunnels",
+    "Forced send backpressure, broader network/resource faults, fuzzing/sanitizer and mobile/macOS-x64 execution",
+    "Published compiler compatibility/SDK promotion, package initial commits/gitlinks/origins, independent CI and release"
+  ],
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "client-acceptance-2026-10-27-darwin-arm64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "core_tests": 59,
+      "isolated_replays": 59,
+      "tcp_loopback": 21,
+      "https_loopback": 29,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "linux-x86_64": {
+      "receipt": "client-acceptance-2026-10-27-linux-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 59,
+      "isolated_replays": 59,
+      "tcp_loopback": 21,
+      "https_loopback": 29,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    },
+    "windows-x86_64": {
+      "receipt": "client-acceptance-2026-10-27-windows-x86_64.json",
+      "status": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "core_tests": 59,
+      "isolated_replays": 59,
+      "tcp_loopback": 21,
+      "https_loopback": 29,
+      "plain_tls_link_inputs": [],
+      "https_production_fixture_imports": []
+    }
+  }
+}

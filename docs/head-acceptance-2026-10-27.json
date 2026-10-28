@@ -1,0 +1,72 @@
+{
+  "format": "nyra-http-head-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "package": "http",
+  "package_version": "0.1.0",
+  "phase": "H1",
+  "scope": "Local source candidates; strict HTTP/1.x heads and body framing plans only; no body decoder, network client, SDK promotion or publication",
+  "protocol_reference": "https://www.rfc-editor.org/rfc/rfc9112.html",
+  "ownership": "Move-only parser, immutable shared owned head metadata, borrowed Push spans, exact consumed head prefix, writer-owned NetBuffer output",
+  "default_limits": {
+    "head_bytes": 32768,
+    "line_bytes_excluding_crlf": 8192,
+    "fields": 100
+  },
+  "hard_limits": {
+    "head_bytes": 1048576,
+    "line_bytes_excluding_crlf": 65536,
+    "fields": 128
+  },
+  "profile_limits": [
+    "Origin-form and OPTIONS * requests only; HTTP/1.0 and HTTP/1.1 parsing; HTTP/1.1 writing",
+    "ASCII reg-name subset/bracketed IPv6 Host; no userinfo, percent-encoded hosts or zones",
+    "Reject every duplicate/list Content-Length and duplicate Transfer-Encoding; only one chunked coding accepted",
+    "Reject TE/CL conflicts, forbidden framing on 1xx/204/CONNECT success, bare LF, obs-fold and unsafe field controls",
+    "Body plans never allocate the advertised length; body/trailer decoding, body limits, adapters, URL/redirect/pool policy remain H2/H3",
+    "Upgrade/Tunnel are context-dependent framing handoffs, not negotiation or tunneling implementation",
+    "No sanitizer/fuzzer, mobile, macOS x86_64, clean public SDK/compiler, independent CI or release claim",
+    "New package is an uncommitted local Git repository; parent gitlink and public origin remain pending"
+  ],
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "head-acceptance-2026-10-27-darwin-arm64.json",
+      "tests": 18,
+      "isolated_replays": 18,
+      "imported_consumer": "passed",
+      "production_precompile": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "c14b42f25af72d56c0b369150333de6b855901432062d501e5917ba1100fa837",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "linux-x86_64": {
+      "receipt": "head-acceptance-2026-10-27-linux-x86_64.json",
+      "tests": 18,
+      "isolated_replays": 18,
+      "imported_consumer": "passed",
+      "production_precompile": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "99f4bd3238185b99a5840d0da96a463afae1a96eaaa06aae0a5a4a821d4f766a",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "windows-x86_64": {
+      "receipt": "head-acceptance-2026-10-27-windows-x86_64.json",
+      "tests": 18,
+      "isolated_replays": 18,
+      "imported_consumer": "passed",
+      "production_precompile": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "b255a868276022bbd8a4c0349ebb48dc31afec899cef03e1910733060ccaf056",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    }
+  }
+}

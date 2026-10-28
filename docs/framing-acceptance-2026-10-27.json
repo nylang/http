@@ -1,0 +1,100 @@
+{
+  "format": "nyra-http-framing-acceptance-summary-v1",
+  "date": "2026-10-27",
+  "status": "passed",
+  "package": "http",
+  "package_version": "0.1.0",
+  "phase": "H2",
+  "scope": "Local HTTP/1.x shared head/body framing and one-request response sequencing; no transport client, SDK promotion or publication",
+  "protocol_references": [
+    "https://www.rfc-editor.org/rfc/rfc9112.html#section-7.1",
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-15.2"
+  ],
+  "ownership": "Move-only parser/writer/decoder; owned event heads and bounded pending metadata; payload pointers borrowed only within Push; exact input acceptance/output generation",
+  "body_default_limits": {
+    "decoded_bytes": 16777216,
+    "cumulative_framing_bytes": 1048576,
+    "line_bytes_excluding_crlf": 8192,
+    "trailers": 100
+  },
+  "body_hard_limits": {
+    "decoded_bytes": 9223372036837998591,
+    "cumulative_framing_bytes": 16777216,
+    "line_bytes_excluding_crlf": 65536,
+    "trailers": 128
+  },
+  "response_default_limits": {
+    "informational_heads": 16,
+    "cumulative_head_bytes_including_final": 1048576
+  },
+  "response_hard_limits": {
+    "informational_heads": 64,
+    "cumulative_head_bytes_including_final": 16777216
+  },
+  "generated_chunk_payload_ceiling": 16384,
+  "profile_limits": [
+    "H1 strict request/head/framing profile remains; this is HTTP/1.x, not HTTP/2",
+    "Fixed/no-body/EOF/chunked writer; Upgrade/Tunnel plans are rejected by body construction and require explicit handoff",
+    "Generated chunks use lowercase hex without extensions; chunk-size lines and all pending metadata obey body framing/line budgets",
+    "Each Push emits at most one framing or payload span; retain unconsumed input and fully send generated output before producing more",
+    "Writer IsComplete means generated output, not transport delivery; EOF-delimited output still requires transport closure",
+    "Fixed/no-body excess is rejected; fixed and announced-chunk shortage fails UnexpectedEof; errors emit no output in the failing call and require discarding the connection",
+    "Chunk trailers must be safe and declared in Trailer head fields; captured metadata survives source mutation/move/drop; only empty repeated Finish is accepted",
+    "Response events stop at each 100..199 except 101 and then one final/101 head; missing final EOF fails even after informational heads",
+    "101 is a framing handoff, not upgrade-negotiation approval; successful CONNECT context preserves opaque tunnel bytes",
+    "Response limits bound each head, informational count and cumulative head bytes; errors report aggregate offsets",
+    "No request queue, TCP/TLS adapters, URL/redirect/pool/deadline/cancellation policy or live HTTP/HTTPS client claim",
+    "No macOS-x64/mobile, fuzzer/sanitizer, exhaustive allocation-fault, public-compiler/SDK, independent CI or release claim",
+    "Package remains a local uncommitted Git repository; parent gitlink and assigned public origin remain pending"
+  ],
+  "tests": {
+    "combined": 52,
+    "head_foundation": 18,
+    "body_decoder": 12,
+    "body_writer": 13,
+    "response_sequencing": 9,
+    "isolated_replays_per_host": 52
+  },
+  "imported_consumer": "Response informational/final association, partial fixed output and fixed decoding, owned declared chunk trailers and decoder roundtrip across translation units",
+  "hosts": {
+    "darwin-arm64": {
+      "receipt": "framing-acceptance-2026-10-27-darwin-arm64.json",
+      "tests": 52,
+      "isolated_replays": 52,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "cf42cdf73675b206885be935914b218368446f39995f4e692ea080ac775f1720",
+      "sdk_runtime_version": "1.0.0",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "linux-x86_64": {
+      "receipt": "framing-acceptance-2026-10-27-linux-x86_64.json",
+      "tests": 52,
+      "isolated_replays": 52,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    },
+    "windows-x86_64": {
+      "receipt": "framing-acceptance-2026-10-27-windows-x86_64.json",
+      "tests": 52,
+      "isolated_replays": 52,
+      "production_precompile": "passed",
+      "imported_consumer": "passed",
+      "compiler_origin": "source-candidate",
+      "compiler_sha256": "389b7363ebf4fe8fe8f1295f261f4fea069587953eecb90f24499d2cf83a7589",
+      "sdk_runtime_version": "1.0.1",
+      "source_fallback_disabled": true,
+      "production_fixture_imports": [],
+      "tls_link_inputs": []
+    }
+  }
+}
