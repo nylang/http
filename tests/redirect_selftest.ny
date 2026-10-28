@@ -101,3 +101,57 @@ func test_http_redirect_controls_defaults_and_sticky_invalid_input() {
   var capped: HttpRedirectChain = redirect_test_chain("http://localhost/", "GET", new <HttpField>[0], "", HttpRedirectPolicy{}); var i: int32 = 0;
   while i < 5 { client_assert(capped.Follow(redirect_test_head(302,"Location: /\r\n")).IsOk(), "default five redirects accepted"); i = i+1; } client_assert(capped.Follow(redirect_test_head(302,"Location: /\r\n")).IsErr(), "sixth default redirect rejected");
 }
+func redirect_stream_test(verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan, policy: ref HttpRedirectPolicy, replay: HttpBodyReplayPolicy) -> HttpRedirectChain {
+  var made: Result<HttpRedirectChain,HttpClientError> = HttpRedirectChain.NewStreaming(url_test("https://localhost/start"),verb,fields,plan,HttpClientLimits{},policy,replay,NetOperationOptions{});
+  client_assert(made.IsOk(),"streamed redirect validates metadata without retaining a body"); return move((made.get_if<HttpRedirectChain>()) as HttpRedirectChain);
+}
+@test(tag = "http_core")
+func test_http_stream_redirect_snapshot_and_fixed_replay() {
+  var chain: HttpRedirectChain = redirect_stream_test("POST",new <HttpField>[0],HttpBodyPlan{kind:HttpBodyKind.ContentLength,length:6u64},HttpRedirectPolicy{allow_unsafe_replay:true},HttpBodyReplayPolicy.Explicit);
+  let first: HttpRedirectRequest = redirect_test_request(chain);
+  client_assert(first.IsStreaming() && first.Body().Len()==(0 as intptr) && first.UploadPlan().length==6u64,"stream snapshot retains a plan rather than a fake empty replay body");
+  client_assert(chain.Follow(redirect_test_head(307,"Location: /next\r\n")).IsOk(),"fixed body replay explicitly allowed");
+  let next: HttpRedirectRequest = redirect_test_request(chain); chain=HttpRedirectChain{};
+  client_assert(next.Verb().Equal("POST") && next.UploadPlan().length==6u64 && next.Url().Target().Equal("/next") && first.Url().Target().Equal("/start"),"snapshots own independent routing and preserved framing after chain drop");
+  var resolver: AsyncResolver = AsyncResolver{}; client_assert(next.OpenTcp(resolver,HttpDialOptions{}).IsErr(),"immutable open cannot silently discard a streamed producer");
+}
+@test(tag = "http_core")
+func test_http_stream_redirect_two_permissions_and_sticky_failure() {
+  var denied: HttpRedirectChain = redirect_stream_test("POST",new <HttpField>[0],HttpBodyPlan{kind:HttpBodyKind.ContentLength,length:6u64},HttpRedirectPolicy{allow_unsafe_replay:true},HttpBodyReplayPolicy.Never);
+  let result: Result<bool,HttpClientError> = denied.Follow(redirect_test_head(308,"Location: /next\r\n"));
+  client_assert(result.IsErr() && (((result.get_if<HttpClientError>()) as HttpClientError).protocol_error as HttpError).kind==HttpErrorKind.ReplayRejected && denied.Count()==0 && denied.Request().IsErr(),"unsafe replay permission cannot manufacture a rewindable producer");
+  var no_opt_in: HttpRedirectChain = redirect_stream_test("GET",new <HttpField>[0],HttpBodyPlan{kind:HttpBodyKind.Chunked},HttpRedirectPolicy{},HttpBodyReplayPolicy.Explicit);
+  client_assert(no_opt_in.Follow(redirect_test_head(307,"Location: /next\r\n")).IsErr(),"even GET chunked producers require unsafe replay opt-in");
+  var empty: HttpRedirectChain = redirect_stream_test("GET",new <HttpField>[0],HttpBodyPlan{},HttpRedirectPolicy{},HttpBodyReplayPolicy.Never);
+  client_assert(empty.Follow(redirect_test_head(308,"Location: /next\r\n")).IsOk(),"known-empty safe requests need no producer replay permission");
+}
+@test(tag = "http_core")
+func test_http_stream_redirect_rewrite_clears_producer_negotiation() {
+  let fields: owned <HttpField>[] = new <HttpField>[]{HttpField{name:"Expect",value:"100-continue"},HttpField{name:"Trailer",value:"X-End"},HttpField{name:"Content-Type",value:"text/plain"},HttpField{name:"X-Keep",value:"ok"}};
+  var chain: HttpRedirectChain = redirect_stream_test("POST",fields,HttpBodyPlan{kind:HttpBodyKind.Chunked},HttpRedirectPolicy{},HttpBodyReplayPolicy.Never);
+  client_assert(chain.Follow(redirect_test_head(303,"Location: /next\r\n")).IsOk(),"303 safely drops even a non-replayable producer");
+  let next: HttpRedirectRequest = redirect_test_request(chain);
+  client_assert(next.IsStreaming() && next.Verb().Equal("GET") && next.UploadPlan().kind==HttpBodyKind.None && next.FieldCount()==1 && ((next.FieldAt(0).get_if<HttpField>()) as HttpField).name.Equal("X-Keep"),"GET rewrite clears Expect, trailers and representation metadata");
+}
+@test(tag = "http_core")
+func test_http_stream_redirect_trailer_and_cross_origin_policy() {
+  var fields: owned <HttpField>[] = new <HttpField>[]{HttpField{name:"Trailer",value:"X-End"}};
+  var chain: HttpRedirectChain = redirect_stream_test("PUT",fields,HttpBodyPlan{kind:HttpBodyKind.Chunked},HttpRedirectPolicy{allow_unsafe_replay:true,allow_cross_origin:true},HttpBodyReplayPolicy.Explicit);
+  client_assert(chain.Follow(redirect_test_head(307,"Location: /same\r\n")).IsOk() && redirect_test_request(chain).FieldCount()==1,"same-origin replay preserves promised chunked trailers");
+  client_assert(chain.Follow(redirect_test_head(307,"Location: https://elsewhere/\r\n")).IsErr() && chain.Count()==1,"cross-origin replay cannot silently remove promised trailers");
+  fields=new <HttpField>[]{HttpField{name:"Connection",value:"Trailer"},HttpField{name:"Trailer",value:"X-End"}};
+  var nominated: HttpRedirectChain = redirect_stream_test("PUT",fields,HttpBodyPlan{kind:HttpBodyKind.Chunked},HttpRedirectPolicy{allow_unsafe_replay:true},HttpBodyReplayPolicy.Explicit);
+  client_assert(nominated.Follow(redirect_test_head(307,"Location: /same\r\n")).IsErr(),"connection-nominated trailer promise cannot silently disappear");
+}
+@test(tag = "http_core")
+func test_http_stream_redirect_controls_precede_replay_and_keep_filters() {
+  var token: NetCancellation = NetCancellation.New();
+  var made: Result<HttpRedirectChain,HttpClientError> = HttpRedirectChain.NewStreaming(url_test("https://localhost/start"),"POST",new <HttpField>[0],HttpBodyPlan{kind:HttpBodyKind.ContentLength,length:6u64},HttpClientLimits{},HttpRedirectPolicy{allow_unsafe_replay:true},HttpBodyReplayPolicy.Explicit,NetOperationOptions{cancellation:token});
+  var chain: HttpRedirectChain=move((made.get_if<HttpRedirectChain>()) as HttpRedirectChain); token.Cancel();
+  let failed: Result<bool,HttpClientError> =chain.Follow(redirect_test_head(307,"Location: /next\r\n"));
+  client_assert(failed.IsErr() && (((failed.get_if<HttpClientError>()) as HttpClientError).transport_error as NetError).kind==NetErrorKind.Cancelled && chain.Count()==0,"original controls win before replay decision");
+  let fields: owned <HttpField>[]=new <HttpField>[]{HttpField{name:"Authorization",value:"secret"},HttpField{name:"Content-Type",value:"text/plain"},HttpField{name:"X-Secret",value:"secret"}};
+  var cross: HttpRedirectChain=redirect_stream_test("PUT",fields,HttpBodyPlan{kind:HttpBodyKind.ContentLength,length:6u64},HttpRedirectPolicy{allow_unsafe_replay:true,allow_cross_origin:true},HttpBodyReplayPolicy.Explicit);
+  client_assert(cross.Follow(redirect_test_head(308,"Location: https://other/next\r\n")).IsOk() && redirect_test_request(cross).FieldCount()==1,"streamed cross-origin filtering retains only existing safe representation fields");
+  client_assert(cross.Follow(redirect_test_head(307,"Location: http://other/next\r\n")).IsErr(),"streaming replay never enables HTTPS downgrade");
+}

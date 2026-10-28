@@ -42,9 +42,9 @@ pub method(HttpUrl) Resolve(reference: ref string) -> Result<HttpUrl, HttpError>
 }
 /** @brief Exact canonical scheme/host/effective-port origin comparison. */
 pub method(HttpUrl) SameOrigin(other: ref HttpUrl) -> bool { return self.IsValid() && other.IsValid() && self.Scheme().Equal(other.Scheme()) && self.Host().Equal(other.Host()) && self.Port() == other.Port(); }
-struct RedirectRequestData { url: HttpUrl; verb: string; fields: owned <HttpField>[]; body: NetBuffer; head: NetBuffer; parsed: HttpHead; limits: HttpClientLimits; options: NetOperationOptions; }
+struct RedirectRequestData { url: HttpUrl; verb: string; fields: owned <HttpField>[]; body: NetBuffer; head: NetBuffer; parsed: HttpHead; limits: HttpClientLimits; options: NetOperationOptions; streaming: bool; plan: HttpBodyPlan; }
 pub struct HttpRedirectRequest { cell: arc<RedirectRequestData>?; }
-struct RedirectChainData { request: HttpRedirectRequest; policy: HttpRedirectPolicy; count: int32; finished: bool; failure: HttpClientError?; }
+struct RedirectChainData { request: HttpRedirectRequest; policy: HttpRedirectPolicy; count: int32; finished: bool; replay: HttpBodyReplayPolicy; failure: HttpClientError?; }
 pub struct HttpRedirectChain { cell: arc<RedirectChainData>?; }
 func redirect_copy(text: ref string) -> string { var buffer: StringBuffer = StringBuffer.New(); buffer.Append(text); return buffer.Take(); }
 func redirect_error(kind: HttpErrorKind) -> HttpClientError { return HttpClientError{protocol_error: HttpError{kind: kind}, stage: HttpClientStage.ResponseHead}; }
@@ -60,27 +60,39 @@ func redirect_finish(state: arc<RedirectChainData>) -> Result<bool, HttpClientEr
   if control.IsErr() { return redirect_fail(s, HttpClientError{transport_error: (control.get_if<NetError>()) as NetError, stage: HttpClientStage.ResponseHead}); }
   s.finished = true; return false;
 }
-func redirect_request(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref NetBuffer, limits: ref HttpClientLimits, options: ref NetOperationOptions) -> Result<HttpRedirectRequest, HttpClientError> {
-  let wire: Result<NetBuffer, HttpError> = url.RequestHead(verb, fields, body.Len() as uint64);
+func redirect_request(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref NetBuffer, limits: ref HttpClientLimits, options: ref NetOperationOptions, streaming: bool, plan: ref HttpBodyPlan) -> Result<HttpRedirectRequest, HttpClientError> {
+  var wire: Result<NetBuffer, HttpError> = HttpError{kind: HttpErrorKind.Closed};
+  if streaming { wire = url.StreamingRequestHead(verb, fields, plan); } else { wire = url.RequestHead(verb, fields, body.Len() as uint64); }
   if wire.IsErr() { return HttpClientError{protocol_error: (wire.get_if<HttpError>()) as HttpError}; }
   let head: NetBuffer = (wire.get_if<NetBuffer>()) as NetBuffer;
-  var checked: Result<HttpClientExchange, HttpError> = HttpClientExchange.New(head, body, limits);
+  var checked: Result<HttpClientExchange, HttpError> = HttpError{kind: HttpErrorKind.Closed};
+  if streaming { checked = HttpClientExchange.NewStreaming(head, limits); } else { checked = HttpClientExchange.New(head, body, limits); }
   if checked.IsErr() { return HttpClientError{protocol_error: (checked.get_if<HttpError>()) as HttpError}; }
   var exchange: HttpClientExchange = move((checked.get_if<HttpClientExchange>()) as HttpClientExchange);
   let parsed: HttpHead = (exchange.RequestHead().get_if<HttpHead>()) as HttpHead;
   var owned_fields: owned <HttpField>[] = new <HttpField>[fields.length]; var i: int32 = 0;
   while i < fields.length { owned_fields[i] = HttpField{name: redirect_copy(fields[i].name), value: redirect_copy(fields[i].value)}; i = i+1; }
-  return HttpRedirectRequest{cell: new arc<RedirectRequestData>{url: url, verb: redirect_copy(verb), fields: move(owned_fields), body: body, head: head, parsed: parsed, limits: limits, options: options}};
+  return HttpRedirectRequest{cell: new arc<RedirectRequestData>{url: url, verb: redirect_copy(verb), fields: move(owned_fields), body: body, head: head, parsed: parsed, limits: limits, options: options, streaming: streaming, plan: plan}};
 }
 /** @brief Own a validated initial request and a bounded redirect policy. */
 pub static method(HttpRedirectChain) New(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref NetBuffer, limits: ref HttpClientLimits, policy: ref HttpRedirectPolicy, options: ref NetOperationOptions) -> Result<HttpRedirectChain, HttpClientError> {
   let control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds()); if control.IsErr() { return HttpClientError{transport_error: (control.get_if<NetError>()) as NetError}; }
   var caps: HttpRedirectPolicy = policy; if caps.max_redirects == 0 { caps.max_redirects = 5; }
   if caps.max_redirects < 1 || caps.max_redirects > 32 { return HttpClientError{protocol_error: http_client_error(HttpErrorKind.InvalidArgument)}; }
-  let request: Result<HttpRedirectRequest, HttpClientError> = redirect_request(url, verb, fields, body, limits, options);
+  let request: Result<HttpRedirectRequest, HttpClientError> = redirect_request(url, verb, fields, body, limits, options, false, HttpBodyPlan{});
   if request.IsErr() { return (request.get_if<HttpClientError>()) as HttpClientError; }
   let final_control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds()); if final_control.IsErr() { return HttpClientError{transport_error: (final_control.get_if<NetError>()) as NetError}; }
   return HttpRedirectChain{cell: new arc<RedirectChainData>{request: (request.get_if<HttpRedirectRequest>()) as HttpRedirectRequest, policy: caps}};
+}
+/** @brief Own streamed request metadata and an explicit producer replay policy without retaining payload. */
+pub static method(HttpRedirectChain) NewStreaming(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan, limits: ref HttpClientLimits, policy: ref HttpRedirectPolicy, replay: HttpBodyReplayPolicy, options: ref NetOperationOptions) -> Result<HttpRedirectChain, HttpClientError> {
+  let control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds()); if control.IsErr() { return HttpClientError{transport_error: (control.get_if<NetError>()) as NetError}; }
+  var caps: HttpRedirectPolicy = policy; if caps.max_redirects == 0 { caps.max_redirects = 5; }
+  if caps.max_redirects < 1 || caps.max_redirects > 32 || (replay != HttpBodyReplayPolicy.Never && replay != HttpBodyReplayPolicy.Explicit) { return HttpClientError{protocol_error: http_client_error(HttpErrorKind.InvalidArgument)}; }
+  let request: Result<HttpRedirectRequest, HttpClientError> = redirect_request(url, verb, fields, NetBuffer{}, limits, options, true, plan);
+  if request.IsErr() { return (request.get_if<HttpClientError>()) as HttpClientError; }
+  let final_control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds()); if final_control.IsErr() { return HttpClientError{transport_error: (final_control.get_if<NetError>()) as NetError}; }
+  return HttpRedirectChain{cell: new arc<RedirectChainData>{request: (request.get_if<HttpRedirectRequest>()) as HttpRedirectRequest, policy: caps, replay: replay}};
 }
 /** @brief Transfer the sole decision cursor. */
 pub method(HttpRedirectChain) operator move() -> HttpRedirectChain { let cell: arc<RedirectChainData>? = self.cell; self.cell = nil; return HttpRedirectChain{cell: cell}; }
@@ -94,7 +106,7 @@ pub method(HttpRedirectChain) Request() -> Result<HttpRedirectRequest, HttpClien
   return s.request;
 }
 func redirect_hop_field(request: arc<RedirectRequestData>, name: ref string) -> bool {
-  if http_client_equal(name, "Connection") || http_client_equal(name, "Keep-Alive") || http_client_equal(name, "Proxy-Connection") || http_client_equal(name, "Proxy-Authorization") || http_client_equal(name, "TE") || http_client_equal(name, "Trailer") || http_client_equal(name, "Upgrade") { return true; }
+  if http_client_equal(name, "Connection") || http_client_equal(name, "Keep-Alive") || http_client_equal(name, "Proxy-Connection") || http_client_equal(name, "Proxy-Authorization") || http_client_equal(name, "TE") || (http_client_equal(name, "Trailer") && !request.streaming) || http_client_equal(name, "Upgrade") { return true; }
   var i: int32 = 0;
   while i < request.parsed.FieldCount() {
     let field: HttpField = (request.parsed.FieldAt(i).get_if<HttpField>()) as HttpField;
@@ -134,13 +146,20 @@ pub method(HttpRedirectChain) Follow(response: ref HttpHead) -> Result<bool, Htt
   if cross && !s.policy.allow_cross_origin { return redirect_fail(s, redirect_error(HttpErrorKind.CrossOriginRedirect)); }
   var verb: string = old.verb; var body: NetBuffer = old.body;
   let rewrite: bool = ((status == 301 || status == 302) && verb.Equal("POST")) || (status == 303 && !verb.Equal("HEAD"));
-  if rewrite { verb = "GET"; body = NetBuffer{}; }
-  else if !s.policy.allow_unsafe_replay && (body.Len() != (0 as intptr) || (!verb.Equal("GET") && !verb.Equal("HEAD") && !verb.Equal("OPTIONS"))) { return redirect_fail(s, redirect_error(HttpErrorKind.ReplayRejected)); }
+  let streamed_body: bool = old.streaming && (old.plan.kind == HttpBodyKind.Chunked || (old.plan.kind == HttpBodyKind.ContentLength && old.plan.length != 0u64));
+  var plan: HttpBodyPlan = old.plan;
+  if rewrite { verb = "GET"; body = NetBuffer{}; plan = HttpBodyPlan{}; }
+  else if !s.policy.allow_unsafe_replay && (streamed_body || body.Len() != (0 as intptr) || (!verb.Equal("GET") && !verb.Equal("HEAD") && !verb.Equal("OPTIONS"))) { return redirect_fail(s, redirect_error(HttpErrorKind.ReplayRejected)); }
+  if !rewrite && streamed_body && s.replay != HttpBodyReplayPolicy.Explicit { return redirect_fail(s, redirect_error(HttpErrorKind.ReplayRejected)); }
+  // Cross-origin filtering must not silently erase promised producer trailers.
+  if !rewrite && old.streaming {
+    i = 0; while i < old.fields.length { if http_client_equal(old.fields[i].name, "Trailer") && (cross || redirect_hop_field(old, "Trailer")) { return redirect_fail(s, redirect_error(HttpErrorKind.ReplayRejected)); } i = i+1; }
+  }
   var count: int32 = 0; i = 0;
-  while i < old.fields.length { let name: string = old.fields[i].name; if !redirect_hop_field(old, name) && !(rewrite && redirect_content(name)) && (!cross || redirect_cross_field(name, !rewrite)) { count = count+1; } i = i+1; }
+  while i < old.fields.length { let name: string = old.fields[i].name; if !redirect_hop_field(old, name) && !(rewrite && (redirect_content(name) || http_client_equal(name, "Expect") || http_client_equal(name, "Trailer"))) && (!cross || redirect_cross_field(name, !rewrite)) { count = count+1; } i = i+1; }
   var fields: owned <HttpField>[] = new <HttpField>[count]; count = 0; i = 0;
-  while i < old.fields.length { let field: HttpField = old.fields[i]; if !redirect_hop_field(old, field.name) && !(rewrite && redirect_content(field.name)) && (!cross || redirect_cross_field(field.name, !rewrite)) { fields[count] = field; count = count+1; } i = i+1; }
-  let made: Result<HttpRedirectRequest, HttpClientError> = redirect_request(url, verb, fields, body, old.limits, old.options);
+  while i < old.fields.length { let field: HttpField = old.fields[i]; if !redirect_hop_field(old, field.name) && !(rewrite && (redirect_content(field.name) || http_client_equal(field.name, "Expect") || http_client_equal(field.name, "Trailer"))) && (!cross || redirect_cross_field(field.name, !rewrite)) { fields[count] = field; count = count+1; } i = i+1; }
+  let made: Result<HttpRedirectRequest, HttpClientError> = redirect_request(url, verb, fields, body, old.limits, old.options, old.streaming, plan);
   if made.IsErr() { return redirect_fail(s, (made.get_if<HttpClientError>()) as HttpClientError); }
   let final_control: Result<Unit, NetError> = old.options.Check(NetClock.NowNanoseconds()); if final_control.IsErr() { return redirect_fail(s, HttpClientError{transport_error: (final_control.get_if<NetError>()) as NetError, stage: HttpClientStage.ResponseHead}); }
   s.request = (made.get_if<HttpRedirectRequest>()) as HttpRedirectRequest; s.count = s.count+1; return true;
@@ -166,5 +185,16 @@ pub method(HttpRedirectRequest) Options() -> NetOperationOptions { if self.cell 
 /** @brief Connect a plain snapshot without refreshing controls. */
 pub method(HttpRedirectRequest) OpenTcp(resolver: ref mut AsyncResolver, dial: ref HttpDialOptions) -> Result<HttpTcpClient, HttpClientError> {
   if self.cell == nil { return redirect_error(HttpErrorKind.InvalidArgument); } let s: arc<RedirectRequestData> = self.cell as arc<RedirectRequestData>;
+  if s.streaming { return redirect_error(HttpErrorKind.InvalidState); }
   return HttpTcpClient.Open(s.url, s.verb, s.fields, s.body, s.limits, resolver, dial, s.options);
+}
+
+/** @brief Whether this snapshot describes a producer instead of retaining a replay body. */
+pub method(HttpRedirectRequest) IsStreaming() -> bool { return self.cell != nil && (self.cell as arc<RedirectRequestData>).streaming; }
+/** @brief Original producer framing, or an empty plan for immutable/default snapshots. */
+pub method(HttpRedirectRequest) UploadPlan() -> HttpBodyPlan { if self.cell == nil { return HttpBodyPlan{}; } return (self.cell as arc<RedirectRequestData>).plan; }
+/** @brief Open a streamed TCP snapshot under its retained original controls. */
+pub method(HttpRedirectRequest) OpenStreamingTcp(resolver: ref mut AsyncResolver, dial: ref HttpDialOptions, continue_wait_ms: int32) -> Result<HttpTcpClient, HttpClientError> {
+  if !self.IsStreaming() { return redirect_error(HttpErrorKind.InvalidState); } let s: arc<RedirectRequestData> = self.cell as arc<RedirectRequestData>;
+  return HttpTcpClient.OpenStreaming(s.url, s.verb, s.fields, s.plan, s.limits, resolver, dial, s.options, continue_wait_ms);
 }

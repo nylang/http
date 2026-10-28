@@ -1,0 +1,108 @@
+/** @brief Imported streamed automatic redirect producer/replay acceptance. */
+import "stdlib:stdlib.ny";
+import "net_core:net_core.ny";
+import "http:http.ny";
+import "tls:tls.ny";
+import "http_tls:http_tls.ny";
+@extern("C") func HttpFixturePort() -> int32;
+@extern("C") func HttpFixtureCase() -> int32;
+@extern("C") func HttpFixtureCa() -> *const int8;
+@extern("C") func HttpFixtureCaLength() -> int32;
+func buffer(text: ref string) -> NetBuffer { return (NetBuffer.CopyFrom(NetBytes.FromString(text)).get_if<NetBuffer>()) as NetBuffer; }
+func network(error: ref HttpFollowError) -> NetError? {
+  if error.http_error!=nil { return (error.http_error as HttpClientError).transport_error; }
+  if error.https_error!=nil && (error.https_error as HttpsClientError).tls_error!=nil { return ((error.https_error as HttpsClientError).tls_error as TlsStreamError).transport_error; } return nil;
+}
+func protocol(error: ref HttpFollowError) -> HttpError? { if error.http_error!=nil { return (error.http_error as HttpClientError).protocol_error; } if error.https_error!=nil { return (error.https_error as HttpsClientError).protocol_error; } return nil; }
+func stats(error: ref HttpFollowError) -> HttpClientStats { if error.http_error!=nil { return (error.http_error as HttpClientError).stats; } if error.https_error!=nil { return (error.https_error as HttpsClientError).stats; } return HttpClientStats{}; }
+func main() -> int32 {
+  let n: int32=HttpFixtureCase();
+  let endpoint: NetEndpoint=(NetEndpoint.New(IpAddress.V4(127u8,0u8,0u8,1u8),HttpFixturePort()).get_if<NetEndpoint>()) as NetEndpoint;
+  let port: string=endpoint.ToString().Substring(10,endpoint.ToString().length-10);
+  let url: HttpUrl=(HttpUrl.Parse("@@SCHEME@@://localhost:".Concat(port).Concat("/start")).get_if<HttpUrl>()) as HttpUrl;
+  var token: NetCancellation=NetCancellation.New(); var budget: uint64=8000000000u64; if n==12 { budget=1000000000u64; }
+  let options: NetOperationOptions=NetOperationOptions{cancellation:token,deadline:NetDeadline.After(NetClock.NowNanoseconds(),budget)};
+  var plan: HttpBodyPlan=HttpBodyPlan{kind:HttpBodyKind.ContentLength,length:6u64};
+  if n==3 || n==20 { plan=HttpBodyPlan{kind:HttpBodyKind.Chunked}; }
+  var verb: string="POST"; if n==3 || n==20 { verb="PUT"; } if n==18 { verb="GET";plan=HttpBodyPlan{}; } if n==19 { verb="HEAD";plan=HttpBodyPlan{}; }
+  var fields: owned <HttpField>[]=new <HttpField>[]{HttpField{name:"Content-Type",value:"text/plain"},HttpField{name:"Authorization",value:"secret"},HttpField{name:"X-Secret",value:"secret"},HttpField{name:"Accept",value:"text/plain"}};
+  if n==3 || n==20 { fields=new <HttpField>[]{HttpField{name:"Trailer",value:"X-End"}}; }
+  if n==6 || n==7 || n==22 { fields=new <HttpField>[]{HttpField{name:"Expect",value:"100-continue"},HttpField{name:"Content-Type",value:"text/plain"}}; }
+  var policy: HttpRedirectPolicy=HttpRedirectPolicy{allow_unsafe_replay:true}; if n==5 { policy.allow_unsafe_replay=false; }
+  if n==8 || n==14 || n==20 || @@MIXED@@ { policy.allow_cross_origin=true; }
+  if n==11 { policy.max_redirects=1; }
+  var replay: HttpBodyReplayPolicy=HttpBodyReplayPolicy.Explicit; if n==1 || n==4 || n==7 || n==18 || n==19 || n==22 { replay=HttpBodyReplayPolicy.Never; }
+  let config: TlsClientConfig=TlsClientConfig{ca_file:string.ViewFrom(HttpFixtureCa(),HttpFixtureCaLength())};
+  var made: Result<HttpFollowClient,HttpFollowError> =HttpFollowClient.NewStreaming(url,config,verb,fields,plan,HttpClientLimits{},policy,replay,HttpDialOptions{family:IpFamily.V4},options,1000);
+  if made.IsErr() { return 1; } var original: HttpFollowClient=move((made.get_if<HttpFollowClient>()) as HttpFollowClient);var client: HttpFollowClient=move(original);
+  if client.ReplayBody().IsOk() || client.SupplyBody(buffer("abc")).IsOk() || client.FinishBody(new <HttpField>[0]).IsOk() || client.UploadState().IsOk() { return 2; }
+  var queued: Result<AsyncResolver,NetError> =AsyncResolver.New(1,2); if queued.IsErr() { return 3; } var resolver: AsyncResolver=move((queued.get_if<AsyncResolver>()) as AsyncResolver);
+  var produced: int32=0;var replays: int32=0;var heads: int32=0;var count: int32=0;var complete: bool=false;var text: StringBuffer=StringBuffer.New();var failure: HttpFollowError?=nil;
+  let initial: HttpRedirectRequest=(client.Request().get_if<HttpRedirectRequest>()) as HttpRedirectRequest;
+  while count<1000 && !complete {
+    count=count+1;let result: Result<HttpClientEvent,HttpFollowError> =client.Next(resolver);
+    if result.IsErr() { failure=(result.get_if<HttpFollowError>()) as HttpFollowError;break; }
+    let event: HttpClientEvent=(result.get_if<HttpClientEvent>()) as HttpClientEvent;
+    if event.kind==HttpClientEventKind.NeedReplay {
+      replays=replays+1;
+      if n==1 || n==4 || n==5 || n==7 || n==9 || n==10 || n==15 || n==16 || n==17 || n==18 || n==19 || n==20 || n==22 { return 4; }
+      if client.RedirectCount()!=replays || event.stats.request_bytes_sent!=0u64 || !initial.Url().Target().Equal("/start") { return 5; }
+      if client.SupplyBody(buffer("abc")).IsOk() || client.FinishBody(new <HttpField>[0]).IsOk() || client.UploadState().IsOk() { return 6; }
+      var again: Result<HttpClientEvent,HttpFollowError> =client.Next(resolver);
+      if again.IsErr() || ((again.get_if<HttpClientEvent>()) as HttpClientEvent).kind!=HttpClientEventKind.NeedReplay { return 7; }
+      if n==12 { Thread.Sleep(1200u32);continue; }
+      if n==13 {
+        token.Cancel();let rejected: Result<Unit,HttpFollowError> =client.ReplayBody(); if rejected.IsOk() { return 8; } failure=(rejected.get_if<HttpFollowError>()) as HttpFollowError;break;
+      }
+      if n==14 {
+        resolver.Close();again=client.Next(resolver);if again.IsErr() || ((again.get_if<HttpClientEvent>()) as HttpClientEvent).kind!=HttpClientEventKind.NeedReplay { return 9; }
+        Thread.Sleep(200u32);
+      }
+      produced=0;
+      if client.ReplayBody().IsErr() || client.ReplayBody().IsOk() { return 10; }
+    }
+    if event.kind==HttpClientEventKind.Informational && n==17 {
+      let short: Result<Unit,HttpFollowError> =client.FinishBody(new <HttpField>[0]);if short.IsOk() { return 11; }failure=(short.get_if<HttpFollowError>()) as HttpFollowError;break;
+    }
+    if event.kind==HttpClientEventKind.NeedBody {
+      if n==18 || n==19 || ((n==1 || n==7) && client.RedirectCount()!=0) || ((n==6 || n==7 || n==22) && client.RedirectCount()==0) { return 12; }
+      if (n==17 || n==21) && produced==1 && client.RedirectCount()==0 { Thread.Sleep(1u32);continue; }
+      var admitted: Result<Unit,HttpFollowError> =Unit{};
+      if produced<2 { var payload: string="abc";if produced==1 { payload="def"; }admitted=client.SupplyBody(buffer(payload));produced=produced+1; }
+      else { var trailers: owned <HttpField>[]=new <HttpField>[0];if n==3 || n==20 { trailers=new <HttpField>[]{HttpField{name:"X-End",value:"yes"}}; }admitted=client.FinishBody(trailers); }
+      if admitted.IsErr() { failure=(admitted.get_if<HttpFollowError>()) as HttpFollowError;break; }
+    }
+    if event.kind==HttpClientEventKind.Head { heads=heads+1;var expected_status: int32=200;if n==15 { expected_status=307; }if event.head.Status()!=expected_status { return 13; } }
+    if event.kind==HttpClientEventKind.Body { text.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8,event.buffer.Len() as int32)); }
+    complete=event.complete;
+  }
+  let expects_failure: bool=n==4 || n==5 || n==9 || n==10 || n==11 || n==12 || n==13 || n==16 || n==17 || n==20 || n==22;
+  if expects_failure {
+    if failure==nil { return 14; }let error: HttpFollowError=failure as HttpFollowError;
+    if n==4 || n==5 || n==9 || n==10 || n==11 || n==17 || n==20 || n==22 {
+      let p: HttpError?=protocol(error);var expected: HttpErrorKind=HttpErrorKind.ReplayRejected;
+      if n==9 { expected=@@SCHEME_ERROR@@; }if n==10 { expected=HttpErrorKind.InvalidFraming; }if n==11 { expected=HttpErrorKind.RedirectLimit; }if n==17 { expected=HttpErrorKind.UnexpectedEof; }
+      if p==nil || (p as HttpError).kind!=expected { return 15; }
+    }
+    if n==12 || n==13 { let e: NetError?=network(error);var expected: NetErrorKind=NetErrorKind.TimedOut;if n==13 { expected=NetErrorKind.Cancelled; }if e==nil || (e as NetError).kind!=expected { return 16; } }
+    if n==16 && client.RedirectCount()!=0 { return 17; }
+    if n==12 || n==13 { if error.redirect_count!=1 || !error.url.Target().Equal("/next") { return 18; } }
+    if n==17 && stats(error).request_bytes_sent!=initial.Head().Len() as uint64+3u64 { return 26; }
+    if n==22 && stats(error).request_bytes_sent!=initial.Head().Len() as uint64 { return 27; }
+    if (n==12 || n==13) && stats(error).request_bytes_sent!=0u64 { return 28; }
+    client.Close();let again: Result<HttpClientEvent,HttpFollowError> =client.Next(resolver);if again.IsOk() { return 19; }
+    let repeated: HttpFollowError=(again.get_if<HttpFollowError>()) as HttpFollowError;
+    if repeated.redirect_count!=error.redirect_count || !repeated.url.ToString().Equal(error.url.ToString()) || stats(repeated).request_bytes_sent!=stats(error).request_bytes_sent { return 29; }
+    if protocol(error)!=nil && (protocol(repeated)==nil || (protocol(repeated) as HttpError).kind!=(protocol(error) as HttpError).kind) { return 30; }
+    if network(error)!=nil && (network(repeated)==nil || (network(repeated) as NetError).kind!=(network(error) as NetError).kind) { return 31; }
+    return 0;
+  }
+  if failure!=nil || !complete || heads!=1 { return 20; }
+  var redirects: int32=1;if n==2 || n==8 { redirects=2; }if n==15 { redirects=0; }
+  if client.RedirectCount()!=redirects { return 21; }
+  var expected_replays: int32=1;if n==2 || n==8 { expected_replays=2; }if n==1 || n==7 || n==15 || n==18 || n==19 { expected_replays=0; }
+  if replays!=expected_replays { return 22; }
+  let content: string=text.Take();if n==19 { if content.length!=0 { return 23; } } else { if !content.Equal("ok") { return 24; } }
+  token.Cancel();let done: Result<HttpClientEvent,HttpFollowError> =client.Next(resolver);if done.IsErr() || ((done.get_if<HttpClientEvent>()) as HttpClientEvent).kind!=HttpClientEventKind.Complete { return 25; }
+  client.Close();return 0;
+}

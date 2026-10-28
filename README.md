@@ -335,7 +335,7 @@ separate work under the roadmap.
 
 `HttpClientExchange.NewStreaming(head, limits)` validates a request head without
 retaining a complete body. This is an explicit transport-driver API. The existing
-TCP/HTTPS convenience clients and automatic redirect snapshots keep their
+Immutable TCP/HTTPS constructors and automatic redirect snapshots keep their
 immutable request contract; they do not call this constructor.
 
 After `Output` and exact `AcknowledgeOutput` calls send the head, inspect
@@ -378,9 +378,9 @@ Only ordinary TCP EOF or authenticated TLS close_notify can be passed as EOF.
 `scripts/accept_upload.py` repeats existing protocol and client acceptance, then
 runs explicit TCP and verified TLS test drivers over the public exchange. Those
 drivers demonstrate transport composition; they are not a new convenience client
-or a duplex TLS API. The connected TCP streamed facade below is a later increment;
-HTTPS scheduling, request-source callbacks/replay and automatic redirect
-integration remain later work.
+or a duplex TLS API. The connected TCP/HTTPS facades and explicit streamed
+redirect replay described below were added after that raw-exchange snapshot.
+No implicit producer rewind callback is supplied.
 
 
 The [H3e acceptance](docs/upload-acceptance-2026-10-28.json) passes on macOS arm64,
@@ -430,10 +430,12 @@ overall deadline. Caller time spent producing data also consumes that deadline.
 There is no I/O while the caller owns control between method calls. Completion
 remains durable without I/O, even if the original control later expires.
 
-This increment is the connected plain TCP facade. URL convenience constructors,
-HTTPS clients and automatic redirect snapshots still use immutable bodies. The
-published TLS stream retains its one-pending-operation contract; a suitable TLS
-scheduler and an explicit producer replay policy remain H3f work.
+This increment is the connected plain TCP facade. URL convenience constructors
+and automatic redirect snapshots still use immutable bodies. The optional
+[HTTPS adapter](../http_tls/README.md#local-development-streamed-connected-https)
+now adds a separate connected streamed path. The published TLS stream retains
+its one-pending-operation contract; the new optional channel and explicit
+producer replay policy remain separate from those immutable APIs.
 
 
 [Connected TCP facade acceptance](docs/tcp-upload-acceptance-2026-10-28.json)
@@ -444,7 +446,8 @@ all 151 prior TCP/TLS/DNS/redirect scenarios. Each compiler and 346 native runti
 files match its pinned SDK manifest. The final fixture handles the documented
 fixed-length producer-finish race; both initial and final full matrices passed
 with unchanged product sources and timing budgets. This is local source
-acceptance; HTTPS streaming and independent package publication remain open.
+acceptance for that earlier TCP increment. Later HTTPS acceptance is recorded
+separately; independent package release remains open.
 
 ## Portable source dependencies
 
@@ -474,3 +477,105 @@ For local development, map these package names to editable entries in a common
 `workspace.yaml`. Keep public Git declarations in package manifests; workspace
 registration alone does not add dependency edges. Source publication does not
 create a tagged release or extend historical platform acceptance.
+
+
+## Local development: connected streamed HTTPS
+
+The optional `http_tls.HttpsClient.NewStreaming` shares the same exchange and
+producer APIs with the TCP facade. It composes an additive `tls.TlsChannel`,
+without changing the published TlsStream's single-pending-operation contract or
+adding TLS imports to plain HTTP. See the [adapter contract](../http_tls/README.md#local-development-streamed-connected-https).
+
+[Current HTTPS/channel acceptance](docs/https-upload-acceptance-2026-10-28.json)
+records macOS arm64, Linux x86_64 and Windows x86_64 using checksum-pinned public
+SDK 1.0.2. Per host: 88 core cases/replays, 181 network/control scenarios
+(the previous 165 plus 16 streamed HTTPS cases), 39 TLS cases/replays and 73 native
+TLS cases. All compiler and 346 native runtime file identities are verified.
+Native bridge/harness cases use ASan/UBSan on macOS/Linux and are unsanitized on
+Windows. The complete provider archive is not claimed to be sanitizer-instrumented.
+
+Intel macOS qualification is pending restoration of its authorized SSH session;
+these records do not substitute Rosetta execution or historical evidence for a
+new native run. Windows' first final-snapshot attempt failed in an existing TCP
+POST/307 redirect snapshot open. The same binary passed three isolated case-2
+replays plus a case-1 comparison, then the complete unchanged HTTP suite passed.
+The native cause remains unconfirmed, alongside the earlier H3e Windows follow
+timeout; the per-host receipt preserves both failure and retry identities.
+No case selection or operation deadline was relaxed. This is local development,
+not a new HTTP/TLS release. URL streaming was added after this connected-only
+snapshot; see the separate URL and streamed-follow qualification below.
+
+## Local development: URL streaming
+
+`HttpUrl.StreamingRequestHead` generates owned routing and framing metadata from
+one URL. Pass `HttpBodyPlan{kind: HttpBodyKind.ContentLength, length: ...}` for a
+known payload size, `HttpBodyPlan{kind: HttpBodyKind.Chunked}` for a producer with
+trailers, or the default plan for an empty request. Other body kinds, nonzero
+unused lengths and `close_connection` are rejected. Shared exchange validation
+applies the existing bounded producer profile. Callers cannot override Host,
+Content-Length or Transfer-Encoding; one valid `Expect: 100-continue` is allowed
+for a nonempty fixed or chunked producer.
+
+`HttpTcpClient.OpenStreaming(url, verb, fields, plan, limits, resolver, dial,
+options, continue_wait_ms)` validates the request, limits and finite continue
+policy before DNS, then uses the existing sequential URL dialer. For HTTPS use
+`http_tls.HttpsClient.OpenStreaming` with explicit CA configuration. The HTTPS
+URL supplies peer/SNI identity; a conflicting identity or unsupported ALPN fails
+before DNS. Provider/trust resources are checked after dial and before HTTP output.
+
+DNS workers stay caller-owned and are borrowed only during OpenStreaming.
+Numeric URLs bypass even a closed resolver. After open, the resolver can close;
+Next/SupplyBody/FinishBody retain the connected streaming contract and the same
+absolute deadline/token, including producer time. There is no automatic replay
+or redirect of streamed bodies. Existing immutable URL and redirect APIs keep
+their previous behavior. No new package release is implied.
+
+[URL streaming acceptance](docs/url-upload-acceptance-2026-10-28.json) records
+macOS arm64, Linux x86_64 and Windows x86_64: 91 core cases and isolated replays,
+231 network/control scenarios per host, including 30 URL uploads and 20 controlled
+DNS cases. Each public SDK 1.0.2 compiler and all 346 native runtime files match
+their pinned identities. Native Intel remains pending SSH restoration. Historical
+Windows redirect/follow timeouts remain unresolved; this candidate passed the
+complete suite without changing fixture budgets or selecting cases. TLS standalone
+and native harness suites were not rerun for these URL-only changes; their
+[previous qualification](docs/https-upload-acceptance-2026-10-28.json) is separate.
+
+## Local development: streamed redirect replay
+
+`HttpRedirectChain.NewStreaming` retains owned request metadata and an upload
+plan, with no payload buffer. `HttpBodyReplayPolicy.Never` rejects redirects
+that preserve nonempty fixed or chunked producers, even when an early final
+response arrived before any payload was sent. `Explicit` is the application's
+promise that it can reproduce the same payload and trailers from the beginning.
+The existing `allow_unsafe_replay` policy is separately required for preserved
+bodies and unsafe methods. Neither permission implies that bytes reached the
+peer or that replay is safe for a particular application.
+
+A streamed `HttpRedirectRequest` exposes `IsStreaming` and `UploadPlan`; its
+`Body` is empty. Open it through `OpenStreamingTcp` or the optional HTTPS
+`OpenStreamingRequest`, after preparing the producer. Immutable snapshot open
+methods reject streamed snapshots, preventing an empty body from being mistaken
+for a complete replay payload. Retained snapshots remain immutable and owned.
+
+The shared decision rules still govern status rewrites, hop limits, cross-origin
+filtering and HTTPS downgrade rejection. POST 301/302 and eligible 303 rewrites
+remove producer framing, Expect, Trailer and representation metadata. Same-origin
+preserved chunked streams keep their Trailer declaration. Cross-origin or
+Connection-nominated Trailer declarations are rejected for preserved streams,
+rather than silently changing a promised producer representation. Cross-origin
+fixed streams retain only the existing safe field allowlist; removed credentials
+never return on a later hop back to the original origin.
+
+The optional `http_tls.HttpFollowClient.NewStreaming` adds automatic connection
+orchestration with an explicit `NeedReplay`/`ReplayBody` boundary. Its contract
+and producer loop are documented in the [adapter](../http_tls/README.md#local-development-streamed-automatic-redirects).
+Transport errors are terminal and never trigger a replay. This remains local,
+unreleased development.
+
+[Streamed follow acceptance](docs/stream-follow-acceptance-2026-10-28.json) records
+96 core cases and isolated replays plus 276 network/control scenarios on each of
+macOS arm64, Linux x86_64 and Windows x86_64 with matching public SDK 1.0.2 and
+346 verified runtime files. It preserves the first Linux partial-head fixture
+failure, old/new binary TCP_NODELAY comparisons and a fresh complete final matrix
+with unchanged protocol budgets and production sources. Native Intel remains
+pending SSH restoration; historical Windows connection timeout causes remain open.

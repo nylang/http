@@ -1,0 +1,3342 @@
+{
+  "format": "nyra-http-url-upload-host-v1",
+  "date": "2026-10-28",
+  "host": "linux-x86_64",
+  "status": "passed",
+  "scope": "URL streaming helper qualification, including unchanged connected/redirect baseline; no producer replay or automatic redirect integration.",
+  "publication": "Local unreleased source candidate; no tag, push or release.",
+  "sdk_version": "1.0.2",
+  "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+  "sdk_manifest_sha256": "b24876c0cf1e2fb0e0ae03511328d63994f4596c187b715bbb435c4ba0ef53c7",
+  "source_archive_sha256": "0488c4dfa204aabed5272a0879bcfc2ac56cafe299da0a853045f9158026b0bc",
+  "source_sha256": {
+    "http": {
+      "http.ny": "c0ac8accb94bce550c8221c1e7f5a949ca5aafd30b876795ffc0e44f24b365ce",
+      "interface/client.ni": "ac63601e147b85e82deb11593fbf96be5c393008415c7b1fa0f06c172047815c",
+      "interface/http.ni": "6257fd6ae35b8f468644483216968126bce0a4f285d528dc41c69a21d040646d",
+      "interface/redirect.ni": "2d3f0592fd70aad139a588a4de383bc6dca0e912206e2f54d9acaf9a3735141b",
+      "interface/url.ni": "f68034b2683e7ce172a76bbebaf316ecff14ba58ef522c41161106361841e2a7",
+      "package.yaml": "0a65903d6098020edd5b718838a1c4468265b680d723f640c6de776389111a29",
+      "private/body.ny": "50e21b4fd361ee85551eb1878a960a8e5167a88eb469f042c98e8282032f3d6c",
+      "private/body_writer.ny": "a9d981543eb07d00cafa9ca587585a38b2355e1377f019ffdb70cdf33fcec852",
+      "private/client.ny": "fe5f5455ab4b967e941572f8cb527f6a483b69e0a9508fb5ec0791b1602c4c77",
+      "private/exchange.ny": "eb04d14c7cccff184b11783572ea97bdd8c7fcf9761e403213f309e1e0648acf",
+      "private/http.ny": "b9854fabedc8c89924dac71f1ca626bb0c9144e4bbf5aaf66c78d31542ef0fb3",
+      "private/redirect.ny": "2716767d379a842fb7a14576cb139c3cab1dc5689ab94305b0b968851011fc59",
+      "private/response.ny": "babf3e08415f76e9912866e8739a09157dcb66e20d58915afb694114631bfb42",
+      "private/scan.ny": "e7403bfdc663b9df2cfeaeee82e72882ec9c77e4086e131694354fbe4a034e39",
+      "private/tcp_client.ny": "efbf34a39d25856d0b17c1999946c2364aac8adf89c427d6ce6e9764e59fdc82",
+      "private/tcp_upload.ny": "0fd2087bc4966b94ffb35e0b72a302249acc52712a6eb080213cbab0730f60e3",
+      "private/upload.ny": "27d1f2c804e17ce11587e25b4c8f415e15fa9ddfc9bc1512b69f74743a8f88d8",
+      "private/url.ny": "d4d86bada2677f71fbdf3696107bf4a1edafa4870d4e56142080d5e6a5105e67",
+      "private/url_dial.ny": "4b5d424224e12512a458b7f44f2a63d6a7255c90f995dd7667e689a5af056c38",
+      "private/writer.ny": "ea4afda31d2095f3b86893b3e84ad07625bb5b679c804176094c85a26cc384fa",
+      "scripts/accept.py": "f45fefe35652d1e19b5e6cf844fa64080597912d5d71a32f8e16adc3906abfee",
+      "scripts/accept_clients.py": "0b16896497c7aa50f5ad26e405af82b3656225f16e155b15590d551a64996653",
+      "scripts/accept_follow.py": "30f857d7c19f962e703e1723d95dc41480e4d8f0fe0fed62525ee39699827fe5",
+      "scripts/accept_https_upload.py": "b557e1b1992eaa53148a2f8181a5b80b8a2cd98385ec16e46798e4a659488fc6",
+      "scripts/accept_redirects.py": "e22428771a25c858887add2485f6d26f55eafd57d2a186adb79ebf9e9df60de4",
+      "scripts/accept_tcp_upload.py": "ec067e36e7bd481eb49eaaf54b581049f0cc4c03ec08d2ecf2853dff0082757c",
+      "scripts/accept_upload.py": "51bdc8f6053bfe3e05d1ed14f168a5914bb4bc8518a07d9d51f9b08d1aac3ba9",
+      "scripts/accept_url_upload.py": "8c6de8c4b57dc7e200bf6784258f499c22cd38f84781fc8fa6557912faab5bd8",
+      "tests/body_selftest.ny": "1b7e1eedf3f921aabb3f7030d746139c2729fc76296ea27792eda933bdde4915",
+      "tests/client_selftest.ny": "e71eb2a3e6109e85403c05533f6548200ebf35012582974dad5bde2661e03803",
+      "tests/data/client_consumer.ny.in": "60c75e7f9c41004f4cfb9a12df07cd53a312fbf49b969cf1e96ee292e698095d",
+      "tests/data/client_fixture.c": "4e76aaeac09fcb0ffacee347817d6f8a32208c77d7a42955993dc697203afcdd",
+      "tests/data/follow_consumer.ny.in": "56454f911a294e78da8d0eabc9e92bd115049bac53fb0edfecd129b271eeb9d6",
+      "tests/data/https_upload_consumer.ny.in": "a4b772daceca86b3990123837698c1ccc6175556feb46b8cf9b06de0dc546a89",
+      "tests/data/redirect_consumer.ny.in": "7851f4271032b55edf19539bbe84972f4ea744404e32f0ac42544f3b126d3a40",
+      "tests/data/tcp_upload_consumer.ny.in": "125567a4af7b4ade8b6f4917d155396c8536b25bef8f6fa73063a35efaa87465",
+      "tests/data/upload_consumer.ny.in": "29eee2cbf853dcda921fd234c9307ba542439fd9a6a19c3a3d7903fa22a37d83",
+      "tests/data/url_control_consumer.ny.in": "bddb07c4969768345f9e2f46a0317366852ad5af196f76785eea0c8853006e27",
+      "tests/data/url_https_upload_consumer.ny.in": "a211007f3ee14d1daee3a5f8f3e098a21fc0313b42325659106c8f6d0a68e875",
+      "tests/data/url_tcp_upload_consumer.ny.in": "630ac260e04cba22a806b9c2a96c7b7ca2c04e3886cb236e4b2a88def07b7cb3",
+      "tests/framing_selftest.ny": "50c92219aa712377883a3d0292291a6a4a07853f521ba5cf6eca9a59778224bc",
+      "tests/head_selftest.ny": "0c34c2c20a462abd79eff1973eec51f8334930adde59fc90e8f84d846152b876",
+      "tests/redirect_selftest.ny": "af81da93562ffe2d58b44710743ec266746ddde57e920e5d54d09d6ab7719889",
+      "tests/upload_selftest.ny": "d8bdeaf51538ca78492f0bb9d7112ec81f9abdbd85495bce49d6353ead6e6a06",
+      "tests/url_selftest.ny": "8030500b512404cabe57bd1e8a4e4b4034b9747177598e3f12c0cd24da6a6cf0"
+    },
+    "http_tls": {
+      "http_tls.ny": "23b52d59bada15e7647b8b6f3e6ab709519e4814c744b28fed8c44d4b8b1e521",
+      "interface/follow.ni": "dedc50975113668e5c6cadab7a9564865116f594ae3da901e0252d9cf43a4737",
+      "interface/http_tls.ni": "d39bf8dc8ccfab347f3da5885c993eed8c8849cb08b19f07c8c05f55583c5e8b",
+      "package.yaml": "024989282b271add689167338154838b9529e6fec3935ba10980d4c70a2dcd68",
+      "private/follow.ny": "720777e463be280305977eab21aa04e774622c2fd32736b78d74c3ebb688a63d",
+      "private/http_tls.ny": "4ff68162ae8679322d3f4044bef6d783fb8c354e9ff0b8b088c9ade0396f04a3",
+      "private/upload.ny": "da17f6a6f8b24690d4d4de0454074d421095667ec648ae10843836747e7d4c86"
+    },
+    "tls": {
+      "interface/channel.ni": "43413e44aec21e4d7e80920518b362c29a9df22053ebe0773bdc5646ce2b4560",
+      "interface/stream.ni": "e664a4b2ba1777fe766420ecaf360e21aac3d9cc22801139f49df2bb293026c9",
+      "interface/tls.ni": "ea2ea191a9e092891e49ea490362ae5bcd8c6143454a252c6891da864b5f3165",
+      "package.yaml": "3269ec0020ef502d7798c2a6293e11380708f4bc6fee2dd004dae304a6b6a3d6",
+      "private/channel.ny": "5edc7e0f8beb8114a3a5f4f134791bc442439e6215651d6ccc086675b2fb3bb7",
+      "private/native/tls_engine.c": "75512f90d95ad7f25e71c12ee2869af7982e50ee1936c06ad12b50210c1620ea",
+      "private/native/tls_engine.h": "34a150b3ebdeeccbb266ec94447d4c898e77cc0687f5504be8218a621339f62d",
+      "private/stream.ny": "c0fff094e39cfa4aeef8b74941c42311e8e3706847dc22a9db5812893e0c1a72",
+      "private/stream_poll.ny": "59b1a22bf621caad9330949501031f8df2301a44e58db8b626fa136f5dfd0fb0",
+      "private/tls.ny": "5cfed046556c9939bec663f6fcaa63037051273df86a0335928d4ad413e6b9ad",
+      "scripts/accept.py": "66ea025c37792745506dac7b505eba2e6cbd50be026cd43704076a31297e8180",
+      "scripts/accept_native.py": "0ff4bdb796a9cdeab615b943cf8ba3717f4b1062aa20bc3fb4a3aa593f68b863",
+      "scripts/build_native.py": "004241016d30243fe11637a52149fb7d4ed636c33d6d4abe8769fc49a846a2b8",
+      "scripts/build_openssl.py": "86f9bb8dc0a0544287db141cf3da41d2c59a9462dfa3efcd7868b9a811d38cdc",
+      "scripts/certificate_fixtures.py": "e846aaa5d0485a4f9f5377ee0f98cb9cc1830cd2f463d990e5788f49090382fb",
+      "scripts/ci.py": "ad9ea6277cdc39ba82ea0214ce4129babcfdb022618fb14c146b35cb20278634",
+      "scripts/native_support.py": "3182be782e6c556c11e9234f24cbfe0da696cc47db35788470b5aa132f9cbcf8",
+      "scripts/release_source.py": "e48b70b10b8999c26cb972914979fbae3ff8a7ce7b3e136d8d61873f77b50d03",
+      "scripts/runtime_resources.py": "3539df359f12945321c525bb2df4b6867d7780f127b37cb72051bed0c5fe7f6b",
+      "tests/channel_selftest.ny": "520d8bb4179b8eb352bfba1d7b0e56f344993300784e556655e78daada3963d7",
+      "tests/engine_selftest.ny": "cece532910586b01855cbba8b33504add5f651c0b5f4c42552539180b7a0234c",
+      "tests/native/config_fixture.c": "a2221a78b472ac2db06e78751fc812cc4ba02c0511cf7caa18a34c7a80ecbc34",
+      "tests/native/engine_peer.h": "bcf71c9d9edef438bb1e272149e58ae8533a0c0693bb5f65ea5d1dec0488c968",
+      "tests/native/engine_test.c": "82afb3329116e7d2e9b4d8f4669b2d1f354b03b4d1312a8d436d4c407260035b",
+      "tests/native/read_probe_cases.h": "b861605892e77a7cddb04d5c213d982134bbc50aa553ff46a2fa38c6f4c61022",
+      "tests/native/resource_hooks.h": "b0129b5e525fbfa478c214d3bf887936f8e07e4370ca74b668c2725f87f56c51",
+      "tests/native/resource_test.c": "ae93351926c55fd31c182082c03bba3a15d9619fc62b3a0fabb1c93a74eca685",
+      "tests/native/runtime_resource_test.c": "6b061ff214e607b10c7e512fe4b4a752a588577a8d7c1eb739fc87fa346555a8",
+      "tests/native/stream_fixture.c": "2f702fb2c03ef5019dcc6fa733ba6d5111669638a851bde53564182a1757f603",
+      "tests/stream_control_selftest.ny": "f88d48b4bb0a813aab0c860f31935c20fdec9b9092d5756845cbe897446c1b6a",
+      "tests/stream_selftest.ny": "34e0da4685e79a61d17489bf8b5f93da5a4039ef76e48d2a8ee70de69b63603d",
+      "tests/tools/test_release_source.py": "91b8295d4589b0a8ddb6ff4666bdffcaac595e70e956f22434d87e2796cf5822",
+      "tls.ny": "2805c25ca9d0d6dc3356c2c0eaa3642ef5a8b2c77db54b839acfda32bc3b3dab"
+    },
+    "net_core": {
+      ".github/actionlint.yaml": "0a9ab45c55b3f5b72a698f2edc46c60d2b4c37b440a8915a961e158e26201909",
+      "interface/async_resolver.ni": "99b483f174e064a5f171a0c08e8d0ade000f070ada2ab44246148e5645c51997",
+      "interface/async_transport.ni": "0d72566f4b73329d6342d6c0e2a62a70dcb9580b212b0da3c82512393761f870",
+      "interface/foundation.ni": "7f36b46f0584007a739bad246f20f52b3f88f1c3067443d2e6fbd4d801327878",
+      "interface/transport.ni": "e5402ff32afcf7db89cf56d979232ded1ab11092d037523f54e38c170c0deb5d",
+      "net_core.ny": "9d47f5150692a70d1e553b46c8db4404c35ef4260e84f1fa4c243a77b715237b",
+      "package.yaml": "3760538749b5315f8577c36d698336fd803e0fa49f6cd156a740a3f301803117",
+      "private/address.ny": "8b8aa9e2d05905823e54205e05c22c623bbeff53cd867509717172204300bb1b",
+      "private/async_connection.ny": "83a06d5a527cb979e84ba8088905b5e46f78c2e2672d8312ec8fef6239c7a861",
+      "private/async_resolver.ny": "26b5450797fe6bd1cd82ea3c1fe6c4f0c22daa661079b673e48fe0a9c55926ef",
+      "private/async_transfer.ny": "e65d71cacd79244e89c77f29a253086c987f553141eb9f6a3a4c3a9ef4276296",
+      "private/buffer.ny": "6fc4dc9952adb6deba5723ee6029c591e2b5424e2a3a0db920fe57884bcb3587",
+      "private/cancellation.ny": "f3fce6b30ee480fc89ca3a4a9634a3345afca1167e6f53ad42d62daaaa98bb64",
+      "private/deadline.ny": "d8387847f7d4221c3cab96f7044343dfc1910ddae9bc585e9420950e49bfc5cf",
+      "private/endpoint.ny": "4281377cc3b6b4a9228a56e8165614929e7742508c26c70ae703357bb743d7fa",
+      "private/error.ny": "2f516c2fd5729fe46f80db9c17911cd89be4cf38ff376500e09fd5062e249040",
+      "private/event_loop.ny": "3b6f9f5bb8a0cf1715e579713ae3cc64c0e0df9770b565d4ab22b992ae670212",
+      "private/foundation.ny": "c1c3f5e4327087a314ab046f5dbf0b4de1907a3bc64e348951fecb1a5005e2ab",
+      "private/native/net_core_os.c": "96b39b4e321ee4b69c542cff1161200ef671ead0695f42e77dc710a4ed237f38",
+      "private/native/net_core_os.h": "930b6b192f2c35e79f86a008d4548a0a960009c0abc1773d4a28afc7b3c7702b",
+      "private/native_bridge.ny": "dd045545d15ca00dd11eea743436aea36123a27a11f400e5d3b4cefd7d3db100",
+      "private/owned_buffer.ny": "4442941afa967d0c0bd00dfcc5d1d066964457e2c858f81b229854774a1f265c",
+      "private/resolver.ny": "9aa51008f958a3b5fa1feb8ffa94a91600f04771f211e8c1dae054442eb01a02",
+      "private/socket_owner.ny": "2fe5834e61fda5c72ee15bb4285a38b1e2b0061366d160ca144d7729965ce78f",
+      "private/tcp.ny": "aad1f99d6750c7e3058a86e67d3c253c592b4ec486626b11a874d8ef4287a756",
+      "private/transport.ny": "b43b8f1f603a4737546177b879e207a450fd2a28a77255f3962bc6649ee1c4c5",
+      "private/udp.ny": "8ebcbb815ead051222c10c89516306e0810b7b3d3cb180f8826b95a463cd0620",
+      "scripts/accept.py": "9ed34973794c204cfbcf6454ad3d5a0546263cd0c2af34798049c0f3e82f16f9",
+      "scripts/accept_macos.py": "d23665b1769b7270264c9b65d246cfad2914287ee895928dfa6206e0d68e4289",
+      "scripts/build_mobile.py": "bc6d56c94945bfa550fe198f67ae28405f6aa55c9834df7897d775ebf908441a",
+      "scripts/build_native.py": "aab135e54aa10be5c59523c1c38d892f6bdb3d0c3e9fb8d1e1de5b85daa0553b",
+      "scripts/ci.py": "323e8e4af900eb83cb8eee41f541d88f174706a46de4d091e5ca57cb28c05a87",
+      "scripts/ci_release.py": "8cd12736eb55acd5b9537ff35d58f8debdb4b394e1f626e88df6823d3dc43004",
+      "tests/n1_foundation_selftest.ny": "8547abe03fcf04abe7fb9769aea8a8708cd5f2fb7e65f6c48d0eed50ed41cd1e",
+      "tests/n3_assert_selftest.ny": "b4b8d2725a74c76d8487dc66f97e17f6e639f43f993f07f42a8b707b391e0274",
+      "tests/n3_resolver_selftest.ny": "77180b1bf98df9dc027e58393948b6a11f011eab25bf2f47844b0401a9ad6877",
+      "tests/n3_selftest.ny": "dd6a7da3a7b8811d78d8a468c91cc9df39c8c61c8f2916fa958547e4267aa4a8",
+      "tests/n3_transport_selftest.ny": "ef532977b3b0e7f0f3d8c759fc52fda27ac4b3111a8f658d34796778a5fa5a8a",
+      "tests/native/ci_smoke.c": "36fab234beccaf54e49ab2785632096ed512c74f3d4b0907a23bbf1f8450b02f",
+      "tests/native/n3_fixture.c": "5af31a467766a289a59ac4f10fc3fb1a56ad1f81998f3c43e80cb00ee6f40c68"
+    }
+  },
+  "execution_environment": {
+    "host": "linux-x86_64",
+    "system": "Linux",
+    "machine": "x86_64",
+    "kernel_release": "6.12.0-55.38.1.el10_0.x86_64",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382",
+    "sdk_manifest_sha256": "b24876c0cf1e2fb0e0ae03511328d63994f4596c187b715bbb435c4ba0ef53c7",
+    "source_archive_sha256": "0488c4dfa204aabed5272a0879bcfc2ac56cafe299da0a853045f9158026b0bc",
+    "runtime_inventory": {
+      "status": "passed",
+      "host": "linux-x86_64",
+      "scope": "All kernel/stdlib/ntest files for the tested native host, plus the exact compiler; other target/toolkit inventory is outside this check.",
+      "checked_runtime_files": 346,
+      "sdk_manifest_sha256": "b24876c0cf1e2fb0e0ae03511328d63994f4596c187b715bbb435c4ba0ef53c7",
+      "compiler_sha256": "72e2d44322047cb6d549db18692ea2c77f3e67ca839cf0c867bcdc503ffe3382"
+    },
+    "userspace": {
+      "NAME": "Ubuntu",
+      "ID": "ubuntu",
+      "PRETTY_NAME": "Ubuntu 24.04.5 LTS",
+      "VERSION_ID": "24.04",
+      "VERSION": "24.04.5 LTS (Noble Numbat)",
+      "VERSION_CODENAME": "noble",
+      "ID_LIKE": "debian",
+      "HOME_URL": "https://www.ubuntu.com/",
+      "SUPPORT_URL": "https://help.ubuntu.com/",
+      "BUG_REPORT_URL": "https://bugs.launchpad.net/ubuntu/",
+      "PRIVACY_POLICY_URL": "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy",
+      "UBUNTU_CODENAME": "noble",
+      "LOGO": "ubuntu-logo"
+    },
+    "libc": [
+      "glibc",
+      "2.39"
+    ]
+  },
+  "totals": {
+    "core_cases": 91,
+    "isolated_replays": 91,
+    "baseline_network_control_cases": 181,
+    "url_streaming_live_cases": 30,
+    "url_streaming_controlled_dns_cases": 20,
+    "total_network_control_cases": 231,
+    "verified_runtime_files": 346
+  },
+  "new_cases": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "fixed-producer-adoption-move-admission",
+      "status": "passed",
+      "elapsed_seconds": 0.001627056859433651,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "elapsed_seconds": 0.0034766672179102898,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "103-does-not-release-100-gate",
+      "status": "passed",
+      "elapsed_seconds": 0.11486540362238884,
+      "head_exact": true,
+      "body_withheld_across_103": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "417-without-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.0035896068438887596,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "early-final-after-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.0034032203257083893,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "finite-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.11414810549467802,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "continue_wait_seconds": 0.08031069580465555,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "coalesced-100-final-no-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.0037270132452249527,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-after-observed-head",
+      "status": "passed",
+      "elapsed_seconds": 0.003416554071009159,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "shortage-after-observed-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.0035388916730880737,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "constrained-window-early-final",
+      "status": "passed",
+      "elapsed_seconds": 0.3704220475628972,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "peer_receive_buffer_bytes": 8192,
+      "accepted_suffix_observed_bytes": 1835008,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "partial-final-pauses-past-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.16482948139309883,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "partial_head_pause_seconds": 0.16,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "original-deadline-during-continue",
+      "status": "passed",
+      "elapsed_seconds": 0.2518353210762143,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 13,
+      "name": "original-deadline-during-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.2661258513107896,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 14,
+      "name": "early-final-truncated-response",
+      "status": "passed",
+      "elapsed_seconds": 0.0038537802174687386,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "expired-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "closed-resolver",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "fixed-producer-adoption-move-admission",
+      "status": "passed",
+      "elapsed_seconds": 0.06473237182945013,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "elapsed_seconds": 0.0639745257794857,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "closure": "close-notify",
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "103-does-not-release-100-gate",
+      "status": "passed",
+      "elapsed_seconds": 0.11445156391710043,
+      "head_exact": true,
+      "body_withheld_across_103": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "417-without-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.06442395597696304,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "early-final-after-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.06389291491359472,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "finite-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.16528029274195433,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "continue_wait_seconds": 0.1216407148167491,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "coalesced-100-final-no-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.06452844105660915,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-after-observed-head",
+      "status": "passed",
+      "elapsed_seconds": 0.06406133901327848,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "shortage-after-observed-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.06408871058374643,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "constrained-window-early-final",
+      "status": "passed",
+      "elapsed_seconds": 0.3233878640457988,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "peer_receive_buffer_bytes": 8192,
+      "accepted_suffix_observed_bytes": 1818624,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "partial-final-pauses-past-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.2155651217326522,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "partial_head_pause_seconds": 0.16,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "original-deadline-during-continue",
+      "status": "passed",
+      "elapsed_seconds": 1.0060114776715636,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "original-deadline-during-producer",
+      "status": "passed",
+      "elapsed_seconds": 1.0706485388800502,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 14,
+      "name": "early-final-authenticated-truncated-response",
+      "status": "passed",
+      "elapsed_seconds": 0.06415146868675947,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 15,
+      "name": "raw-tls-truncation",
+      "status": "passed",
+      "elapsed_seconds": 0.007649882696568966,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "transport": "https",
+      "case": 16,
+      "name": "untrusted-ca-before-http",
+      "status": "passed",
+      "elapsed_seconds": 0.007600581273436546,
+      "untrusted_client_rejected_before_http": true
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "expired-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "closed-resolver",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "peer-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "alpn-before-dns",
+      "profile": "controlled-dns",
+      "status": "passed"
+    }
+  ],
+  "baseline_case_names": [
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "cec68f82717a9bc535178024553775cfb2f3e7fe82399152c5dd5415bcd1e685",
+      "request_exact": true,
+      "response_bytes": 90
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 20098,
+      "request_sha256": "93010c27a61daa8715b226c38577294d2e252348d4b45a854b20939c5d4edc97",
+      "request_exact": true,
+      "response_bytes": 84
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "95837e242bb888625cb4e9062cf6bd7b51d7b8d7747269f99243875adf9174e8",
+      "request_exact": true,
+      "response_bytes": 24
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "dcfd096f41866766caeb2e662bd3525c9447d0e1fe0205e86edbcfe76a8dc36e",
+      "request_exact": true,
+      "response_bytes": 44
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "65a0a35f2c66f6ca700b9819c18560922ac3de6bc1a69b9e73c421280cc4562a",
+      "request_exact": true,
+      "response_bytes": 66
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "82f75aeb98301a69b1481c7ac472260c158ca9b24943f8d66495f74d745fd77a",
+      "request_exact": true,
+      "response_bytes": 32
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.001,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.001,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "bc2240e3229256a949b8f041ae924832bf911760f55490a26e0b649261ef0d4e",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.234,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "a971a05cffa18a210c6540d2e04b644100dd590e0c96371dd7b110b2d48b459e",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "80dd0246bbff3944825d045eba2de013df395b1e573c5f21dca473d25a5ba9c5",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "29cbd10a2770afcff10bb2c778c1568d1a42d9ddd0f988e8c60baeb59e78d2cc",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "ea822f89287488d74fda7ddd30df975fb8efee8d9e0b54b9bc86d1f68829b794",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "8e20de988b5c63bc37b43764088f93e14083b866d17b324da49383b07776cd5b",
+      "request_exact": true,
+      "response_bytes": 47
+    },
+    {
+      "transport": "tcp",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "b02f243683f1c00b8c51acca50afea7d71d5219ce9bf61b41f2d063c717b362d",
+      "request_exact": true,
+      "response_bytes": 22
+    },
+    {
+      "transport": "tcp",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.033,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "631f563eb11649df470d687d7d17eee79910fc85500d789dc2ec64a62c9a3d32",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "9263b71dfc5344cf2186469a912adb3c4bdb98021b01dd8b3574f98147fc31f8",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.026,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "89bd5598e45b2591cf46a7770e90635cb9198b3fffffd7762514fd23e59409ed",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.002,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.001,
+      "accepted": true,
+      "request_bytes": 0
+    },
+    {
+      "transport": "tcp",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "d0fb8d07d20d2c23877b06392655c0c59e78ef1405ef4cd298cfa495cf1d5784",
+      "request_exact": true,
+      "response_bytes": 40042
+    },
+    {
+      "transport": "tcp",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "61d55c934db0d13b2a58ed8e28073b60defda6a36b7d174ce893765c60124120",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "e898d65f42fc22fc920cebdaf98223260a5950c912ff66e7553a6056cb11d31d",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "7189d57149f82bfd4cc53672adbfbd96af552a628db8e41c836524fe85e17cf1",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 78,
+      "request_sha256": "c0bc40c8a27a6ce053be78df5eaac387ba7c309f40e9359c88d9e85ed96fd229",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "tcp",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.027,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "592d73e4627d66ae3ffe8e3a7d00d6f63e4213eda05099c6df3b7a8a6e36f351",
+      "request_exact": true
+    },
+    {
+      "transport": "tcp",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "request_bytes": 72,
+      "request_sha256": "a21d6fc1c56e651c3af532bd11023697f53d3fa26106c4abd812714af0b29527",
+      "request_exact": true,
+      "response_bytes": 43
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "fixed-informational",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "6baf71e5f28ec9e901eba0ea22737616f98ed6993d36db9de5d87a6527071d2b",
+      "request_exact": true,
+      "response_bytes": 90,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "chunked-upload-trailers",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 20098,
+      "request_sha256": "32654641c4ddf696a585901212e4332a416326fba18748f8703c14a521efa514",
+      "request_exact": true,
+      "response_bytes": 84,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "eof-body",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "1bc63a48385d9fb95f6e79b5211d8562d3937657feb58a05dbc4e00e3160b1af",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "truncated-fixed",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "edd47bc17a9ebc1dce0ee679221c62030b9324e68bbb21d5aad4f71201d64250",
+      "request_exact": true,
+      "response_bytes": 44,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "framing-conflict",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "14a915bbf3f2014d1ea44da4880495e92bfb1c0b5c54795ac21a77f58828c845",
+      "request_exact": true,
+      "response_bytes": 66,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "upgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "5e713db3567f2b10f7039d902c1f9c8405234ede8925985b3db34e716d6541d9",
+      "request_exact": true,
+      "response_bytes": 32,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "unauthenticated-eof",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "0fadea0ac374f2552c6ab525d529e127933e18e234792dd132c05f5e692d35c5",
+      "request_exact": true,
+      "response_bytes": 24,
+      "closure": "raw-eof"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancelled-constructor",
+      "status": "passed",
+      "duration_seconds": 0.003,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "expired-constructor",
+      "status": "passed",
+      "duration_seconds": 0.002,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "cancel-buffered-body",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "6f9d0f2cc844ed0606b712df22134888fbefc60e0f158269bca3b436361ab0f8",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "expire-buffered-body",
+      "status": "passed",
+      "duration_seconds": 3.282,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "5399c9690df7abe6e3acbc78b5acd5c0d1137af89af458e60021b562d607a3c6",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "retained-options",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "e514a441e6853449a111bfc86f3f8b6309efb30ea3bf953c621614703df8708e",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "host-peer-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.002,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 14,
+      "name": "certificate-name-mismatch",
+      "status": "passed",
+      "duration_seconds": 0.008,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 15,
+      "name": "trust-unavailable",
+      "status": "passed",
+      "duration_seconds": 0.004,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 16,
+      "name": "alpn-offer-rejected",
+      "status": "passed",
+      "duration_seconds": 0.002,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 17,
+      "name": "durable-completion",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "5d495e16cb94e3ccdd03e945dde1d91fa05772fccaee0786653b04f8a0827b64",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 18,
+      "name": "response-body-cap",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "e46f1f67cec9cf5ddc98d4d1bc8c6451366926429f62b70e67e6d87df7580556",
+      "request_exact": true,
+      "response_bytes": 43,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 19,
+      "name": "informational-cap",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "f902425b6f5a0a6aa2917d891827cbc99dd61c14a464fa604d895a4c42d23000",
+      "request_exact": true,
+      "response_bytes": 47,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 20,
+      "name": "missing-final",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "409b125bfbc554b2ae5b9bab54b7e2c308b72761f0eb478ace9e650ba7f5ea40",
+      "request_exact": true,
+      "response_bytes": 22,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 22,
+      "name": "ipv4-identity",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "046d642eddf78be639ebdf43aaa2d9298610fed0b589ce70bda523f87b5a29c2",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 23,
+      "name": "dns-case",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "a5b9916456a70546fac5484c8198c6e25f35debdc5bb536fe1a3db6a96da6578",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 24,
+      "name": "ipv6-identity",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 80,
+      "request_sha256": "3cdae9d0cd70f999ee63c6d8b8d72e257639d550bede01193a7de274401ba3c9",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 25,
+      "name": "deadline-native-wait",
+      "status": "passed",
+      "duration_seconds": 1.031,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "42609c00f60d8306fc3663a4c4e421d6ddf334875e26ee2fedef72eb259884c9",
+      "request_exact": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 27,
+      "name": "invalid-request-adoption",
+      "status": "passed",
+      "duration_seconds": 0.003,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 28,
+      "name": "expect-rejected",
+      "status": "passed",
+      "duration_seconds": 0.002,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 29,
+      "name": "streaming-large-response",
+      "status": "passed",
+      "duration_seconds": 0.032,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "aca05b0d0926b6e9c172824229784d2c52ea1b8a96a9088e30bfa5d9872b16cd",
+      "request_exact": true,
+      "response_bytes": 40042,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 31,
+      "name": "alpn-absent",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": null,
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "00c937ee190357905e50af3492684a595bc27c2fe81c3bf61ab50912f8ab6b12",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 32,
+      "name": "certificate-untrusted",
+      "status": "passed",
+      "duration_seconds": 0.008,
+      "accepted": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)"
+    },
+    {
+      "transport": "https",
+      "case": 40,
+      "name": "url-dns-open",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "f9b4d6756610c51760b8e9343dd4231c6cb022d1a2d7ebff52f7ca33e5b79abd",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 41,
+      "name": "url-numeric-bypass",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "7737e145c67d915c6ee1006c0a260f7069e3a25ebba7c8f936ef071f53b53bea",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 42,
+      "name": "url-unspecified-family",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "30d815a3f1e1258ee4e7d02435976250b0e7f9e956ada95f0f72721df8eae0c4",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 43,
+      "name": "url-escaped-query",
+      "status": "passed",
+      "duration_seconds": 0.064,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 78,
+      "request_sha256": "9912c976ddd0c6d1efe94dae1d79bea7e1ffa14fadec706144a4c946fdbf2017",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 44,
+      "name": "url-native-deadline",
+      "status": "passed",
+      "duration_seconds": 1.032,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "8aacfa420896c020d51980f95a102a6cdbd462ee501fe620aeda82fe43c6aca5",
+      "request_exact": true,
+      "expected_peer_error": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:2696)"
+    },
+    {
+      "transport": "https",
+      "case": 45,
+      "name": "url-retained-options",
+      "status": "passed",
+      "duration_seconds": 0.065,
+      "accepted": true,
+      "alpn": "http/1.1",
+      "tls_version": "TLSv1.3",
+      "request_bytes": 72,
+      "request_sha256": "29c6d3be98919e3a7c0c6130e3feba7c2feff311a13ffda461fd986499feb544",
+      "request_exact": true,
+      "response_bytes": 43,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "dns-name-not-found",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "blocked-dns-deadline",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "blocked-dns-cancel",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "expired-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "closed-resolver",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "reserved-host-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "address-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "scheme-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "request-cap-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "peer-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "alpn-before-dns",
+      "status": "passed"
+    },
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 35127,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 35127
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 37369,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 37369
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 43743,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 59665,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 57195
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 52879,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 43979,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 43979,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 43979,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 33273,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 33211,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60147,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 60147
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 42649,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.203,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 54661,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 41453
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 38419,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 38419,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.191,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 32883,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 32883,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 40857,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 59021,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 58249,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 44639,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.238,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 34751,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 34751,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 34751,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 58171,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 42595,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53505,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 53505,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 54625,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.248,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 51531,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.149,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53583,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "https-downgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 57867,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 49039,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 49039
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 46851,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 46851
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 43239,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.104,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 57739,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 46627
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 45223,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.104,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 46843,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 46843,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 46843,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 58207,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 60923,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53395,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 53395
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.103,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 39801,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.203,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 33647,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.102,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 40035
+        }
+      ]
+    },
+    {
+      "transport": "tcp-to-tls",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 40191,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 49219,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "post-302-get",
+      "status": "passed",
+      "duration_seconds": 0.193,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 41819,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 41819,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "post-307-replay-opt-in",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 48045,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/next",
+          "body_bytes": 3,
+          "host_port": 48045,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "post-307-rejected",
+      "status": "passed",
+      "duration_seconds": 0.149,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 55579,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "cross-origin-filter",
+      "status": "passed",
+      "duration_seconds": 0.192,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 37535,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next",
+          "body_bytes": 0,
+          "host_port": 57793,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "cross-origin-rejected",
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 44375,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "cycle-hop-limit",
+      "status": "passed",
+      "duration_seconds": 0.236,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 44097,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop1",
+          "body_bytes": 0,
+          "host_port": 44097,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 2,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/hop2",
+          "body_bytes": 0,
+          "host_port": 44097,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "duplicate-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 49395,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-before-follow",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 36901,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "relative-303-no-body-drain",
+      "status": "passed",
+      "duration_seconds": 0.193,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 44325,
+          "old_connection_closed": true
+        },
+        {
+          "hop": 1,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/next/leaf?x=%2f",
+          "body_bytes": 0,
+          "host_port": 44325,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 10,
+      "name": "malformed-location",
+      "status": "passed",
+      "duration_seconds": 0.147,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 36067,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 11,
+      "name": "original-deadline",
+      "status": "passed",
+      "duration_seconds": 1.248,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 44337,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 12,
+      "name": "missing-location-terminal",
+      "status": "passed",
+      "duration_seconds": 0.146,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "POST",
+          "target": "/dir/start",
+          "body_bytes": 3,
+          "host_port": 53901,
+          "closure": "close-notify"
+        }
+      ]
+    },
+    {
+      "transport": "https",
+      "case": 13,
+      "name": "https-downgrade-rejected",
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "requests": [
+        {
+          "hop": 0,
+          "request_exact": true,
+          "method": "GET",
+          "target": "/dir/start",
+          "body_bytes": 0,
+          "host_port": 57027,
+          "old_connection_closed": true
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "case": 1,
+      "name": "fixed-producer",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 92,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 3,
+      "name": "103-before-100",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_withheld_before_100": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 4,
+      "name": "417-before-body",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 5,
+      "name": "early-final-revokes-queued-suffix",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 6,
+      "name": "caller-bounded-continue-release",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 7,
+      "name": "100-and-early-final",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 8,
+      "name": "cancel-before-producer",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "abort_checkpoint": "head-observed",
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "tcp",
+      "case": 9,
+      "name": "fixed-producer-shortage",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "abort_checkpoint": "prefix-observed",
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "https",
+      "case": 1,
+      "name": "fixed-producer",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 92,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 3,
+      "name": "103-before-100",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_withheld_before_100": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 4,
+      "name": "417-before-body",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 5,
+      "name": "early-final-revokes-queued-suffix",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 6,
+      "name": "caller-bounded-continue-release",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 7,
+      "name": "100-and-early-final",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 89,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true,
+      "closure": "close-notify"
+    },
+    {
+      "transport": "https",
+      "case": 8,
+      "name": "cancel-before-producer",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "abort_checkpoint": "head-observed",
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "transport": "https",
+      "case": 9,
+      "name": "fixed-producer-shortage",
+      "status": "passed",
+      "head_exact": true,
+      "head_bytes": 67,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "abort_checkpoint": "prefix-observed",
+      "no_extra_upload_or_retry": true
+    },
+    {
+      "case": 1,
+      "name": "fixed-producer-adoption-move-admission",
+      "status": "passed",
+      "elapsed_seconds": 0.001552024856209755,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "elapsed_seconds": 0.0014902614057064056,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "connection_retired": true
+    },
+    {
+      "case": 3,
+      "name": "103-does-not-release-100-gate",
+      "status": "passed",
+      "elapsed_seconds": 0.11441351100802422,
+      "head_exact": true,
+      "body_withheld_across_103": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "case": 4,
+      "name": "417-without-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.0014744410291314125,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 5,
+      "name": "early-final-after-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.00343449879437685,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "case": 6,
+      "name": "finite-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.11436386965215206,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "continue_wait_seconds": 0.08056463953107595,
+      "connection_retired": true
+    },
+    {
+      "case": 7,
+      "name": "coalesced-100-final-no-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.0015951162204146385,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 8,
+      "name": "cancel-after-observed-head",
+      "status": "passed",
+      "elapsed_seconds": 0.0035082846879959106,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 9,
+      "name": "shortage-after-observed-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.003583064302802086,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "case": 10,
+      "name": "constrained-window-early-final",
+      "status": "passed",
+      "elapsed_seconds": 0.3681024694815278,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "peer_receive_buffer_bytes": 8192,
+      "accepted_suffix_observed_bytes": 1835008,
+      "connection_retired": true
+    },
+    {
+      "case": 11,
+      "name": "partial-final-pauses-past-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.16536822728812695,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "partial_head_pause_seconds": 0.16,
+      "connection_retired": true
+    },
+    {
+      "case": 12,
+      "name": "original-deadline-during-continue",
+      "status": "passed",
+      "elapsed_seconds": 0.251435162499547,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 13,
+      "name": "original-deadline-during-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.2661172868683934,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 14,
+      "name": "early-final-truncated-response",
+      "status": "passed",
+      "elapsed_seconds": 0.001619972288608551,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 1,
+      "name": "fixed-producer-adoption-move-admission",
+      "status": "passed",
+      "elapsed_seconds": 0.06434986740350723,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "case": 2,
+      "name": "chunked-producer-trailers",
+      "status": "passed",
+      "elapsed_seconds": 0.06464994605630636,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 33,
+      "closure": "close-notify",
+      "connection_retired": true
+    },
+    {
+      "case": 3,
+      "name": "103-does-not-release-100-gate",
+      "status": "passed",
+      "elapsed_seconds": 0.11489055305719376,
+      "head_exact": true,
+      "body_withheld_across_103": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "connection_retired": true
+    },
+    {
+      "case": 4,
+      "name": "417-without-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.06453772727400064,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 5,
+      "name": "early-final-after-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.06436320208013058,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "case": 6,
+      "name": "finite-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.16471931710839272,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 6,
+      "continue_wait_seconds": 0.1213557543233037,
+      "connection_retired": true
+    },
+    {
+      "case": 7,
+      "name": "coalesced-100-final-no-producer",
+      "status": "passed",
+      "elapsed_seconds": 0.06443469598889351,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 8,
+      "name": "cancel-after-observed-head",
+      "status": "passed",
+      "elapsed_seconds": 0.0639328695833683,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 9,
+      "name": "shortage-after-observed-prefix",
+      "status": "passed",
+      "elapsed_seconds": 0.0638768645003438,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 3,
+      "connection_retired": true
+    },
+    {
+      "case": 10,
+      "name": "constrained-window-early-final",
+      "status": "passed",
+      "elapsed_seconds": 0.3351393109187484,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "peer_receive_buffer_bytes": 8192,
+      "accepted_suffix_observed_bytes": 1818624,
+      "connection_retired": true
+    },
+    {
+      "case": 11,
+      "name": "partial-final-pauses-past-continue-fallback",
+      "status": "passed",
+      "elapsed_seconds": 0.21499207895249128,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "partial_head_pause_seconds": 0.16,
+      "connection_retired": true
+    },
+    {
+      "case": 12,
+      "name": "original-deadline-during-continue",
+      "status": "passed",
+      "elapsed_seconds": 1.005234220996499,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 13,
+      "name": "original-deadline-during-producer",
+      "status": "passed",
+      "elapsed_seconds": 1.0714566390961409,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 14,
+      "name": "early-final-authenticated-truncated-response",
+      "status": "passed",
+      "elapsed_seconds": 0.06467465497553349,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 15,
+      "name": "raw-tls-truncation",
+      "status": "passed",
+      "elapsed_seconds": 0.007657866925001144,
+      "head_exact": true,
+      "body_exact": true,
+      "body_wire_bytes": 0,
+      "connection_retired": true
+    },
+    {
+      "case": 16,
+      "name": "untrusted-ca-before-http",
+      "status": "passed",
+      "elapsed_seconds": 0.007523607462644577,
+      "untrusted_client_rejected_before_http": true
+    }
+  ],
+  "commands": [
+    {
+      "name": "prior",
+      "command": [
+        "/usr/bin/python3",
+        "/runner/http-url-stream-20261028/third_party/http/scripts/accept_https_upload.py",
+        "--sdk",
+        "/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64",
+        "--openssl-root",
+        "/runner/tls-dev-20261027/openssl/openssl-3.5.9",
+        "--out-dir",
+        "/runner/http-url-stream-20261028/accepted/base"
+      ]
+    },
+    {
+      "name": "tcp-consumer",
+      "command": [
+        "/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/hosts/linux-x86_64/bin/nyrac",
+        "build",
+        "/runner/http-url-stream-20261028/accepted/tcp-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/http-url-stream-20261028/accepted/tcp-objects",
+        "-o",
+        "/runner/http-url-stream-20261028/accepted/url-tcp-upload",
+        "--platform-archive=/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/core/net-native/libnet_core_native.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/fixture.o",
+        "--link-arg=-lpthread"
+      ]
+    },
+    {
+      "name": "tcp-controls",
+      "command": [
+        "/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/hosts/linux-x86_64/bin/nyrac",
+        "build",
+        "/runner/http-url-stream-20261028/accepted/tcp-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/http-url-stream-20261028/accepted/tcp-control-objects",
+        "-o",
+        "/runner/http-url-stream-20261028/accepted/url-tcp-controls",
+        "--platform-archive=/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/dns-test-native/libnet_core_native.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/dns-fixture.o"
+      ]
+    },
+    {
+      "name": "https-consumer",
+      "command": [
+        "/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/hosts/linux-x86_64/bin/nyrac",
+        "build",
+        "/runner/http-url-stream-20261028/accepted/https-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/http-url-stream-20261028/accepted/https-objects",
+        "-o",
+        "/runner/http-url-stream-20261028/accepted/url-https-upload",
+        "--platform-archive=/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/core/net-native/libnet_core_native.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/tls-native/libtls_native.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libssl.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libcrypto.a",
+        "--link-arg=-ldl"
+      ]
+    },
+    {
+      "name": "https-controls",
+      "command": [
+        "/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/hosts/linux-x86_64/bin/nyrac",
+        "build",
+        "/runner/http-url-stream-20261028/accepted/https-consumer/main.ny",
+        "--link",
+        "-O2",
+        "-j",
+        "4",
+        "--out-dir",
+        "/runner/http-url-stream-20261028/accepted/https-control-objects",
+        "-o",
+        "/runner/http-url-stream-20261028/accepted/url-https-controls",
+        "--platform-archive=/runner/_work/_tool/nyra-release-work/nyra-sdk-40597935931-1/public-release/nyra-sdk-1.0.2-linux-x86_64/targets/linux-x86_64/stdlib/lib/libnyra_platform.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/dns-test-native/libnet_core_native.a",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/fixture.o",
+        "--link-arg=-lpthread",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/tls-native/libtls_native.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libssl.a",
+        "--link-arg=/runner/tls-dev-20261027/openssl/openssl-3.5.9/libcrypto.a",
+        "--link-arg=-ldl",
+        "--link-arg=/runner/http-url-stream-20261028/accepted/base/base/base/base/base/dns-fixture.o"
+      ]
+    }
+  ],
+  "plain_tls_link_inputs": [],
+  "production_fixture_imports": {
+    "http": [],
+    "https": []
+  },
+  "limitations": [
+    "Native Intel macOS not run: authorized SSH session is unavailable.",
+    "Historical Windows redirect/follow connection timeouts remain unexplained; passing this candidate does not establish a root-cause fix.",
+    "TLS standalone/native suites were not rerun for URL-only changes; previous channel qualification remains separately recorded.",
+    "Gated DNS uses an explicit test-only native fixture; production clients have no test DNS or TLS fixture imports."
+  ]
+}

@@ -102,17 +102,34 @@ pub method(HttpUrl) HostField() -> string { if self.cell == nil { return ""; } r
 pub method(HttpUrl) Target() -> string { if self.cell == nil { return ""; } return (self.cell as arc<HttpUrlData>).target; }
 /** @brief Owned canonical absolute URL without fragment. */
 pub method(HttpUrl) ToString() -> string { if self.cell == nil { return ""; } return self.Scheme().Concat("://").Concat(self.HostField()).Concat(self.Target()); }
-/** @brief Generate authority/framing once; caller cannot override routing fields. */
-pub method(HttpUrl) RequestHead(verb: ref string, fields: ref <HttpField>[], body_length: uint64) -> Result<NetBuffer, HttpError> {
-  if !self.IsValid() { return http_client_error(HttpErrorKind.InvalidArgument); }
+// Generate routing fields in one place for buffered and streamed URL requests.
+func url_request_head(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body_length: uint64, chunked: bool, streaming: bool) -> Result<NetBuffer, HttpError> {
+  if !url.IsValid() { return http_client_error(HttpErrorKind.InvalidArgument); }
   if fields.length > 126 { return http_client_error(HttpErrorKind.LimitExceeded); }
-  var all: owned <HttpField>[] = new <HttpField>[fields.length+2]; all[0] = HttpField{name: "Host", value: self.HostField()}; all[1] = HttpField{name: "Content-Length", value: url_decimal(body_length)};
+  var all: owned <HttpField>[] = new <HttpField>[fields.length+2]; all[0] = HttpField{name: "Host", value: url.HostField()};
+  all[1] = HttpField{name: "Content-Length", value: url_decimal(body_length)};
+  if chunked { all[1] = HttpField{name: "Transfer-Encoding", value: "chunked"}; }
   var i: int32 = 0; while i < fields.length {
     let name: string = fields[i].name;
     if http_client_equal(name, "Host") || http_client_equal(name, "Content-Length") || http_client_equal(name, "Transfer-Encoding") { return http_client_error(HttpErrorKind.InvalidArgument); }
-    if http_client_equal(name, "Expect") || http_client_equal(name, "Upgrade") { return http_client_error(HttpErrorKind.Unsupported); }
+    if (!streaming && http_client_equal(name, "Expect")) || http_client_equal(name, "Upgrade") { return http_client_error(HttpErrorKind.Unsupported); }
     all[i+2] = fields[i]; i = i+1;
   }
   if verb.Equal("CONNECT") { return http_client_error(HttpErrorKind.Unsupported); }
-  return HttpWriter.Request(verb, self.Target(), all);
+  return HttpWriter.Request(verb, url.Target(), all);
+}
+/** @brief Generate authority/framing once; caller cannot override routing fields. */
+pub method(HttpUrl) RequestHead(verb: ref string, fields: ref <HttpField>[], body_length: uint64) -> Result<NetBuffer, HttpError> {
+  return url_request_head(self, verb, fields, body_length, false, false);
+}
+/** @brief Serialize a URL-associated streamed request and validate the shared producer profile. */
+pub method(HttpUrl) StreamingRequestHead(verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan) -> Result<NetBuffer, HttpError> {
+  if plan.close_connection || (plan.kind != HttpBodyKind.None && plan.kind != HttpBodyKind.ContentLength && plan.kind != HttpBodyKind.Chunked) || (plan.kind != HttpBodyKind.ContentLength && plan.length != 0u64) { return http_client_error(HttpErrorKind.InvalidArgument); }
+  let made: Result<NetBuffer, HttpError> = url_request_head(self, verb, fields, plan.length, plan.kind == HttpBodyKind.Chunked, true);
+  if made.IsErr() { return (made.get_if<HttpError>()) as HttpError; }
+  let wire: NetBuffer = (made.get_if<NetBuffer>()) as NetBuffer;
+  // Share Expect/upgrade/framing validation without imposing a caller's body budget.
+  var checked: Result<HttpClientExchange, HttpError> = HttpClientExchange.NewStreaming(wire, HttpClientLimits{max_retained_request_bytes: 1073741824, body: HttpBodyLimits{max_body_bytes: 9223372036837998591u64}});
+  if checked.IsErr() { return (checked.get_if<HttpError>()) as HttpError; }
+  return wire;
 }

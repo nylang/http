@@ -7,9 +7,10 @@ pub struct HttpClientLimits { request_head: HttpHeadLimits; response: HttpRespon
 /** @brief Cursor stage identifying the origin of a protocol error offset. */
 pub enum HttpClientStage { Request, ResponseHead, ResponseBody, Resolve, Connect }
 /** @brief Pull events; NeedInput asks the transport for bytes, Complete never requests more I/O.
- * @note NeedBody is emitted only by the streamed TCP facade; supply one producer block or finish.
+ * @note NeedBody is emitted by streamed connected TCP/HTTPS clients; supply one producer block or finish.
+ *       NeedReplay is emitted only by optional streamed automatic-follow clients before opening a hop.
  */
-pub enum HttpClientEventKind { NeedInput, Informational, Head, Body, Complete, NeedBody }
+pub enum HttpClientEventKind { NeedInput, Informational, Head, Body, Complete, NeedBody, NeedReplay }
 /** @brief Committed plaintext HTTP wire counts, including head/framing bytes and unconsumed read suffixes. */
 pub struct HttpClientStats { request_bytes_sent: uint64; response_bytes_received: uint64; }
 /** @brief Owned head/body event; body chunks are at most 16 KiB and may be retained after client drop.

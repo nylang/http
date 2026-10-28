@@ -7,6 +7,17 @@ transport so plain consumers need not link TLS. Compiler language contracts stay
 unchanged. This is the maintained package schedule. The public source repository
 is https://github.com/nylang/http; tagged package/binary release remains separate.
 
+## First-version feature freeze
+
+The user approved the first HTTP/1.1 client feature freeze on 2026-10-28.
+The [design contract](../../docs/design/ecosystem/http.md) records the baseline,
+delivery requirements and deferred iteration boundaries. Continue delivery and
+known-fault closure; do not expand the first version with pooling/reuse, Happy
+Eyeballs or additional protocol families. Feature freeze is not a release or a
+claim that every unchecked item below is complete. This file remains the single
+implementation/delivery schedule; deferred feature entries below belong to later
+iterations unless explicitly rescheduled.
+
 ## H1 — Bounded head parser and writer
 
 - [x] Independent local package, MIT license and public type-owned API.
@@ -101,8 +112,39 @@ and compiler/runtime identities. H1 is not a streaming body decoder or HTTP clie
       One fixture refinement accepts the valid full-fixed-payload-before-producer-
       finish race; both complete four-host matrices passed, product sources and
       timing budgets unchanged.
-- [ ] H3f HTTPS/URL convenience-client scheduling, producer/replay contracts and
-      automatic redirect integration; TLS currently permits one pending operation.
+- [x] H3f connected HTTPS streaming implementation over the optional TLS channel:
+      shared producers/framing, response-first probes, finite continue fallback,
+      provider retry barriers and early-final abort without hidden ciphertext flush.
+      Existing TlsStream still permits one pending operation; the new channel is opt-in.
+- [x] H3f [three-host TLS/channel and streamed HTTPS qualification](docs/https-upload-acceptance-2026-10-28.json):
+      matching public SDK 1.0.2 on macOS arm64, Linux x86_64 and Windows x86_64;
+      88 core cases/replays, 181 network/control scenarios, 39 TLS cases/replays
+      and 73 native TLS cases per host. The final Windows TCP redirect-open
+      failure and unchanged isolated/full retries are retained; cause unconfirmed.
+- [ ] H3f native Intel macOS qualification: authorized SSH session expired and
+      available public-key authentication was rejected. Do not reuse earlier
+      receipts or Rosetta as acceptance of the new candidate.
+- [x] H3f URL streaming helpers: shared fixed/chunked head construction, explicit
+      caller-owned DNS, URL-derived HTTPS identity and original producer controls.
+      Immutable URL/redirect APIs retain their existing behavior.
+- [x] H3f [URL streaming three-host qualification](docs/url-upload-acceptance-2026-10-28.json):
+      macOS arm64, Linux x86_64 and Windows x86_64 each pass 91 core cases/replays
+      and 231 network/control scenarios (181 baseline, 30 URL uploads, 20 gated
+      DNS cases). Exact SDK 1.0.2 compilers and 346 runtime files match their pins.
+      Native Intel remains pending SSH restoration; prior Windows timeout causes
+      remain open despite this complete passing candidate.
+- [x] H3f explicit streamed producer replay contracts and automatic redirect
+      integration: separate unsafe/replay permissions, owned metadata snapshots,
+      NeedReplay acknowledgement before new-hop DNS/I/O, shared origin filtering,
+      body-dropping rewrites and original controls including rewind time.
+- [x] H3f [streamed follow three-host qualification](docs/stream-follow-acceptance-2026-10-28.json):
+      macOS arm64, Linux x86_64 and Windows x86_64 each pass 96 core cases/replays
+      and 276 network/control scenarios (231 baseline, 22 TCP and 22 HTTPS streamed
+      follows, one TCP-to-HTTPS chain). Exact SDK 1.0.2 compilers and 346 native
+      runtime files match their pins. A Nagle-sensitive existing TLS partial-head
+      fixture was reproduced against old/new binaries and corrected only in the
+      controlled peer; original 40/160 ms timing budgets and production sources
+      were unchanged before the complete final matrix. Native Intel remains pending.
 - [ ] IDNA/trailing-dot policy beyond the strict URL profile; Happy Eyeballs and
       deterministic fallback/fault matrices.
 - [ ] Pooling/reuse, explicit upgrade/tunnel ownership and broader fault propagation.

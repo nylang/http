@@ -51,3 +51,18 @@ pub method(HttpUrl) Dial(resolver: ref mut AsyncResolver, dial: ref HttpDialOpti
  *       resolution, sequential dial and all later Next calls. No redirect, proxy or connection reuse.
  */
 pub static method(HttpTcpClient) Open(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref NetBuffer, limits: ref HttpClientLimits, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions, options: ref NetOperationOptions) -> Result<HttpTcpClient, HttpClientError>;
+
+/** @brief Build an owned streamed HTTP/1.1 head with URL-derived Host and target.
+ * @param plan None (zero length), ContentLength, or Chunked (zero length); close_connection must be false.
+ * @note None generates Content-Length: 0. Additional fields cannot override Host/framing or Upgrade.
+ *       One case-insensitive Expect: 100-continue is allowed for nonempty fixed or chunked producers.
+ *       Shared writer/exchange validation rejects unsupported negotiation before I/O. No body retained.
+ */
+pub method(HttpUrl) StreamingRequestHead(verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan) -> Result<NetBuffer, HttpError>;
+/** @brief Validate a streamed request, then resolve/connect an http URL with the original controls.
+ * @param continue_wait_ms Finite 0..60000 ms fallback after the complete head is sent.
+ * @note Request/limits/continue policy fail before DNS. HTTPS is rejected. The resolver is borrowed
+ *       only during OpenStreaming. Next returns NeedBody for SupplyBody/FinishBody; producer time
+ *       consumes the original deadline. No replay, redirects, retries or connection reuse.
+ */
+pub static method(HttpTcpClient) OpenStreaming(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan, limits: ref HttpClientLimits, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions, options: ref NetOperationOptions, continue_wait_ms: int32) -> Result<HttpTcpClient, HttpClientError>;

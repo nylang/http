@@ -246,3 +246,80 @@ complete matrix was repeated after that correction, preserving product code,
 case selection and timing budgets. Intel macOS evidence is native Intel hardware,
 not Rosetta. The earlier H3e Windows follow timeout remains unconfirmed and is
 linked as a broader timing/fault follow-up rather than silently closed.
+
+
+## Connected HTTPS streamed facade increment
+
+`scripts/accept_https_upload.py --sdk <sdk> --openssl-root <pinned-build>
+--out-dir <new-external-directory>` repeats the complete 151 existing scenarios,
+the 14 streamed TCP facade scenarios, then 16 new verified HTTPS scenarios.
+Optional baseline directories are accepted only with matching source/compiler/SDK
+inventories. Plain production archives remain TLS-free; HTTPS production retains
+no fixture inputs. The optional channel/probe has its own 39/39/73 TLS acceptance.
+
+The new consumer verifies constructor rollback for wrong peer/ALPN/trust/BIO
+capacity, bounded fixed/chunked producers/trailers, 103/100 gating, finite continue
+fallback, coalesced 100/final, peer-observed cancellation/shortage checkpoints,
+partial heads, original deadlines during continue/producer time, and early 413
+while a 64 MiB upload is blocked. Fixed-length success still permits the documented
+full-payload-before-explicit-finish race. Chunked completion tests graceful
+close_notify; early 413 tests abortive Shutdown without flushing pending upload.
+Authenticated closure before a fixed HTTP body finishes yields HTTP UnexpectedEof;
+raw TLS truncation stays a TLS failure. Untrusted CA fails before any HTTP output.
+
+[Current receipts](../docs/https-upload-acceptance-2026-10-28.json) cover three hosts,
+with native Intel macOS pending restored SSH access. Windows' first final-snapshot
+attempt failed opening an old explicit TCP POST/307 redirect snapshot. The unchanged
+binary passed case 2 three times and case 1 once, followed by a complete unchanged
+181-scenario pass. Source/receipt/binary hashes are retained; the cause remains
+unconfirmed and no timeout, case selection or production source was changed to
+obtain the retry. Broader Windows timing/fault investigation remains open.
+
+`accept_url_upload.py` runs the complete connected HTTPS upload baseline, then
+30 imported URL streaming scenarios (14 TCP and 16 HTTPS) and 20 controlled DNS
+scenarios. It reuses the peer protocol assertions with canonical URL-derived
+Host/escaped targets. Numeric URLs work with a closed resolver; DNS-backed
+clients continue after their resolver closes. HTTPS derives verification from an
+empty peer-name configuration, including the numeric IP certificate case.
+Gated native DNS proves cancellation/expiry returns while the OS job retains its
+slot, retirement/recovery of the same pool, and rejection before DNS with exact
+worker counters. Fixed/chunked/trailer framing, continue gates, producer waits,
+early finals, constrained-window backpressure, authenticated truncation and
+untrusted peers retain the connected fixture deadlines and assertions.
+
+[URL streaming receipt](../docs/url-upload-acceptance-2026-10-28.json): matching
+public SDK 1.0.2 compilers and 346 native runtime files, 91 core cases/replays and
+231 network/control cases on macOS arm64, Linux x86_64 and Windows x86_64.
+Native Intel is pending; previous Windows connection timeout causes remain open.
+
+`accept_stream_follow.py` runs the complete URL upload baseline, then 22 streamed
+follow scenarios on TCP, the same 22 on verified HTTPS, and one three-hop
+TCP-to-HTTPS transition. They verify fixed/chunked replay, trailer preservation,
+POST/303 rewrites, explicit replay and unsafe-method permissions, conservative
+rejection of unsent gated bodies, partial-prefix restart from zero, permanent
+cross-origin filtering, downgrade/ambiguous Location/hop errors, durable per-hop
+failures, producer shortages, empty GET/HEAD, and no retry after transport failure.
+Repeated NeedReplay calls use a closed DNS pool and a peer-side no-connection
+checkpoint before acknowledgement. Original cancellation and expiry remain
+active during rewind. Redirect responses advertise a large unfinished body;
+only the terminal response is published and old connections are closed without
+draining it. Intentional-shortage and partial-prefix fixtures stop their producer
+at the first block until the peer's 103 checkpoint/final response is observed.
+
+The first streamed-follow matrix exposed a Nagle-sensitive existing HTTPS
+partial-head fixture on Linux. The previous URL binary reproduced 6 failures in
+12 runs; the streamed-follow binary reproduced 7 in 12. With TCP_NODELAY set on
+the controlled TLS peer, both unchanged binaries passed 12/12. The final fixture
+sets that option only for partial-head case 11, isolating the continue timer from
+peer-side buffering of TLS traffic. Its 40 ms fallback, 160 ms partial-head pause,
+original operation budgets and all production sources remain unchanged. The
+final acceptance requires a fresh complete matrix after this fixture correction;
+passing isolated reruns alone is not qualification. Exact binary hashes and all
+48 replay outcomes are retained with the streamed-follow receipt.
+
+[Streamed follow receipt](../docs/stream-follow-acceptance-2026-10-28.json) records
+a fresh complete passing matrix on macOS arm64, Linux x86_64 and Windows x86_64:
+96 core cases/replays and 276 network/control scenarios per host, matching public
+SDK 1.0.2 compiler and 346 native runtime files. Native Intel remains pending;
+historical Windows connection timeout causes remain open. Standalone TLS/native
+harness qualification remains separate from this HTTP-only increment.

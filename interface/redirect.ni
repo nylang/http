@@ -1,4 +1,4 @@
-/** @brief Explicit bounded redirect decisions and immutable replay requests shared by TCP/HTTPS. */
+/** @brief Explicit bounded redirect decisions and owned request snapshots shared by TCP/HTTPS. */
 import "stdlib:stdlib.ny";
 import "net_core:net_core.ny";
 import "interface/http.ni";
@@ -20,17 +20,17 @@ pub method(HttpUrl) SameOrigin(other: ref HttpUrl) -> bool;
  *       Preserved bodies or methods other than GET/HEAD/OPTIONS require allow_unsafe_replay.
  */
 pub struct HttpRedirectPolicy { max_redirects: int32; allow_cross_origin: bool; allow_unsafe_replay: bool; }
-/** @brief Copyable immutable owned request snapshot; retained snapshots outlive chain changes/drop. */
+/** @brief Copyable immutable request metadata; retained snapshots outlive chain changes/drop. */
 pub struct HttpRedirectRequest;
 /** @brief Validated URL for routing and certificate/SNI identity; invalid default returns an invalid URL. */
 pub method(HttpRedirectRequest) Url() -> HttpUrl;
 /** @brief Owned case-sensitive method, or empty for a default snapshot. */
 pub method(HttpRedirectRequest) Verb() -> string;
-/** @brief Owned validated HTTP/1.1 head including generated Host/Content-Length; default is empty. */
+/** @brief Owned validated HTTP/1.1 head including generated URL routing/framing; default is empty. */
 pub method(HttpRedirectRequest) Head() -> NetBuffer;
-/** @brief Retain immutable request body storage; empty after a GET rewrite or on a default snapshot. */
+/** @brief Retain immutable buffered body storage; empty for streamed/default/GET-rewritten snapshots. */
 pub method(HttpRedirectRequest) Body() -> NetBuffer;
-/** @brief Additional field count excluding generated Host/Content-Length. */
+/** @brief Additional field count excluding generated Host/framing. */
 pub method(HttpRedirectRequest) FieldCount() -> int32;
 /** @brief Owned additional field, or InvalidArgument for a bad index/default snapshot. */
 pub method(HttpRedirectRequest) FieldAt(index: int32) -> Result<HttpField, HttpError>;
@@ -38,7 +38,7 @@ pub method(HttpRedirectRequest) FieldAt(index: int32) -> Result<HttpField, HttpE
 pub method(HttpRedirectRequest) Limits() -> HttpClientLimits;
 /** @brief Copied original absolute deadline/shared token; modifying the copy never resets this snapshot. */
 pub method(HttpRedirectRequest) Options() -> NetOperationOptions;
-/** @brief Open an http snapshot using its original controls; reject https without network I/O. */
+/** @brief Open an http snapshot using its original controls; reject https and streamed snapshots without network I/O. */
 pub method(HttpRedirectRequest) OpenTcp(resolver: ref mut AsyncResolver, dial: ref HttpDialOptions) -> Result<HttpTcpClient, HttpClientError>;
 /** @brief Move-only single-caller decision cursor; no automatic network I/O, cookie jar or socket reuse. */
 pub struct HttpRedirectChain;
@@ -72,3 +72,28 @@ pub method(HttpRedirectChain) Request() -> Result<HttpRedirectRequest, HttpClien
 pub method(HttpRedirectChain) Follow(response: ref HttpHead) -> Result<bool, HttpClientError>;
 /** @brief Number of committed redirects, excluding the initial request and rejected decisions. */
 pub method(HttpRedirectChain) Count() -> int32;
+
+/** @brief Reject preserved-body replay by default, or require explicit caller-managed identical payload replay.
+ * @note Neither value permits unsafe replay by itself: HttpRedirectPolicy.allow_unsafe_replay is also
+ *       required for nonempty/chunked bodies and unsafe methods. No payload is buffered for replay.
+ */
+pub enum HttpBodyReplayPolicy { Never, Explicit }
+/** @brief Own a streamed URL request's metadata and bounded redirect/replay policy without I/O.
+ * @note Framing/limits match HttpUrl.StreamingRequestHead and the streamed exchange. Original controls
+ *       apply to every decision/hop. Follow rejects preserved nonempty/chunked bodies under Never,
+ *       even if no body bytes were sent. Explicit is an application promise to reproduce the same
+ *       payload; manual callers must rewind before opening each accepted preserved-body snapshot.
+ *       GET rewrites clear producer framing, Expect, Trailer and Content-* metadata without replay.
+ *       Same-origin preserved streams retain Trailer. A Connection-nominated Trailer or cross-origin
+ *       stream declaring trailers is ReplayRejected instead of silently losing their declaration.
+ *       Other filtering, unsafe-method, downgrade and hop policies match immutable New.
+ */
+pub static method(HttpRedirectChain) NewStreaming(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan, limits: ref HttpClientLimits, policy: ref HttpRedirectPolicy, replay: HttpBodyReplayPolicy, options: ref NetOperationOptions) -> Result<HttpRedirectChain, HttpClientError>;
+/** @brief Whether this snapshot requires a producer; Body is empty even for a nonempty stream. */
+pub method(HttpRedirectRequest) IsStreaming() -> bool;
+/** @brief Streamed producer plan, or an empty plan for immutable/default snapshots. */
+pub method(HttpRedirectRequest) UploadPlan() -> HttpBodyPlan;
+/** @brief Open only a streamed http snapshot with its retained original controls.
+ * @note Caller prepares a fresh producer before every preserved-body replay. No implicit rewind.
+ */
+pub method(HttpRedirectRequest) OpenStreamingTcp(resolver: ref mut AsyncResolver, dial: ref HttpDialOptions, continue_wait_ms: int32) -> Result<HttpTcpClient, HttpClientError>;

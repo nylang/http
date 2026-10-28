@@ -24,8 +24,8 @@ CASES = {1:'fixed-producer-adoption-move-admission', 2:'chunked-producer-trailer
          13:'original-deadline-during-producer', 14:'early-final-truncated-response'}
 
 class Peer:
-    def __init__(self, case: int):
-        self.case=case; self.error=None; self.record={}
+    def __init__(self, case: int, url: bool = False):
+        self.url=url; self.case=case; self.error=None; self.record={}
         self.listener=socket.socket()
         if case==10: self.listener.setsockopt(socket.SOL_SOCKET,socket.SO_RCVBUF,4096)
         self.listener.bind(('127.0.0.1',0)); self.port=self.listener.getsockname()[1]
@@ -38,7 +38,9 @@ class Peer:
             connection,_=self.listener.accept(); connection.settimeout(10)
             framing='Transfer-Encoding: chunked\r\nTrailer: X-End\r\n' if self.case==2 else 'Content-Length: 67108864\r\n' if self.case==10 else 'Content-Length: 6\r\n'
             if self.case in (3,4,6,7,11,12,14): framing+='Expect: 100-continue\r\n'
-            expected=('POST /upload HTTP/1.1\r\nHost: localhost\r\n'+framing+'\r\n').encode()
+            target='/upload%2f?q=' if self.url else '/upload'
+            authority=('127.0.0.1' if self.case==1 else 'localhost')+':'+str(self.port) if self.url else 'localhost'
+            expected=('POST '+target+' HTTP/1.1\r\nHost: '+authority+'\r\n'+framing+'\r\n').encode()
             actual=b''
             while not actual.endswith(b'\r\n\r\n'):
                 part=connection.recv(1)

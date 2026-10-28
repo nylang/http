@@ -82,3 +82,20 @@ pub static method(HttpTcpClient) Open(url: ref HttpUrl, verb: ref string, fields
   var connection: TcpConnection = move((connected.get_if<TcpConnection>()) as TcpConnection);
   return HttpTcpClient.New(connection, wire, body, limits, options);
 }
+
+/** @brief Validate producer framing and controls before URL resolution or connection. */
+pub static method(HttpTcpClient) OpenStreaming(url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], plan: ref HttpBodyPlan, limits: ref HttpClientLimits, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions, options: ref NetOperationOptions, continue_wait_ms: int32) -> Result<HttpTcpClient, HttpClientError> {
+  let control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds()); if control.IsErr() { return url_network((control.get_if<NetError>()) as NetError, HttpClientStage.Resolve); }
+  if url.IsSecure() { return HttpClientError{protocol_error: http_client_error(HttpErrorKind.Unsupported)}; }
+  if continue_wait_ms < 0 || continue_wait_ms > 60000 { return HttpClientError{protocol_error: http_client_error(HttpErrorKind.InvalidArgument)}; }
+  let head: Result<NetBuffer, HttpError> = url.StreamingRequestHead(verb, fields, plan);
+  if head.IsErr() { return HttpClientError{protocol_error: (head.get_if<HttpError>()) as HttpError}; }
+  let wire: NetBuffer = (head.get_if<NetBuffer>()) as NetBuffer;
+  var validated: Result<HttpClientExchange, HttpError> = HttpClientExchange.NewStreaming(wire, limits);
+  if validated.IsErr() { return HttpClientError{protocol_error: (validated.get_if<HttpError>()) as HttpError}; }
+  validated = HttpError{kind: HttpErrorKind.Closed};
+  var connected: Result<TcpConnection, HttpClientError> = url.Dial(resolver, dial, options);
+  if connected.IsErr() { return (connected.get_if<HttpClientError>()) as HttpClientError; }
+  var connection: TcpConnection = move((connected.get_if<TcpConnection>()) as TcpConnection);
+  return HttpTcpClient.NewStreaming(connection, wire, limits, options, continue_wait_ms);
+}
