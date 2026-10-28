@@ -121,9 +121,11 @@ and compiler/runtime identities. H1 is not a streaming body decoder or HTTP clie
       88 core cases/replays, 181 network/control scenarios, 39 TLS cases/replays
       and 73 native TLS cases per host. The final Windows TCP redirect-open
       failure and unchanged isolated/full retries are retained; cause unconfirmed.
-- [ ] H3f native Intel macOS qualification: authorized SSH session expired and
-      available public-key authentication was rejected. Do not reuse earlier
-      receipts or Rosetta as acceptance of the new candidate.
+- [x] H3f native Intel macOS qualification of the current HTTP/HTTPS candidate:
+      all four desktop jobs pass in the [http_tls 0.1.1 tag pipeline](https://github.com/nylang/http_tls/actions/runs/40681962834),
+      each with 96 core cases/replays and 276 network/control scenarios.
+      Earlier SSH-blocked development receipts retain their original pending
+      status; their historical records are not rewritten as new acceptance.
 - [x] H3f URL streaming helpers: shared fixed/chunked head construction, explicit
       caller-owned DNS, URL-derived HTTPS identity and original producer controls.
       Immutable URL/redirect APIs retain their existing behavior.
@@ -145,6 +147,12 @@ and compiler/runtime identities. H1 is not a streaming body decoder or HTTP clie
       fixture was reproduced against old/new binaries and corrected only in the
       controlled peer; original 40/160 ms timing budgets and production sources
       were unchanged before the complete final matrix. Native Intel remains pending.
+- [x] HTTP 0.1.1 / http_tls 0.1.1 release graph: the complete four-host
+      [adapter publication](../http_tls/docs/publication-0.1.1.json) passes 96
+      core cases/replays and 276 network/control scenarios per host, including
+      native Intel. Both initial Windows 0.1.0 deadline-fixture failures remain
+      recorded; the IPv4-only peer's two tight phase tests now request IPv4.
+      Production behavior, deadlines and other default-family cases are unchanged.
 - [ ] IDNA/trailing-dot policy beyond the strict URL profile; Happy Eyeballs and
       deterministic fallback/fault matrices.
 - [ ] Pooling/reuse, explicit upgrade/tunnel ownership and broader fault propagation.
