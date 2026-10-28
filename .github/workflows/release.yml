@@ -74,13 +74,13 @@ jobs:
           path: ${{ runner.temp }}/http-receipts
       - name: Validate exact four-host inputs and preserve original Git manifests
         run: |
-          test "$GITHUB_REF_http" = "v0.1.0"
+          test "$GITHUB_REF_NAME" = "v0.1.0"
           python3 scripts/release_source.py --package-root . --receipts "$RUNNER_TEMP/http-receipts" --out-dir "$RUNNER_TEMP/http-release"
       - name: Publish verified source assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release create "$GITHUB_REF_http" --draft --title "http 0.1.0" --notes-file docs/release-0.1.0.md
-          gh release upload "$GITHUB_REF_http" "$RUNNER_TEMP/http-release/http-0.1.0-source.tar.gz" "$RUNNER_TEMP/http-release/release.json" "$RUNNER_TEMP/http-release/SHA256SUMS"
-          gh release edit "$GITHUB_REF_http" --draft=false
+          gh release create "$GITHUB_REF_NAME" --draft --title "http 0.1.0" --notes-file docs/release-0.1.0.md
+          gh release upload "$GITHUB_REF_NAME" "$RUNNER_TEMP/http-release/http-0.1.0-source.tar.gz" "$RUNNER_TEMP/http-release/release.json" "$RUNNER_TEMP/http-release/SHA256SUMS"
+          gh release edit "$GITHUB_REF_NAME" --draft=false
