@@ -579,3 +579,17 @@ macOS arm64, Linux x86_64 and Windows x86_64 with matching public SDK 1.0.2 and
 failure, old/new binary TCP_NODELAY comparisons and a fresh complete final matrix
 with unchanged protocol budgets and production sources. Native Intel remains
 pending SSH restoration; historical Windows connection timeout causes remain open.
+
+## Published 0.1.0
+
+[http 0.1.0](https://github.com/nylang/http/releases/tag/v0.1.0) is a source-only release. Its package.yaml
+retains immutable public Git dependencies; the source assets preserve the
+original declarations without relative sibling rewrites. Corrected Nyra 1.0.4
+tools are required for locked Git consumption; that SDK is not yet publicly
+released. A clean Git consumer has passed lock/fetch, relocation/offline,
+semantic checking, native linking and execution with the source tool candidate.
+Protocol qualification with public SDK 1.0.2 is recorded separately.
+
+See the [publication receipt](docs/publication-0.1.0.json) for exact
+sources, assets and native desktop qualification. Historical development
+receipts retain their original pending/partial state and are not rewritten.

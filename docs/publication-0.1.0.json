@@ -1,0 +1,155 @@
+{
+  "format": "nyra-source-publication-v1",
+  "package": "http",
+  "version": "0.1.0",
+  "source_commit": "c96b742aac0c7b14bcd6b89d0098ec584085c4b0",
+  "release_url": "https://github.com/nylang/http/releases/tag/v0.1.0",
+  "published_at": "2026-10-28T11:11:53Z",
+  "tag_workflow_run": 40676743951,
+  "tag_aggregate_conclusion": "failure (publisher guard); all four desktop qualification jobs succeeded",
+  "publication": "Owner-authenticated upload of source packager output validated against all four original CI receipts; no tag movement.",
+  "desktop_jobs": [
+    {
+      "name": "desktop (ubuntu-24.04, linux-x86_64)",
+      "id": 122776972268,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop (macos-15, darwin-arm64)",
+      "id": 122776972554,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop (windows-2022, windows-x86_64)",
+      "id": 122776972576,
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop (macos-15-intel, darwin-x86_64)",
+      "id": 122776972710,
+      "conclusion": "success"
+    }
+  ],
+  "assets": [
+    {
+      "name": "git-consumer-acceptance.json",
+      "size": 3601,
+      "digest": "sha256:0e31f9d8a9ca4aff075c5aadb408cd7d2c8bc1ca6b03c0f1e580c0d6906c801d",
+      "url": "https://github.com/nylang/http/releases/download/untagged-4d39bba9d7198f4c72f8/git-consumer-acceptance.json"
+    },
+    {
+      "name": "http-0.1.0-source.tar.gz",
+      "size": 497163,
+      "digest": "sha256:326704b64b159dca79e49150e6c3d230ba0fd2b7c49bb5c787bb278b09429285",
+      "url": "https://github.com/nylang/http/releases/download/untagged-4d39bba9d7198f4c72f8/http-0.1.0-source.tar.gz"
+    },
+    {
+      "name": "release.json",
+      "size": 3058,
+      "digest": "sha256:6d90d5da2a94c5703e48d2a7a29e16142da6a9cab45f9bc3fdd48a69ca248802",
+      "url": "https://github.com/nylang/http/releases/download/untagged-4d39bba9d7198f4c72f8/release.json"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 265,
+      "digest": "sha256:8bd2810df0b09c5bd45fea83ab5d6137b36cfcc03b7e59abd8110472652ce461",
+      "url": "https://github.com/nylang/http/releases/download/untagged-4d39bba9d7198f4c72f8/SHA256SUMS"
+    }
+  ],
+  "git_consumer": {
+    "status": "passed",
+    "toolchain": "Source candidate 1.0.4; public SDK 1.0.4 not yet released.",
+    "manager_sha256": "a6a4429f6bf99fbddead10f93b26f181a611feff11b26a552c6111e8c2642bb8",
+    "compiler_sha256": "fa2337a5fbf391fc3dbf79b170e896059cfa9bb17287aceaac16f51996758d61",
+    "runtime_sdk_version": "1.0.3",
+    "source_commits": {
+      "http": "c96b742aac0c7b14bcd6b89d0098ec584085c4b0",
+      "http_tls": "a61612b2df03c39b3f1045eb5a5328ee3ac627ab",
+      "tls": "7b6f9a870e74f32cab625391e8a1395ef872c23e",
+      "net_core": "e86cf3b732b97ef7198e8e461ecd550c65b2c8cb"
+    },
+    "commands": [
+      {
+        "label": "git-lock",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-native/nyra",
+          "lock",
+          "--no-workspace",
+          "--cache-scope",
+          "local",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer"
+        ]
+      },
+      {
+        "label": "git-fetch-frozen",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-native/nyra",
+          "fetch",
+          "--frozen",
+          "--no-workspace",
+          "--cache-scope",
+          "local",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer"
+        ]
+      },
+      {
+        "label": "git-check",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-release/darwin-arm64/bootstrap/native-generations/stage-1/nyrac",
+          "check",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer/main.ny",
+          "--no-workspace"
+        ]
+      },
+      {
+        "label": "git-offline-moved",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-native/nyra",
+          "fetch",
+          "--offline",
+          "--frozen",
+          "--no-workspace",
+          "--cache-scope",
+          "local",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer-moved"
+        ]
+      },
+      {
+        "label": "git-moved-check",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-release/darwin-arm64/bootstrap/native-generations/stage-1/nyrac",
+          "check",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer-moved/main.ny",
+          "--no-workspace"
+        ]
+      },
+      {
+        "label": "git-build",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/1.0.4-release/darwin-arm64/bootstrap/native-generations/stage-1/nyrac",
+          "build",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-consumer-moved/main.ny",
+          "--no-workspace",
+          "--link",
+          "-O2",
+          "--out-dir",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-objects",
+          "-o",
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-client",
+          "--platform-archive=/Volumes/Work/Workspace/NyraLang/source/bootstrap/sdk/packages/stdlib/targets/darwin-arm64/lib/libnyra_platform.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/https-stream-v2/accepted/base/base/base/base/tls-native/libtls_native.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/package-103/qualification/openssl/openssl-3.5.9/libssl.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/package-103/qualification/openssl/openssl-3.5.9/libcrypto.a",
+          "--link-arg=/Volumes/Work/Workspace/NyraLang/cache/https-stream-v2/accepted/base/base/base/base/core/net-native/libnet_core_native.a",
+          "--link-arg=-lpthread"
+        ]
+      },
+      {
+        "label": "git-run",
+        "command": [
+          "/Volumes/Work/Workspace/NyraLang/cache/http-publication/git-client"
+        ]
+      }
+    ]
+  }
+}

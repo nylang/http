@@ -156,8 +156,14 @@ and compiler/runtime identities. H1 is not a streaming body decoder or HTTP clie
 - [x] macOS x86_64 desktop production precompilation, imported linking and live
       protocol/client acceptance on physical Intel hardware with public SDK 1.0.2.
 - [ ] Android/iOS build/link/runtime evidence for any advertised mobile faces.
-- [ ] Local initial commit/submodule registration, assigned public origin, dependency
-      lock, independent CI, relocated consumers, licenses and release artifacts.
+- [x] Source registration/origin, immutable Git dependency pins, licenses,
+      independent four-host plain-HTTP CI and HTTP 0.1.0 source release assets.
+      See [publication](docs/publication-0.1.0.json); the initial publisher guard
+      failure and owner-authenticated asset recovery are retained. Tags unchanged.
+- [x] Clean Git lock/fetch, moved offline resolution, checking, linking and execution
+      with corrected source 1.0.4 tools; source archives retain original manifests.
+- [ ] Repeat locked Git consumption against delivered SDK 1.0.4 when available;
+      its publication is separate from these source package releases.
 - [ ] Complete fault/resource matrices and recheck protocol conformance boundaries.
 
 HTTP/2, HTTP/3, transparent decompression, proxy routing, caching and server
