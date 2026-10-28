@@ -50,8 +50,12 @@ func main() -> int32 {
     rejected=HttpsClient.OpenStreaming(unresolved,invalid,"POST",fields,plan,limits,closed,HttpDialOptions{},options,80);
     if rejected.IsOk() || ((rejected.get_if<HttpsClientError>()) as HttpsClientError).protocol_error==nil { return 32; }
   }
+  // This peer listens only on IPv4. Isolate tight continue/producer deadlines
+  // from OS-dependent localhost resolution and sequential IPv6 fallback.
+  var dial: HttpDialOptions = HttpDialOptions{};
+  if n==12 || n==13 { dial.family=IpFamily.V4; }
   var wait_ms: int32 = 1000; if n==6 { wait_ms=80; } if n==11 { wait_ms=40; }
-  var made: Result<HttpsClient,HttpsClientError> = HttpsClient.OpenStreaming(url,config, "POST",fields,plan,limits,pool,HttpDialOptions{},options,wait_ms);
+  var made: Result<HttpsClient,HttpsClientError> = HttpsClient.OpenStreaming(url,config, "POST",fields,plan,limits,pool,dial,options,wait_ms);
   if made.IsErr() { return 4; }
   pool.Close();
   var original: HttpsClient = move((made.get_if<HttpsClient>()) as HttpsClient);

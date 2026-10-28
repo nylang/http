@@ -39,8 +39,12 @@ func main() -> int32 {
     rejected=HttpTcpClient.OpenStreaming(unresolved,"POST",fields,plan,HttpClientLimits{body:HttpBodyLimits{max_body_bytes:5u64}},closed,HttpDialOptions{},options,80);
     if rejected.IsOk() || ((rejected.get_if<HttpClientError>()) as HttpClientError).protocol_error==nil { return 3; }
   }
+  // This peer listens only on IPv4. Isolate tight continue/producer deadlines
+  // from OS-dependent localhost resolution and sequential IPv6 fallback.
+  var dial: HttpDialOptions = HttpDialOptions{};
+  if n==12 || n==13 { dial.family=IpFamily.V4; }
   var wait_ms: int32 = 1000; if n==6 { wait_ms=80; } if n==11 { wait_ms=40; }
-  var made: Result<HttpTcpClient,HttpClientError> = HttpTcpClient.OpenStreaming(url,"POST",fields,plan,limits,pool,HttpDialOptions{},options,wait_ms);
+  var made: Result<HttpTcpClient,HttpClientError> = HttpTcpClient.OpenStreaming(url,"POST",fields,plan,limits,pool,dial,options,wait_ms);
   if made.IsErr() { return 4; }
   pool.Close();
   var original: HttpTcpClient = move((made.get_if<HttpTcpClient>()) as HttpTcpClient);

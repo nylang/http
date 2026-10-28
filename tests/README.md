@@ -323,3 +323,11 @@ a fresh complete passing matrix on macOS arm64, Linux x86_64 and Windows x86_64:
 SDK 1.0.2 compiler and 346 native runtime files. Native Intel remains pending;
 historical Windows connection timeout causes remain open. Standalone TLS/native
 harness qualification remains separate from this HTTP-only increment.
+
+
+The 0.1.1 URL deadline fixtures explicitly request IPv4 for cases 12/13 because
+the controlled peer is IPv4-only. On Windows hosted runners the other localhost
+cases took about two seconds, compared with about 12 ms for numeric IPv4; the
+original tight control budget could end before the intended HTTP checkpoint.
+The 160 ms TCP and 800 ms HTTPS budgets, production dial behavior and all other
+default-family cases are unchanged. Both original Windows failures are retained.
