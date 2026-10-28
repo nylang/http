@@ -276,7 +276,8 @@ and isolated replays, builds an independent imported consumer, and precompiles
 production code while rejecting test/TLS undefined symbols. No OpenSSL inputs are
 linked. See [tests](tests/README.md), [framing acceptance](docs/framing-acceptance-2026-10-27.json)
 and [roadmap](ROADMAP.md). The source repository is public; no versioned
-release, parent gitlink or SDK promotion is established by these results.
+package/binary release or SDK promotion is established by these results.
+The NyraLang parent records this independent repository as a submodule.
 
 Connected-client acceptance also builds independent TCP/HTTPS consumers and
 controlled loopback peers. Supply the pinned OpenSSL static build only for HTTPS:
