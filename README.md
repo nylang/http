@@ -593,3 +593,18 @@ Protocol qualification with public SDK 1.0.2 is recorded separately.
 See the [publication receipt](docs/publication-0.1.0.json) for exact
 sources, assets and native desktop qualification. Historical development
 receipts retain their original pending/partial state and are not rewritten.
+
+
+## Published 0.1.1
+
+[http 0.1.1](https://github.com/nylang/http/releases/tag/v0.1.1) supersedes the
+first 0.1.0 source release with corrected publication tooling and IPv4-specific
+URL continue/producer deadline fixtures. Production behavior and APIs, the
+160/800 ms deadlines and the remaining default-family URL cases are unchanged.
+See the [fixture investigation](docs/windows-url-deadline-fixture-2026-10-28.json),
+[publication receipt](docs/publication-0.1.1.json) and
+[real Git consumer](docs/git-consumer-0.1.1.json). The four desktop jobs and
+publisher passed; original tags/assets and failed fixture attempts are retained.
+Source archives preserve package.yaml byte for byte with immutable public Git
+edges. Corrected source 1.0.4 tools pass lock/fetch, offline relocation, checking,
+linking and execution; delivery of the 1.0.4 SDK remains separate.

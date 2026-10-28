@@ -1,0 +1,133 @@
+{
+  "format": "nyra-http-url-deadline-fixture-v1",
+  "date": "2026-10-28",
+  "scope": "Private acceptance fixture correction; production behavior unchanged.",
+  "observations": [
+    {
+      "attempt": "first",
+      "workflow_run": 40676749161,
+      "source_commit": "a61612b2df03c39b3f1045eb5a5328ee3ac627ab",
+      "error": "TCP upload case 12: exit=4, peer=TimeoutError('timed out'); see D:\\a\\_temp\\http_tls-ci\\acceptance\\base\\tcp-case-12.log",
+      "completed_tcp_cases": [
+        {
+          "case": 1,
+          "elapsed_seconds": 0.012302400000066882
+        },
+        {
+          "case": 2,
+          "elapsed_seconds": 2.0325387999999975
+        },
+        {
+          "case": 3,
+          "elapsed_seconds": 2.0758284000000913
+        },
+        {
+          "case": 4,
+          "elapsed_seconds": 2.0319620000000214
+        },
+        {
+          "case": 5,
+          "elapsed_seconds": 2.044186399999944
+        },
+        {
+          "case": 6,
+          "elapsed_seconds": 2.1124038000000382
+        },
+        {
+          "case": 7,
+          "elapsed_seconds": 2.0344228000000157
+        },
+        {
+          "case": 8,
+          "elapsed_seconds": 2.0441723999999795
+        },
+        {
+          "case": 9,
+          "elapsed_seconds": 2.0448816000000534
+        },
+        {
+          "case": 10,
+          "elapsed_seconds": 2.3272488999999723
+        },
+        {
+          "case": 11,
+          "elapsed_seconds": 2.1884496999999783
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12810369447,
+          "name": "acceptance-windows-x86_64",
+          "digest": "sha256:374e2223425b912c803e5304d5aad25e689531d4c68bad495dd9d76c6012d692"
+        }
+      ]
+    },
+    {
+      "attempt": "retry",
+      "workflow_run": 40679590853,
+      "source_commit": "a61612b2df03c39b3f1045eb5a5328ee3ac627ab",
+      "error": "TCP upload case 12: exit=4, peer=TimeoutError('timed out'); see D:\\a\\_temp\\http_tls-ci\\acceptance\\base\\tcp-case-12.log",
+      "completed_tcp_cases": [
+        {
+          "case": 1,
+          "elapsed_seconds": 0.012408699999923556
+        },
+        {
+          "case": 2,
+          "elapsed_seconds": 2.018810599999938
+        },
+        {
+          "case": 3,
+          "elapsed_seconds": 2.0909556000000293
+        },
+        {
+          "case": 4,
+          "elapsed_seconds": 2.0306276000000025
+        },
+        {
+          "case": 5,
+          "elapsed_seconds": 2.028071999999952
+        },
+        {
+          "case": 6,
+          "elapsed_seconds": 2.1063614999999345
+        },
+        {
+          "case": 7,
+          "elapsed_seconds": 2.0185828999999558
+        },
+        {
+          "case": 8,
+          "elapsed_seconds": 2.048937199999955
+        },
+        {
+          "case": 9,
+          "elapsed_seconds": 2.0308585999999877
+        },
+        {
+          "case": 10,
+          "elapsed_seconds": 2.34139069999992
+        },
+        {
+          "case": 11,
+          "elapsed_seconds": 2.2312024000000292
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12812911850,
+          "name": "acceptance-windows-x86_64",
+          "digest": "sha256:8bb6b6a3851a1b0e147de357951da856b3e122f5cb641778969055c952c5fa5f"
+        }
+      ]
+    }
+  ],
+  "typed_open_cause": "Not captured by the original fixture.",
+  "correction": "IPv4-only loopback peers: explicitly select IpFamily.V4 for URL cases 12/13, isolating the continue/producer phase from OS-dependent localhost resolution/sequential IPv6 fallback. Other URL cases retain Unspecified.",
+  "budgets_unchanged_ms": {
+    "tcp": 160,
+    "https": 800
+  },
+  "production_files_changed": false,
+  "historical_windows_connect_faults": "Remain a separate open investigation; no general transport root-cause fix is claimed."
+}

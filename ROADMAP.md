@@ -157,9 +157,10 @@ and compiler/runtime identities. H1 is not a streaming body decoder or HTTP clie
       protocol/client acceptance on physical Intel hardware with public SDK 1.0.2.
 - [ ] Android/iOS build/link/runtime evidence for any advertised mobile faces.
 - [x] Source registration/origin, immutable Git dependency pins, licenses,
-      independent four-host plain-HTTP CI and HTTP 0.1.0 source release assets.
-      See [publication](docs/publication-0.1.0.json); the initial publisher guard
-      failure and owner-authenticated asset recovery are retained. Tags unchanged.
+      independent four-host plain-HTTP CI and HTTP 0.1.1 source release assets.
+      See [publication](docs/publication-0.1.1.json); all four jobs and the publisher
+      pass. The 0.1.0 publisher recovery and both original Windows URL fixture
+      failures are retained; production sources and protocol budgets are unchanged.
 - [x] Clean Git lock/fetch, moved offline resolution, checking, linking and execution
       with corrected source 1.0.4 tools; source archives retain original manifests.
 - [ ] Repeat locked Git consumption against delivered SDK 1.0.4 when available;
