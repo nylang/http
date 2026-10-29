@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Accept the streamed exchange with explicit TCP/TLS drivers; convenience clients remain immutable."""
 from __future__ import annotations
 import argparse

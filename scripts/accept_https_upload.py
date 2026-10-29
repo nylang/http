@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Accept streamed verified HTTPS, independent response probes and constrained-window early rejection."""
 from __future__ import annotations
 import argparse

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Accept explicit redirect decisions with ordinary TCP/optional verified HTTPS multi-hop peers."""
 from __future__ import annotations
 import argparse, json, os, platform, socket, ssl, subprocess, sys, threading, time

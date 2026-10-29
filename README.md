@@ -608,3 +608,7 @@ publisher passed; original tags/assets and failed fixture attempts are retained.
 Source archives preserve package.yaml byte for byte with immutable public Git
 edges. Corrected source 1.0.4 tools pass lock/fetch, offline relocation, checking,
 linking and execution; delivery of the 1.0.4 SDK remains separate.
+
+## Module architecture
+
+See [module responsibilities, ownership and dependency boundaries](ARCHITECTURE.md).

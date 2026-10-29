@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Validate HTTP heads and streaming bodies using a public SDK runtime, without linking TLS."""
 from __future__ import annotations
 import argparse

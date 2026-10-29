@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Accept automatic redirect following, including a plain TCP to verified TLS transition."""
 from __future__ import annotations
 import argparse

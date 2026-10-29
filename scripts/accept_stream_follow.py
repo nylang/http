@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Accept explicit streamed producer replay and automatic TCP/HTTPS redirects without hidden retries."""
 from __future__ import annotations
 import argparse

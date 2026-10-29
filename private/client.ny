@@ -1,19 +1,11 @@
-/** @brief Shared connected-client exchange and plain TCP adapter. */
-module HttpClientCore;
-part "exchange.ny";
-part "upload.ny";
-part "tcp_client.ny";
-part "tcp_upload.ny";
-part "url.ny";
-part "url_dial.ny";
-part "redirect.ny";
-part "../tests/redirect_selftest.ny";
-part "../tests/url_selftest.ny";
-part "../tests/client_selftest.ny";
-part "../tests/upload_selftest.ny";
-import "stdlib:stdlib.ny";
-import "net_core:net_core.ny";
-import "interface/http.ni";
-import "interface/client.ni";
-import "interface/url.ni";
-import "interface/redirect.ni";
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
+/** @brief Assemble the independent exchange, TCP, URL, dialing and redirect implementations. */
+module HttpClientAssembly;
+import "private/exchange.ny";
+import "private/tcp_client.ny";
+import "private/url.ny";
+import "private/url_reference.ny";
+import "private/url_dial.ny";
+import "private/redirect.ny";

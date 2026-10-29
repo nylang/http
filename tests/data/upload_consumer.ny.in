@@ -1,102 +1,318 @@
-/** @brief Explicit transport driver for the public streamed exchange, without convenience-client claims. */
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
+/**
+ * @brief Explicit transport driver for the public streamed exchange, without convenience-client
+ *   claims.
+ */
 import "stdlib:stdlib.ny";
 import "net_core:net_core.ny";
 import "http:http.ny";
 @@TLS_IMPORT@@
 @extern("C") func HttpFixturePort() -> int32;
+
 @extern("C") func HttpFixtureCase() -> int32;
+
 @extern("C") func HttpFixtureCa() -> *const int8;
+
 @extern("C") func HttpFixtureCaLength() -> int32;
+
 @@HELPERS@@
-func send_ready(exchange: ref mut HttpClientExchange, io: ref mut @@IO@@, options: ref NetOperationOptions) -> bool {
+func send_ready(
+  exchange: ref mut HttpClientExchange,
+  io: ref mut @@IO@@,
+  options: ref NetOperationOptions
+) -> bool {
   var rounds: int32 = 0;
   while rounds < 10000 {
-    let output: Result<NetBuffer,HttpError> = exchange.Output(); if output.IsErr() { return false; }
-    let block: NetBuffer = (output.get_if<NetBuffer>()) as NetBuffer; if block.Len()==(0 as intptr) { return true; }
+    let output: Result<NetBuffer, HttpError> = exchange.Output();
+    if output.IsErr() {
+      return false;
+    }
+
+    let block: NetBuffer = (output.get_if<NetBuffer>()) as NetBuffer;
+    if block.Len() == (0 as intptr) {
+      return true;
+    }
+
     @@WRITE@@
-    if count <= (0 as intptr) || exchange.AcknowledgeOutput(count).IsErr() { return false; }
-    rounds = rounds+1;
+    if count <= (0 as intptr) || exchange.AcknowledgeOutput(count).IsErr() {
+      return false;
+    }
+
+    rounds = rounds + 1;
   }
+
   return false;
 }
-func receive_once(exchange: ref mut HttpClientExchange, io: ref mut @@IO@@, options: ref NetOperationOptions) -> bool {
+
+func receive_once(
+  exchange: ref mut HttpClientExchange,
+  io: ref mut @@IO@@,
+  options: ref NetOperationOptions
+) -> bool {
   @@READ@@
 }
-func await_checkpoint(exchange: ref mut HttpClientExchange, io: ref mut @@IO@@, options: ref NetOperationOptions) -> bool {
+
+func await_checkpoint(
+  exchange: ref mut HttpClientExchange,
+  io: ref mut @@IO@@,
+  options: ref NetOperationOptions
+) -> bool {
   var rounds: int32 = 0;
   while rounds < 1000 {
-    let next: Result<HttpClientEvent,HttpError> = exchange.NextResponse(); if next.IsErr() { return false; }
+    let next: Result<HttpClientEvent, HttpError> = exchange.NextResponse();
+    if next.IsErr() {
+      return false;
+    }
+
     let event: HttpClientEvent = (next.get_if<HttpClientEvent>()) as HttpClientEvent;
-    if event.kind==HttpClientEventKind.NeedInput { if !receive_once(exchange,io,options) { return false; } }
-    else { return event.kind==HttpClientEventKind.Informational && event.head.Status()==103; }
-    rounds=rounds+1;
+    if event.kind == HttpClientEventKind.NeedInput {
+      if !receive_once(exchange, io, options) {
+        return false;
+      }
+    } else {
+      return event.kind == HttpClientEventKind.Informational && event.head.Status() == 103;
+    }
+
+    rounds = rounds + 1;
   }
+
   return false;
 }
+
 func main() -> int32 {
-  let n: int32 = HttpFixtureCase(); let port: int32 = HttpFixturePort();
+  let n: int32 = HttpFixtureCase();
+  let port: int32 = HttpFixturePort();
   var token: NetCancellation = NetCancellation.New();
-  let options: NetOperationOptions = NetOperationOptions{cancellation:token,deadline:NetDeadline.After(NetClock.NowNanoseconds(),8000000000u64)};
-  let endpoint: NetEndpoint = (NetEndpoint.New(IpAddress.V4(127u8,0u8,0u8,1u8),port).get_if<NetEndpoint>()) as NetEndpoint;
-  let authority: string = endpoint.ToString().Substring(10,endpoint.ToString().length-10);
+  let options: NetOperationOptions = NetOperationOptions{
+    cancellation: token,
+    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 8000000000u64)
+  };
+  let endpoint: NetEndpoint = (NetEndpoint.New(
+    IpAddress.V4(127u8, 0u8, 0u8, 1u8),
+    port
+  ).get_if<NetEndpoint>()) as NetEndpoint;
+  let authority: string = endpoint.ToString().Substring(10, endpoint.ToString().length - 10);
   var framing: string = "Content-Length: 6\r\n";
-  if n == 2 { framing="Transfer-Encoding: chunked\r\nTrailer: X-End\r\n"; }
-  if n == 3 || n == 4 || n == 6 || n == 7 { framing=framing.Concat("Expect: 100-continue\r\n"); }
+  if n == 2 {
+    framing = "Transfer-Encoding: chunked\r\nTrailer: X-End\r\n";
+  }
+
+  if n == 3 || n == 4 || n == 6 || n == 7 {
+    framing = framing.Concat("Expect: 100-continue\r\n");
+  }
+
   let wire: string = "POST /upload HTTP/1.1\r\nHost: localhost:".Concat(authority).Concat("\r\n").Concat(framing).Concat("\r\n");
   let head: NetBuffer = (NetBuffer.CopyFrom(NetBytes.FromString(wire)).get_if<NetBuffer>()) as NetBuffer;
-  var made: Result<HttpClientExchange,HttpError> = HttpClientExchange.NewStreaming(head,HttpClientLimits{max_retained_request_bytes:1024});
-  if made.IsErr() { return 1; } var exchange: HttpClientExchange = move((made.get_if<HttpClientExchange>()) as HttpClientExchange);
-  var opened: Result<TcpConnection,NetError> = TcpConnection.Dial(endpoint,options); if opened.IsErr() { return 2; }
+  var made: Result<HttpClientExchange, HttpError> = HttpClientExchange.NewStreaming(
+    head,
+    HttpClientLimits{max_retained_request_bytes: 1024}
+  );
+  if made.IsErr() {
+    return 1;
+  }
+
+  var exchange: HttpClientExchange = move((made.get_if<HttpClientExchange>()) as HttpClientExchange);
+  var opened: Result<TcpConnection, NetError> = TcpConnection.Dial(endpoint, options);
+  if opened.IsErr() {
+    return 2;
+  }
+
   var connection: TcpConnection = move((opened.get_if<TcpConnection>()) as TcpConnection);
   @@OPEN@@
-  if !send_ready(exchange,io,options) { return 3; }
-  if n == 8 { if !await_checkpoint(exchange,io,options) { return 24; } token.Cancel(); if options.Check(NetClock.NowNanoseconds()).IsOk() || exchange.Stats().request_bytes_sent!=wire.length as uint64 { return 4; } @@ABORT@@ return 0; }
-  var produced: int32 = 0; var complete: bool = false; var status: int32 = 0; var reads: bool = false; var rounds: int32 = 0;
-  var text: StringBuffer = StringBuffer.New(); var held: NetBuffer = NetBuffer{}; var released: bool = false;
-  while !complete && rounds < 10000 {
-    rounds=rounds+1; if options.Check(NetClock.NowNanoseconds()).IsErr() { return 5; }
-    let queried: Result<HttpUploadState,HttpError> = exchange.UploadState(); if queried.IsErr() { return 6; }
-    let state: HttpUploadState = (queried.get_if<HttpUploadState>()) as HttpUploadState;
-    if state==HttpUploadState.WaitingContinue {
-      if n==6 && !released { Thread.Sleep(80u32); if options.Check(NetClock.NowNanoseconds()).IsErr() || exchange.ContinueUpload().IsErr() { return 7; } released=true; reads=false; continue; }
-      reads=true;
+  if !send_ready(exchange, io, options) {
+    return 3;
+  }
+
+  if n == 8 {
+    if !await_checkpoint(exchange, io, options) {
+      return 24;
     }
-    if state==HttpUploadState.ReadingResponse || state==HttpUploadState.Stopped || state==HttpUploadState.Finished { reads=true; }
+
+    token.Cancel();
+    if options.Check(NetClock.NowNanoseconds()).IsOk()
+      || exchange.Stats().request_bytes_sent != wire.length as uint64 {
+      return 4;
+    }
+
+    @@ABORT@@ return 0;
+  }
+
+  var produced: int32 = 0;
+  var complete: bool = false;
+  var status: int32 = 0;
+  var reads: bool = false;
+  var rounds: int32 = 0;
+  var text: StringBuffer = StringBuffer.New();
+  var held: NetBuffer = NetBuffer{};
+  var released: bool = false;
+  while !complete && rounds < 10000 {
+    rounds = rounds + 1;
+    if options.Check(NetClock.NowNanoseconds()).IsErr() {
+      return 5;
+    }
+
+    let queried: Result<HttpUploadState, HttpError> = exchange.UploadState();
+    if queried.IsErr() {
+      return 6;
+    }
+
+    let state: HttpUploadState = (queried.get_if<HttpUploadState>()) as HttpUploadState;
+    if state == HttpUploadState.WaitingContinue {
+      if n == 6 && !released {
+        Thread.Sleep(80u32);
+        if options.Check(NetClock.NowNanoseconds()).IsErr() || exchange.ContinueUpload().IsErr() {
+          return 7;
+        }
+
+        released = true;
+        reads = false;
+        continue;
+      }
+
+      reads = true;
+    }
+
+    if state == HttpUploadState.ReadingResponse
+      || state == HttpUploadState.Stopped
+      || state == HttpUploadState.Finished {
+      reads = true;
+    }
+
     if !reads {
-      if state==HttpUploadState.NeedBody {
-        if n==9 && produced==1 {
-          if !await_checkpoint(exchange,io,options) { return 25; }
-          let end: Result<Unit,HttpError> = exchange.FinishBody(new <HttpField>[0]);
-          if end.IsOk() || ((end.get_if<HttpError>()) as HttpError).kind!=HttpErrorKind.UnexpectedEof || exchange.Stats().request_bytes_sent!=wire.length as uint64+3u64 { return 8; }
+      if state == HttpUploadState.NeedBody {
+        if n == 9 && produced == 1 {
+          if !await_checkpoint(exchange, io, options) {
+            return 25;
+          }
+
+          let end: Result<Unit, HttpError> = exchange.FinishBody(new <HttpField>[0]);
+          if end.IsOk()
+            || ((end.get_if<HttpError>()) as HttpError).kind != HttpErrorKind.UnexpectedEof
+            || exchange.Stats().request_bytes_sent != wire.length as uint64 + 3u64 {
+            return 8;
+          }
+
           @@ABORT@@ return 0;
         }
+
         if produced<2 {
-          var payload: string = "abc"; if produced==1 { payload="def"; }
-          let block: NetBuffer = (NetBuffer.CopyFrom(NetBytes.FromString(payload)).get_if<NetBuffer>()) as NetBuffer;
-          if exchange.SupplyBody(block).IsErr() { return 9; } produced=produced+1;
-          if n==5 && produced==2 { held=(exchange.Output().get_if<NetBuffer>()) as NetBuffer; reads=true; continue; }
+          var payload: string = "abc";
+          if produced == 1 {
+            payload = "def";
+          }
+
+          let block: NetBuffer = (
+            NetBuffer.CopyFrom(NetBytes.FromString(payload)).get_if<NetBuffer>()
+          ) as NetBuffer;
+          if exchange.SupplyBody(block).IsErr() {
+            return 9;
+          }
+
+          produced = produced + 1;
+          if n == 5 && produced == 2 {
+            held = (exchange.Output().get_if<NetBuffer>()) as NetBuffer;
+            reads = true;
+            continue;
+          }
         } else {
-          var trailers: owned <HttpField>[] = new <HttpField>[0]; if n==2 { trailers=new <HttpField>[]{HttpField{name:"X-End",value:"yes"}}; }
-          if exchange.FinishBody(trailers).IsErr() { return 10; }
+          var trailers: owned <HttpField>[] = new <HttpField>[0];
+          if n == 2 {
+            trailers = new <HttpField>[] {
+              HttpField{name: "X-End", value: "yes"}
+            };
+          }
+
+          if exchange.FinishBody(trailers).IsErr() {
+            return 10;
+          }
         }
       }
-      if !send_ready(exchange,io,options) { return 11; } continue;
+
+      if !send_ready(exchange, io, options) {
+        return 11;
+      }
+
+      continue;
     }
-    let next: Result<HttpClientEvent,HttpError> = exchange.NextResponse(); if next.IsErr() { return 12; }
+
+    let next: Result<HttpClientEvent, HttpError> = exchange.NextResponse();
+    if next.IsErr() {
+      return 12;
+    }
+
     let event: HttpClientEvent = (next.get_if<HttpClientEvent>()) as HttpClientEvent;
-    if event.kind==HttpClientEventKind.NeedInput { if !receive_once(exchange,io,options) { return 13; } continue; }
-    if event.kind==HttpClientEventKind.Informational { if event.head.Status()==100 && n!=7 { reads=false; } }
-    if event.kind==HttpClientEventKind.Head { status=event.head.Status(); reads=true; }
-    if event.kind==HttpClientEventKind.Body { text.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8,event.buffer.Len() as int32)); }
-    complete=event.complete;
+    if event.kind == HttpClientEventKind.NeedInput {
+      if !receive_once(exchange, io, options) {
+        return 13;
+      }
+
+      continue;
+    }
+
+    if event.kind == HttpClientEventKind.Informational {
+      if event.head.Status() == 100 && n != 7 {
+        reads = false;
+      }
+    }
+
+    if event.kind == HttpClientEventKind.Head {
+      status = event.head.Status();
+      reads = true;
+    }
+
+    if event.kind == HttpClientEventKind.Body {
+      text.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8, event.buffer.Len() as int32));
+    }
+
+    complete = event.complete;
   }
-  let early: bool = n==4 || n==5 || n==7;
-  var expected: int32 = 200; if n==4 { expected=417; } if n==5 { expected=409; } if n==7 { expected=413; }
-  var content: string = "ok"; if early { content="no"; }
-  if !complete || status!=expected || !text.Take().Equal(content) || exchange.RequestComplete()==early { return 14; }
-  var bytes: uint64 = 6u64; if n==2 { bytes=33u64; } if n==4 || n==7 { bytes=0u64; } if n==5 { bytes=3u64; }
-  if exchange.Stats().request_bytes_sent!=wire.length as uint64+bytes { return 15; }
-  if n==5 && held.Len()!=(3 as intptr) { return 16; }
+
+  let early: bool = n == 4 || n == 5 || n == 7;
+  var expected: int32 = 200;
+  if n == 4 {
+    expected = 417;
+  }
+
+  if n == 5 {
+    expected = 409;
+  }
+
+  if n == 7 {
+    expected = 413;
+  }
+
+  var content: string = "ok";
+  if early {
+    content = "no";
+  }
+
+  if !complete || status != expected || !text.Take().Equal(content) || exchange.RequestComplete() == early {
+    return 14;
+  }
+
+  var bytes: uint64 = 6u64;
+  if n == 2 {
+    bytes = 33u64;
+  }
+
+  if n == 4 || n == 7 {
+    bytes = 0u64;
+  }
+
+  if n == 5 {
+    bytes = 3u64;
+  }
+
+  if exchange.Stats().request_bytes_sent != wire.length as uint64 + bytes {
+    return 15;
+  }
+
+  if n == 5 && held.Len() != (3 as intptr) {
+    return 16;
+  }
+
   @@SHUTDOWN@@
   return 0;
 }

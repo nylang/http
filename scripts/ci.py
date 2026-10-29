@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Qualify exact Git sources with checksum-pinned public SDK runtimes before source release."""
 from __future__ import annotations
 import argparse,json,os,platform,re,shutil,subprocess,sys,tarfile,urllib.request,zipfile

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
 /* Explicit runtime configuration for external loopback consumers only. */
 #include <stdint.h>
 #include <stdlib.h>

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Package exact tested source manifests without replacing Git edges with local paths."""
 from __future__ import annotations
 import argparse,io,json,re,subprocess,tarfile

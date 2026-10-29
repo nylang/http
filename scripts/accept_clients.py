@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 tangxiangjiang
+# SPDX-License-Identifier: MIT
+
 """Exercise connected TCP/optional verified HTTPS clients with controlled loopback peers."""
 from __future__ import annotations
 import argparse, hashlib, json, os

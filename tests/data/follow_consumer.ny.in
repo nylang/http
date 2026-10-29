@@ -1,3 +1,6 @@
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
 /** @brief Automatic mixed-transport redirect consumer with owned terminal events. */
 import "stdlib:stdlib.ny";
 import "net_core:net_core.ny";
@@ -5,81 +8,263 @@ import "http:http.ny";
 import "tls:tls.ny";
 import "http_tls:http_tls.ny";
 @extern("C") func HttpFixturePort() -> int32;
+
 @extern("C") func HttpFixtureCase() -> int32;
+
 @extern("C") func HttpFixtureCa() -> *const int8;
+
 @extern("C") func HttpFixtureCaLength() -> int32;
+
 func main() -> int32 {
   let n: int32 = HttpFixtureCase();
-  let endpoint: NetEndpoint = (NetEndpoint.New(IpAddress.V4(127u8,0u8,0u8,1u8),HttpFixturePort()).get_if<NetEndpoint>()) as NetEndpoint;
-  let port: string = endpoint.ToString().Substring(10,endpoint.ToString().length-10);
-  let url: HttpUrl = (HttpUrl.Parse("@@SCHEME@@://localhost:".Concat(port).Concat("/dir/start")).get_if<HttpUrl>()) as HttpUrl;
+  let endpoint: NetEndpoint = (NetEndpoint.New(
+    IpAddress.V4(127u8, 0u8, 0u8, 1u8),
+    HttpFixturePort()
+  ).get_if<NetEndpoint>()) as NetEndpoint;
+  let port: string = endpoint.ToString().Substring(10, endpoint.ToString().length - 10);
+  let url: HttpUrl = (
+    HttpUrl.Parse("@@SCHEME@@://localhost:".Concat(port).Concat("/dir/start")).get_if<HttpUrl>()
+  ) as HttpUrl;
   var policy: HttpRedirectPolicy = HttpRedirectPolicy{};
-  if n == 2 { policy.allow_unsafe_replay = true; }
-  if n == 4 || n == 13 { policy.allow_cross_origin = true; }
-  if n == 6 { policy.max_redirects = 2; }
-  let fields: owned <HttpField>[] = new <HttpField>[]{HttpField{name:"Authorization",value:"Bearer secret"},HttpField{name:"Cookie",value:"sid=secret"},HttpField{name:"X-Secret",value:"secret"},HttpField{name:"Accept",value:"text/plain"},HttpField{name:"Content-Type",value:"text/plain"},HttpField{name:"Connection",value:"X-Hop"},HttpField{name:"X-Hop",value:"remove"}};
-  var verb: string = "POST"; var payload: string = "abc";
-  if n == 4 || n == 5 || n == 6 || n == 13 { verb = "GET"; payload = ""; }
+  if n == 2 {
+    policy.allow_unsafe_replay = true;
+  }
+
+  if n == 4 || n == 13 {
+    policy.allow_cross_origin = true;
+  }
+
+  if n == 6 {
+    policy.max_redirects = 2;
+  }
+
+  let fields: owned <HttpField>[] = new <HttpField>[] {
+    HttpField{
+      name: "Authorization",
+      value: "Bearer secret"
+    }, HttpField{name: "Cookie", value: "sid=secret"}, HttpField{name: "X-Secret", value: "secret"}, HttpField{name: "Accept", value: "text/plain"}, HttpField{
+      name: "Content-Type",
+      value: "text/plain"
+    }, HttpField{name: "Connection", value: "X-Hop"}, HttpField{name: "X-Hop", value: "remove"}
+  };
+  var verb: string = "POST";
+  var payload: string = "abc";
+  if n == 4 || n == 5 || n == 6 || n == 13 {
+    verb = "GET";
+    payload = "";
+  }
+
   let body: NetBuffer = (NetBuffer.CopyFrom(NetBytes.FromString(payload)).get_if<NetBuffer>()) as NetBuffer;
   var token: NetCancellation = NetCancellation.New();
-  var options: NetOperationOptions = NetOperationOptions{cancellation:token,deadline:NetDeadline.After(NetClock.NowNanoseconds(),8000000000u64)};
-  if n == 11 { options.deadline = NetDeadline.After(NetClock.NowNanoseconds(),1000000000u64); }
-  var settings: TlsClientConfig = TlsClientConfig{ca_file:string.ViewFrom(HttpFixtureCa(),HttpFixtureCaLength())};
-  var made: Result<HttpFollowClient,HttpFollowError> = HttpFollowClient.New(url,settings,verb,fields,body,HttpClientLimits{},policy,HttpDialOptions{family:IpFamily.V4},options);
-  if made.IsErr() { return 1; }
+  var options: NetOperationOptions = NetOperationOptions{
+    cancellation: token,
+    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 8000000000u64)
+  };
+  if n == 11 {
+    options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 1000000000u64);
+  }
+
+  var settings: TlsClientConfig = TlsClientConfig{ca_file: string.ViewFrom(
+    HttpFixtureCa(),
+    HttpFixtureCaLength()
+  )};
+  var made: Result<HttpFollowClient, HttpFollowError> = HttpFollowClient.New(
+    url,
+    settings,
+    verb,
+    fields,
+    body,
+    HttpClientLimits{},
+    policy,
+    HttpDialOptions{family: IpFamily.V4},
+    options
+  );
+  if made.IsErr() {
+    return 1;
+  }
+
   var original: HttpFollowClient = move((made.get_if<HttpFollowClient>()) as HttpFollowClient);
-  var pool: Result<AsyncResolver,NetError> = AsyncResolver.New(1,2); if pool.IsErr() { return 2; }
+  var pool: Result<AsyncResolver, NetError> = AsyncResolver.New(1, 2);
+  if pool.IsErr() {
+    return 2;
+  }
+
   var resolver: AsyncResolver = move((pool.get_if<AsyncResolver>()) as AsyncResolver);
   // Transfer the cursor once; default and pre-I/O queries must not poison it.
   var client: HttpFollowClient = move(original);
   var empty: HttpFollowClient = HttpFollowClient{};
-  if empty.Next(resolver).IsOk() { return 3; }
-  if client.TrailerCount().IsOk() || client.Shutdown().IsOk() { return 4; }
-  settings.ca_file = "discarded-after-construction"; options.deadline = NetDeadline.After(NetClock.NowNanoseconds(),1u64);
-  var content: StringBuffer = StringBuffer.New(); var heads: int32 = 0; var status: int32 = 0; var events: int32 = 0;
+  if empty.Next(resolver).IsOk() {
+    return 3;
+  }
+
+  if client.TrailerCount().IsOk() || client.Shutdown().IsOk() {
+    return 4;
+  }
+
+  settings.ca_file = "discarded-after-construction";
+  options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 1u64);
+  var content: StringBuffer = StringBuffer.New();
+  var heads: int32 = 0;
+  var status: int32 = 0;
+  var events: int32 = 0;
   while events < 1000 {
-    let advanced: Result<HttpClientEvent,HttpFollowError> = client.Next(resolver); events = events+1;
+    let advanced: Result<HttpClientEvent, HttpFollowError> = client.Next(resolver);
+    events = events + 1;
     if advanced.IsErr() {
       let error: HttpFollowError = (advanced.get_if<HttpFollowError>()) as HttpFollowError;
-      if error.http_error == nil && error.https_error == nil { return 5; }
-      if error.http_error != nil && error.https_error != nil { return 6; }
-      // Every failure remains observable after Close and another Next.
-      client.Close(); let again: Result<HttpClientEvent,HttpFollowError> = client.Next(resolver);
-      if again.IsOk() || ((again.get_if<HttpFollowError>()) as HttpFollowError).redirect_count != error.redirect_count { return 7; }
-      var protocol: HttpError? = nil; var network: NetError? = nil;
-      if error.http_error != nil { let e: HttpClientError = error.http_error as HttpClientError; protocol = e.protocol_error; network = e.transport_error; }
-      if error.https_error != nil { let e: HttpsClientError = error.https_error as HttpsClientError; protocol = e.protocol_error; if e.tls_error != nil { network = (e.tls_error as TlsStreamError).transport_error; } }
-      if n == 8 || n == 11 {
-        if network == nil || error.redirect_count != 0 { return 8; }
-        var expected: NetErrorKind = NetErrorKind.Cancelled; if n == 11 { expected = NetErrorKind.TimedOut; }
-        if (network as NetError).kind == expected { return 0; } return 9;
+      if error.http_error == nil && error.https_error == nil {
+        return 5;
       }
-      if error.http_error == nil || protocol == nil || error.url.ToString().length == 0 { return 10; }
+
+      if error.http_error != nil && error.https_error != nil {
+        return 6;
+      }
+
+      // Every failure remains observable after Close and another Next.
+      client.Close();
+      let again: Result<HttpClientEvent, HttpFollowError> = client.Next(resolver);
+      if again.IsOk()
+        || ((again.get_if<HttpFollowError>()) as HttpFollowError).redirect_count != error.redirect_count {
+        return 7;
+      }
+
+      var protocol: HttpError? = nil;
+      var network: NetError? = nil;
+      if error.http_error != nil {
+        let e: HttpClientError = error.http_error as HttpClientError;
+        protocol = e.protocol_error;
+        network = e.transport_error;
+      }
+
+      if error.https_error != nil {
+        let e: HttpsClientError = error.https_error as HttpsClientError;
+        protocol = e.protocol_error;
+        if e.tls_error != nil {
+          network = (e.tls_error as TlsStreamError).transport_error;
+        }
+      }
+
+      if n == 8 || n == 11 {
+        if network == nil || error.redirect_count != 0 {
+          return 8;
+        }
+
+        var expected: NetErrorKind = NetErrorKind.Cancelled;
+        if n == 11 {
+          expected = NetErrorKind.TimedOut;
+        }
+
+        if (network as NetError).kind == expected {
+          return 0;
+        }
+
+        return 9;
+      }
+
+      if error.http_error == nil || protocol == nil || error.url.ToString().length == 0 {
+        return 10;
+      }
+
       let kind: HttpErrorKind = (protocol as HttpError).kind;
-      if n == 3 && kind == HttpErrorKind.ReplayRejected { return 0; }
-      if n == 5 && kind == HttpErrorKind.CrossOriginRedirect { return 0; }
-      if n == 6 && kind == HttpErrorKind.RedirectLimit && error.redirect_count == 2 { return 0; }
-      if n == 7 && kind == HttpErrorKind.InvalidFraming { return 0; }
-      if n == 10 && kind == HttpErrorKind.Malformed { return 0; }
-      if n == 13 && kind == HttpErrorKind.InsecureRedirect { return 0; }
+      if n == 3 && kind == HttpErrorKind.ReplayRejected {
+        return 0;
+      }
+
+      if n == 5 && kind == HttpErrorKind.CrossOriginRedirect {
+        return 0;
+      }
+
+      if n == 6 && kind == HttpErrorKind.RedirectLimit && error.redirect_count == 2 {
+        return 0;
+      }
+
+      if n == 7 && kind == HttpErrorKind.InvalidFraming {
+        return 0;
+      }
+
+      if n == 10 && kind == HttpErrorKind.Malformed {
+        return 0;
+      }
+
+      if n == 13 && kind == HttpErrorKind.InsecureRedirect {
+        return 0;
+      }
+
       return 11;
     }
+
     let event: HttpClientEvent = (advanced.get_if<HttpClientEvent>()) as HttpClientEvent;
-    if event.kind == HttpClientEventKind.Informational { if n == 8 { token.Cancel(); } if n == 11 { Thread.Sleep(1100u32); } }
-    if event.kind == HttpClientEventKind.Head { heads = heads+1; status = event.head.Status(); }
-    if event.kind == HttpClientEventKind.Body { content.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8,event.buffer.Len() as int32)); }
+    if event.kind == HttpClientEventKind.Informational {
+      if n == 8 {
+        token.Cancel();
+      }
+
+      if n == 11 {
+        Thread.Sleep(1100u32);
+      }
+    }
+
+    if event.kind == HttpClientEventKind.Head {
+      heads = heads + 1;
+      status = event.head.Status();
+    }
+
+    if event.kind == HttpClientEventKind.Body {
+      content.Append(string.ViewFrom(
+        event.buffer.Bytes().Data() as *const int8,
+        event.buffer.Len() as int32
+      ));
+    }
+
     if event.complete {
-      if heads != 1 || !content.Take().Equal("hello") { return 12; }
-      if n == 12 { if status != 302 || client.RedirectCount() != 0 { return 13; } }
-      else { if status != 200 || client.RedirectCount() != 1 { return 14; } }
-      let trailers: Result<int32,HttpFollowError> = client.TrailerCount(); if trailers.IsErr() || ((trailers.get_if<int32>()) as int32) != 0 { return 15; }
-      if client.TrailerAt(0).IsOk() { return 16; }
-      let repeated: Result<HttpClientEvent,HttpFollowError> = client.Next(resolver);
-      if repeated.IsErr() || ((repeated.get_if<HttpClientEvent>()) as HttpClientEvent).kind != HttpClientEventKind.Complete { return 17; }
-      if client.Url().IsSecure() { if client.Shutdown().IsErr() { return 18; } }
-      else { token.Cancel(); if client.Next(resolver).IsErr() { return 19; } }
-      client.Close(); if client.Next(resolver).IsOk() { return 20; } return 0;
+      if heads != 1 || !content.Take().Equal("hello") {
+        return 12;
+      }
+
+      if n == 12 {
+        if status != 302 || client.RedirectCount() != 0 {
+          return 13;
+        }
+      } else {
+        if status != 200 || client.RedirectCount() != 1 {
+          return 14;
+        }
+      }
+
+      let trailers: Result<int32, HttpFollowError> = client.TrailerCount();
+      if trailers.IsErr() || ((trailers.get_if<int32>()) as int32) != 0 {
+        return 15;
+      }
+
+      if client.TrailerAt(0).IsOk() {
+        return 16;
+      }
+
+      let repeated: Result<HttpClientEvent, HttpFollowError> = client.Next(resolver);
+      if repeated.IsErr()
+        || ((repeated.get_if<HttpClientEvent>()) as HttpClientEvent).kind != HttpClientEventKind.Complete {
+        return 17;
+      }
+
+      if client.Url().IsSecure() {
+        if client.Shutdown().IsErr() {
+          return 18;
+        }
+      } else {
+        token.Cancel();
+        if client.Next(resolver).IsErr() {
+          return 19;
+        }
+      }
+
+      client.Close();
+      if client.Next(resolver).IsOk() {
+        return 20;
+      }
+
+      return 0;
     }
   }
+
   return 21;
 }

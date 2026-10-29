@@ -1,116 +1,361 @@
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
 /** @brief Imported producer-driven TCP convenience client acceptance. */
 import "stdlib:stdlib.ny";
 import "net_core:net_core.ny";
 import "http:http.ny";
 @extern("C") func HttpFixturePort() -> int32;
+
 @extern("C") func HttpFixtureCase() -> int32;
-func buffer(text: ref string) -> NetBuffer { return (NetBuffer.CopyFrom(NetBytes.FromString(text)).get_if<NetBuffer>()) as NetBuffer; }
+
+func buffer(text: ref string) -> NetBuffer {
+  return (NetBuffer.CopyFrom(NetBytes.FromString(text)).get_if<NetBuffer>()) as NetBuffer;
+}
+
 func main() -> int32 {
   let n: int32 = HttpFixtureCase();
-  let endpoint: NetEndpoint = (NetEndpoint.New(IpAddress.V4(127u8,0u8,0u8,1u8),HttpFixturePort()).get_if<NetEndpoint>()) as NetEndpoint;
+  let endpoint: NetEndpoint = (NetEndpoint.New(
+    IpAddress.V4(127u8, 0u8, 0u8, 1u8),
+    HttpFixturePort()
+  ).get_if<NetEndpoint>()) as NetEndpoint;
   var token: NetCancellation = NetCancellation.New();
-  var timeout: uint64 = 8000000000u64; if n==12 || n==13 { timeout=160000000u64; }
-  let options: NetOperationOptions = NetOperationOptions{cancellation:token,deadline:NetDeadline.After(NetClock.NowNanoseconds(),timeout)};
-  var opened: Result<TcpConnection,NetError> = TcpConnection.Dial(endpoint,options); if opened.IsErr() { return 1; }
+  var timeout: uint64 = 8000000000u64;
+  if n == 12 || n == 13 {
+    timeout = 160000000u64;
+  }
+
+  let options: NetOperationOptions = NetOperationOptions{
+    cancellation: token,
+    deadline: NetDeadline.After(NetClock.NowNanoseconds(), timeout)
+  };
+  var opened: Result<TcpConnection, NetError> = TcpConnection.Dial(endpoint, options);
+  if opened.IsErr() {
+    return 1;
+  }
+
   var connection: TcpConnection = move((opened.get_if<TcpConnection>()) as TcpConnection);
   var framing: string = "Content-Length: 6\r\n";
-  if n==2 { framing="Transfer-Encoding: chunked\r\nTrailer: X-End\r\n"; }
-  if n==10 { framing="Content-Length: 67108864\r\n"; }
-  if n==3 || n==4 || n==6 || n==7 || n==11 || n==12 || n==14 { framing=framing.Concat("Expect: 100-continue\r\n"); }
+  if n == 2 {
+    framing = "Transfer-Encoding: chunked\r\nTrailer: X-End\r\n";
+  }
+
+  if n == 10 {
+    framing = "Content-Length: 67108864\r\n";
+  }
+
+  if n == 3 || n == 4 || n == 6 || n == 7 || n == 11 || n == 12 || n == 14 {
+    framing = framing.Concat("Expect: 100-continue\r\n");
+  }
+
   let wire: string = "POST /upload HTTP/1.1\r\nHost: localhost\r\n".Concat(framing).Concat("\r\n");
   let head: NetBuffer = buffer(wire);
-  let limits: HttpClientLimits = HttpClientLimits{max_retained_request_bytes:32768,body:HttpBodyLimits{max_body_bytes:67108864u64}};
-  if n==1 {
-    if HttpTcpClient.NewStreaming(connection,head,limits,options,-1).IsOk() || !connection.IsOpen() { return 2; }
-    if HttpTcpClient.NewStreaming(connection,buffer("bad"),limits,options,80).IsOk() || !connection.IsOpen() { return 3; }
+  let limits: HttpClientLimits = HttpClientLimits{
+    max_retained_request_bytes: 32768,
+    body: HttpBodyLimits{max_body_bytes: 67108864u64}
+  };
+  if n == 1 {
+    if HttpTcpClient.NewStreaming(connection, head, limits, options, -1).IsOk() || !connection.IsOpen() {
+      return 2;
+    }
+
+    if HttpTcpClient.NewStreaming(connection, buffer("bad"), limits, options, 80).IsOk()
+      || !connection.IsOpen() {
+      return 3;
+    }
   }
-  var wait_ms: int32 = 1000; if n==6 { wait_ms=80; } if n==11 { wait_ms=40; }
-  var made: Result<HttpTcpClient,HttpClientError> = HttpTcpClient.NewStreaming(connection,head,limits,options,wait_ms);
-  if made.IsErr() || connection.IsOpen() { return 4; }
+
+  var wait_ms: int32 = 1000;
+  if n == 6 {
+    wait_ms = 80;
+  }
+
+  if n == 11 {
+    wait_ms = 40;
+  }
+
+  var made: Result<HttpTcpClient, HttpClientError> = HttpTcpClient.NewStreaming(
+    connection,
+    head,
+    limits,
+    options,
+    wait_ms
+  );
+  if made.IsErr() || connection.IsOpen() {
+    return 4;
+  }
+
   var original: HttpTcpClient = move((made.get_if<HttpTcpClient>()) as HttpTcpClient);
   var client: HttpTcpClient = move(original);
-  if n==1 {
-    if client.SupplyBody(buffer("abc")).IsOk() || client.FinishBody(new <HttpField>[0]).IsOk() { return 6; }
+  if n == 1 {
+    if client.SupplyBody(buffer("abc")).IsOk() || client.FinishBody(new <HttpField>[0]).IsOk() {
+      return 6;
+    }
   }
+
   var large: owned <uint8>[] = new <uint8>[16384];
-  var i: int32=0; while i<16384 { large[i]=97u8; i=i+1; }
-  let bulk: NetBuffer = (NetBuffer.CopyFrom((NetBytes.FromRaw(&large[0],16384 as intptr).get_if<NetBytes>()) as NetBytes).get_if<NetBuffer>()) as NetBuffer;
-  var count: int32=0; var produced: int32=0; var status: int32=0; var complete: bool=false;
-  var info103: bool=false; var info100: bool=false; var text: StringBuffer=StringBuffer.New();
-  var maximum_next_ns: uint64=0u64;
-  var final_stats: HttpClientStats=HttpClientStats{}; var terminal: HttpClientError?=nil;
-  while count<10000 && !complete {
-    count=count+1;
-    let started: uint64=NetClock.NowNanoseconds();
-    let result: Result<HttpClientEvent,HttpClientError> = client.Next();
-    let elapsed: uint64=NetClock.NowNanoseconds()-started; if elapsed>maximum_next_ns { maximum_next_ns=elapsed; }
-    if result.IsErr() { terminal=(result.get_if<HttpClientError>()) as HttpClientError; break; }
-    let event: HttpClientEvent=(result.get_if<HttpClientEvent>()) as HttpClientEvent;
-    final_stats=event.stats;
-    if event.kind==HttpClientEventKind.Informational {
-      if event.head.Status()==103 { info103=true; }
-      if event.head.Status()==100 { info100=true; }
-      if n==8 { token.Cancel(); }
-      if n==9 && produced==1 {
-        let ended: Result<Unit,HttpClientError> = client.FinishBody(new <HttpField>[0]);
-        if ended.IsOk() { return 7; } terminal=(ended.get_if<HttpClientError>()) as HttpClientError; break;
-      }
-    }
-    if event.kind==HttpClientEventKind.NeedBody {
-      if n==4 || n==7 || n==11 || n==12 { return 8; }
-      if n==3 && (!info103 || !info100) { return 9; }
-      if n==8 && !info103 { Thread.Sleep(1u32); continue; }
-      if (n==5 || n==9) && produced==1 { Thread.Sleep(1u32); continue; }
-      if n==13 { if !info103 { Thread.Sleep(1u32); continue; } Thread.Sleep(220u32); }
-      if n==1 && produced==0 {
-        if client.SupplyBody(NetBuffer{}).IsOk() || client.SupplyBody(bulk).IsOk() { return 11; }
-      }
-      var admitted: Result<Unit,HttpClientError> = Unit{};
-      if n==10 { admitted=client.SupplyBody(bulk); produced=produced+1; }
-      else if produced<2 {
-        var payload: string="abc"; if produced==1 { payload="def"; }
-        admitted=client.SupplyBody(buffer(payload)); produced=produced+1;
-        if n==1 && produced==1 && client.FinishBody(new <HttpField>[0]).IsOk() { return 12; }
-      } else {
-        var trailers: owned <HttpField>[]=new <HttpField>[0]; if n==2 { trailers=new <HttpField>[]{HttpField{name:"X-End",value:"yes"}}; }
-        admitted=client.FinishBody(trailers);
-      }
-      if admitted.IsErr() { terminal=(admitted.get_if<HttpClientError>()) as HttpClientError; break; }
-    }
-    if event.kind==HttpClientEventKind.Head { status=event.head.Status(); }
-    if event.kind==HttpClientEventKind.Body { text.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8,event.buffer.Len() as int32)); }
-    complete=event.complete;
+  var i: int32 = 0;
+  while i<16384 {
+    large[i] = 97u8;
+    i = i + 1;
   }
-  if n==8 || n==9 || n==12 || n==13 || n==14 {
-    if terminal==nil { return 13; } let error: HttpClientError=terminal as HttpClientError;
-    if n==8 && (error.transport_error==nil || (error.transport_error as NetError).kind!=NetErrorKind.Cancelled || error.stats.request_bytes_sent!=wire.length as uint64) { return 14; }
-    if n==12 || n==13 {
-      if error.transport_error==nil || (error.transport_error as NetError).kind!=NetErrorKind.TimedOut || error.stats.request_bytes_sent!=wire.length as uint64 { return 15; }
+
+  let bulk: NetBuffer = (NetBuffer.CopyFrom((NetBytes.FromRaw(
+    &large[0],
+    16384 as intptr
+  ).get_if<NetBytes>()) as NetBytes).get_if<NetBuffer>()) as NetBuffer;
+  var count: int32 = 0;
+  var produced: int32 = 0;
+  var status: int32 = 0;
+  var complete: bool = false;
+  var info103: bool = false;
+  var info100: bool = false;
+  var text: StringBuffer = StringBuffer.New();
+  var maximum_next_ns: uint64 = 0u64;
+  var final_stats: HttpClientStats = HttpClientStats{};
+  var terminal: HttpClientError? = nil;
+  while count<10000 && !complete {
+    count = count + 1;
+    let started: uint64 = NetClock.NowNanoseconds();
+    let result: Result<HttpClientEvent, HttpClientError> = client.Next();
+    let elapsed: uint64 = NetClock.NowNanoseconds() - started;
+    if elapsed>maximum_next_ns {
+      maximum_next_ns = elapsed;
     }
-    if n==9 && (error.protocol_error==nil || (error.protocol_error as HttpError).kind!=HttpErrorKind.UnexpectedEof || error.stats.request_bytes_sent!=wire.length as uint64+3u64) { return 16; }
-    if n==14 && (error.protocol_error==nil || (error.protocol_error as HttpError).kind!=HttpErrorKind.UnexpectedEof || error.stage!=HttpClientStage.ResponseBody) { return 17; }
-    client.Close(); let again: Result<HttpClientEvent,HttpClientError> =client.Next();
-    if again.IsOk() || ((again.get_if<HttpClientError>()) as HttpClientError).stats.request_bytes_sent!=error.stats.request_bytes_sent { return 18; }
+
+    if result.IsErr() {
+      terminal = (result.get_if<HttpClientError>()) as HttpClientError;
+      break;
+    }
+
+    let event: HttpClientEvent = (result.get_if<HttpClientEvent>()) as HttpClientEvent;
+    final_stats = event.stats;
+    if event.kind == HttpClientEventKind.Informational {
+      if event.head.Status() == 103 {
+        info103 = true;
+      }
+
+      if event.head.Status() == 100 {
+        info100 = true;
+      }
+
+      if n == 8 {
+        token.Cancel();
+      }
+
+      if n == 9 && produced == 1 {
+        let ended: Result<Unit, HttpClientError> = client.FinishBody(new <HttpField>[0]);
+        if ended.IsOk() {
+          return 7;
+        }
+
+        terminal = (ended.get_if<HttpClientError>()) as HttpClientError;
+        break;
+      }
+    }
+
+    if event.kind == HttpClientEventKind.NeedBody {
+      if n == 4 || n == 7 || n == 11 || n == 12 {
+        return 8;
+      }
+
+      if n == 3 && (!info103 || !info100) {
+        return 9;
+      }
+
+      if n == 8 && !info103 {
+        Thread.Sleep(1u32);
+        continue;
+      }
+
+      if (n == 5 || n == 9) && produced == 1 {
+        Thread.Sleep(1u32);
+        continue;
+      }
+
+      if n == 13 {
+        if !info103 {
+          Thread.Sleep(1u32);
+          continue;
+        }
+
+        Thread.Sleep(220u32);
+      }
+
+      if n == 1 && produced == 0 {
+        if client.SupplyBody(NetBuffer{}).IsOk() || client.SupplyBody(bulk).IsOk() {
+          return 11;
+        }
+      }
+
+      var admitted: Result<Unit, HttpClientError> = Unit{};
+      if n == 10 {
+        admitted = client.SupplyBody(bulk);
+        produced = produced + 1;
+      } else if produced<2 {
+        var payload: string = "abc";
+        if produced == 1 {
+          payload = "def";
+        }
+
+        admitted = client.SupplyBody(buffer(payload));
+        produced = produced + 1;
+        if n == 1 && produced == 1 && client.FinishBody(new <HttpField>[0]).IsOk() {
+          return 12;
+        }
+      } else {
+        var trailers: owned <HttpField>[] = new <HttpField>[0];
+        if n == 2 {
+          trailers = new <HttpField>[] {
+            HttpField{name: "X-End", value: "yes"}
+          };
+        }
+
+        admitted = client.FinishBody(trailers);
+      }
+
+      if admitted.IsErr() {
+        terminal = (admitted.get_if<HttpClientError>()) as HttpClientError;
+        break;
+      }
+    }
+
+    if event.kind == HttpClientEventKind.Head {
+      status = event.head.Status();
+    }
+
+    if event.kind == HttpClientEventKind.Body {
+      text.Append(string.ViewFrom(event.buffer.Bytes().Data() as *const int8, event.buffer.Len() as int32));
+    }
+
+    complete = event.complete;
+  }
+
+  if n == 8 || n == 9 || n == 12 || n == 13 || n == 14 {
+    if terminal == nil {
+      return 13;
+    }
+
+    let error: HttpClientError = terminal as HttpClientError;
+    if n == 8
+      && (
+        error.transport_error == nil || (
+          error.transport_error as NetError
+        ).kind != NetErrorKind.Cancelled || error.stats.request_bytes_sent != wire.length as uint64
+      ) {
+      return 14;
+    }
+
+    if n == 12 || n == 13 {
+      if error.transport_error == nil
+        || (error.transport_error as NetError).kind != NetErrorKind.TimedOut
+        || error.stats.request_bytes_sent != wire.length as uint64 {
+        return 15;
+      }
+    }
+
+    if n == 9
+      && (
+        error.protocol_error == nil || (
+          error.protocol_error as HttpError
+        ).kind != HttpErrorKind.UnexpectedEof || error.stats.request_bytes_sent != wire.length as uint64 + 3u64
+      ) {
+      return 16;
+    }
+
+    if n == 14
+      && (
+        error.protocol_error == nil || (
+          error.protocol_error as HttpError
+        ).kind != HttpErrorKind.UnexpectedEof || error.stage != HttpClientStage.ResponseBody
+      ) {
+      return 17;
+    }
+
+    client.Close();
+    let again: Result<HttpClientEvent, HttpClientError> = client.Next();
+    if again.IsOk()
+      || (
+        (again.get_if<HttpClientError>()) as HttpClientError
+      ).stats.request_bytes_sent != error.stats.request_bytes_sent {
+      return 18;
+    }
+
     return 0;
   }
-  if terminal!=nil || !complete { return 19; }
-  var expected: int32=200; if n==4 { expected=417; } if n==5 { expected=409; } if n==7 || n==10 || n==11 { expected=413; }
-  var content: string="ok"; if expected!=200 { content="no"; }
-  if status!=expected || !text.Take().Equal(content) { return 20; }
-  let upload: HttpUploadState=(client.UploadState().get_if<HttpUploadState>()) as HttpUploadState;
+
+  if terminal != nil || !complete {
+    return 19;
+  }
+
+  var expected: int32 = 200;
+  if n == 4 {
+    expected = 417;
+  }
+
+  if n == 5 {
+    expected = 409;
+  }
+
+  if n == 7 || n == 10 || n == 11 {
+    expected = 413;
+  }
+
+  var content: string = "ok";
+  if expected != 200 {
+    content = "no";
+  }
+
+  if status != expected || !text.Take().Equal(content) {
+    return 20;
+  }
+
+  let upload: HttpUploadState = (client.UploadState().get_if<HttpUploadState>()) as HttpUploadState;
   // A fixed-length peer can respond after its last payload byte, before the
   // caller receives NeedBody and explicitly closes the producer. That valid
   // race stops the unfinished producer even though the complete payload arrived.
-  if expected==200 && upload!=HttpUploadState.Finished && (n==2 || upload!=HttpUploadState.Stopped || produced!=2) { return 21; }
-  if expected!=200 && upload!=HttpUploadState.Stopped { return 22; }
-  if n==10 {
-    let accepted: uint64=final_stats.request_bytes_sent-wire.length as uint64;
-    if accepted==0u64 || accepted>=67108864u64 || produced<2 || maximum_next_ns<100000000u64 { return 23; }
-  } else {
-    var bytes: uint64=6u64; if n==2 { bytes=33u64; } if n==4 || n==7 || n==11 { bytes=0u64; } if n==5 { bytes=3u64; }
-    if final_stats.request_bytes_sent!=wire.length as uint64+bytes { return 24; }
+  if expected == 200
+    && upload != HttpUploadState.Finished
+    && (n == 2 || upload != HttpUploadState.Stopped || produced != 2) {
+    return 21;
   }
-  token.Cancel(); let done: Result<HttpClientEvent,HttpClientError> =client.Next();
-  if done.IsErr() || ((done.get_if<HttpClientEvent>()) as HttpClientEvent).kind!=HttpClientEventKind.Complete { return 25; }
-  client.Close(); return 0;
+
+  if expected != 200 && upload != HttpUploadState.Stopped {
+    return 22;
+  }
+
+  if n == 10 {
+    let accepted: uint64 = final_stats.request_bytes_sent - wire.length as uint64;
+    if accepted == 0u64 || accepted >= 67108864u64 || produced<2 || maximum_next_ns<100000000u64 {
+      return 23;
+    }
+  } else {
+    var bytes: uint64 = 6u64;
+    if n == 2 {
+      bytes = 33u64;
+    }
+
+    if n == 4 || n == 7 || n == 11 {
+      bytes = 0u64;
+    }
+
+    if n == 5 {
+      bytes = 3u64;
+    }
+
+    if final_stats.request_bytes_sent != wire.length as uint64 + bytes {
+      return 24;
+    }
+  }
+
+  token.Cancel();
+  let done: Result<HttpClientEvent, HttpClientError> = client.Next();
+  if done.IsErr()
+    || ((done.get_if<HttpClientEvent>()) as HttpClientEvent).kind != HttpClientEventKind.Complete {
+    return 25;
+  }
+
+  client.Close();
+
+  return 0;
 }
