@@ -312,7 +312,7 @@ Automatic-follow acceptance composes those same protocol and explicit-redirect
 suites with TCP/HTTPS routing through the optional adapter:
 
 ```sh
-python3 scripts/accept_follow.py --sdk /path/to/sdk-1.0.2 --compiler /path/to/sdk-1.0.2/hosts/HOST/bin/nyrac \
+python3 scripts/accept_follow.py --sdk /path/to/sdk-1.0.5 --compiler /path/to/sdk-1.0.5/hosts/HOST/bin/nyrac \
   --openssl-root /path/to/openssl-3.5.9 --out-dir /external/cache/http-follow
 ```
 
@@ -465,16 +465,14 @@ sources does not build or link those native libraries.
 dependencies:
   http:
     git: https://github.com/nylang/http.git
-    rev: main
+    rev: 6eeb23ed00615a3823d67f3f33f21e55387075a1
 ```
 
-Native `nyra` 1.0.3 or later handles explicit dependency acquisition. Use
-`nyra lock ./app` to pin the initial branch selector, commit `nyra.lock`, then
-`nyra fetch ./app --frozen` for repeatable preparation. Normal compilation and
-analysis never fetch. The native manager's public SDK delivery is separate;
-published SDK 1.0.2 does not include it. SDK 1.0.3 v2 locked SDK-runtime loading
-requires the `buglist.sdk_portable_lock` compiler follow-up; the unchanged
-accepted bootstrap does not include that follow-up.
+Use native `nyra` from the matching SDK 1.0.5. Run `nyra lock ./app`, commit
+`nyra.lock`, then use `nyra fetch ./app --frozen` for repeatable preparation.
+The example selects an existing public development commit with this API.
+Compilation and analysis consume prepared dependencies without fetching them.
+SDK/package publication and historical older-SDK acceptance remain separate.
 
 For local development, map these package names to editable entries in a common
 `workspace.yaml`. Keep public Git declarations in package manifests; workspace
@@ -622,5 +620,5 @@ See [module responsibilities, ownership and dependency boundaries](ARCHITECTURE.
 1.0.5 P7 analyzer candidate (or a later SDK containing those rules); the
 published 1.0.4 analyzer does not implement them. `import: default` inherits
 the selected workspace profile when present, otherwise analyzer SDK defaults.
-No sibling source path is required. Run `nyra-analyzer lint . --json`. Existing
-violations remain migration debt; lint success is not runtime qualification.
+No sibling source path is required. Run `nyra-analyzer lint . --json`. Lint checks
+coding rules; runtime qualification is a separate gate.
