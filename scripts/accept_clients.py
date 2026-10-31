@@ -8,7 +8,7 @@ import argparse, hashlib, json, os
 from pathlib import Path
 import platform, shutil, socket, ssl, subprocess, sys, threading, time
 from accept import digest, sources
-from sdk_layout import sdk_package
+from sdk_layout import sdk_package, sdk_entry
 PACKAGE=Path(__file__).resolve().parents[1]
 COMMON={1:'fixed-informational',2:'chunked-upload-trailers',3:'eof-body',4:'truncated-fixed',5:'framing-conflict',6:'upgrade-rejected',8:'cancelled-constructor',9:'expired-constructor',10:'cancel-buffered-body',11:'expire-buffered-body',12:'retained-options',17:'durable-completion',18:'response-body-cap',19:'informational-cap',20:'missing-final',22:'ipv4-identity',23:'dns-case',25:'deadline-native-wait',27:'invalid-request-adoption',28:'expect-rejected',29:'streaming-large-response',40:'url-dns-open',41:'url-numeric-bypass',42:'url-unspecified-family',43:'url-escaped-query',44:'url-native-deadline',45:'url-retained-options'}
 SECURE={7:'unauthenticated-eof',13:'host-peer-mismatch',14:'certificate-name-mismatch',15:'trust-unavailable',16:'alpn-offer-rejected',24:'ipv6-identity',31:'alpn-absent',32:'certificate-untrusted'}
@@ -187,7 +187,7 @@ def main():
         stage=out/'project'
         for name,path in packages.items():
             shutil.copytree(path,stage/name,ignore=shutil.ignore_patterns('.git','docs','__pycache__'))
-            deps='  stdlib:\n    precompiled: '+json.dumps(str(runtime))+'\n'
+            deps='  stdlib:\n    precompiled: '+json.dumps(str(sdk_entry(sdk, host, 'stdlib')))+'\n'
             for dep in {'http':['net_core'],'http_tls':['http','tls','net_core'],'tls':['net_core'],'net_core':[]}[name]:deps+='  '+dep+':\n    path: ../'+dep+'\n'
             (stage/name/'package.yaml').write_text('name: '+name+'\nversion: 0.1.0\nlicense: MIT\ndependencies:\n'+deps+'directories:\n  interface:\n    - interface\n  private:\n    - private\n    - tests\n')
         report['staged_manifest_sha256']={name:digest(stage/name/'package.yaml') for name in packages}

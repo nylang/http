@@ -14,7 +14,7 @@ import shutil
 import subprocess
 import sys
 
-from sdk_layout import sdk_package
+from sdk_layout import sdk_package, sdk_entry
 PACKAGE = Path(__file__).resolve().parents[1]
 
 def digest(path: Path) -> str:
@@ -78,7 +78,7 @@ def main() -> int:
         stage = output / 'project'
         for name, source in [('http', PACKAGE), ('net_core', net)]:
             shutil.copytree(source, stage / name, ignore=shutil.ignore_patterns('.git', '__pycache__', 'docs'))
-            dependencies = '  stdlib:\n    precompiled: ' + json.dumps(str(stdlib)) + '\n'
+            dependencies = '  stdlib:\n    precompiled: ' + json.dumps(str(sdk_entry(sdk, host, 'stdlib'))) + '\n'
             if name == 'http': dependencies += '  net_core:\n    path: ../net_core\n'
             (stage / name / 'package.yaml').write_text('name: ' + name + '\nversion: 0.1.0\nlicense: MIT\ndependencies:\n' + dependencies + 'directories:\n  interface:\n    - interface\n  private:\n    - private\n    - tests\n')
         report['staged_manifest_sha256'] = {name: digest(stage / name / 'package.yaml') for name in ('http', 'net_core')}
