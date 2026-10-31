@@ -14,12 +14,13 @@ def main():
     manifest=(root/'package.yaml').read_text();name=re.search(r'^name: (\S+)',manifest,re.M)[1];version=re.search(r'^version: (\S+)',manifest,re.M)[1]
     if '\n    path:' in manifest:raise ValueError('public manifest contains local dependencies')
     commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip();lock=json.loads((root/'release.lock.json').read_text());receipts={}
+    if set(lock['sdk']['hosts'])!={'darwin-arm64','darwin-x86_64','linux-x86_64','windows-x86_64'}:raise ValueError('four qualified SDK host pins are required before source packaging')
     for path in a.receipts.rglob('ci-report.json'):
         r=json.loads(path.read_text());host=r['host']
         if host in receipts or host not in lock['sdk']['hosts'] or r['status']!='passed' or r['package']!=name or r['source_commit']!=commit or r['sdk_manifest_sha256']!=lock['sdk']['hosts'][host]['manifest_sha256'] or r['sdk_archive_sha256']!=lock['sdk']['hosts'][host]['archive_sha256'] or r['source_sha256'][name]!=sources(root):raise ValueError('source qualification mismatch')
         receipts[host]=r
     if set(receipts)!=set(lock['sdk']['hosts']):raise ValueError('four-host acceptance incomplete')
-    out.mkdir(parents=True);record={'format':'nyra-http-source-release-v1','package':name,'version':version,'source_commit':commit,'sdk_protocol_acceptance':lock['sdk'],'git_consumer_requirement':'Corrected Nyra 1.0.4 tools; no SDK 1.0.4 publication is implied.','manifest_rewrite':'None: original immutable Git dependency declarations are preserved.','hosts':{h:{'profile':r['profile'],'source_commits':r['source_commits'],'compiler_sha256':r['compiler_sha256']} for h,r in receipts.items()}}
+    out.mkdir(parents=True);record={'format':'nyra-http-source-release-v1','package':name,'version':version,'source_commit':commit,'sdk_protocol_acceptance':lock['sdk'],'git_consumer_requirement':'The exact SDK version and manifest/archives pinned in release.lock.json.','manifest_rewrite':'None: original immutable Git dependency declarations are preserved.','hosts':{h:{'profile':r['profile'],'source_commits':r['source_commits'],'compiler_sha256':r['compiler_sha256']} for h,r in receipts.items()}}
     (out/'release.json').write_text(json.dumps(record,indent=2)+'\n');archive=out/(name+'-'+version+'-source.tar.gz');prefix=name+'-'+version
     names=filter(None,subprocess.check_output(['git','-C',str(root),'ls-files','-z']).decode().split('\0'))
     with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as bundle:

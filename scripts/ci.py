@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse,json,os,platform,re,shutil,subprocess,sys,tarfile,urllib.request,zipfile
 from pathlib import Path,PurePosixPath
 from accept import digest,sources
+from native_provider import source_layout
 PACKAGE=Path(__file__).resolve().parents[1]
 def revision(path):return subprocess.check_output(['git','-C',str(path),'rev-parse','HEAD'],text=True).strip()
 def manifest_dependency(path,name):
@@ -18,7 +19,8 @@ def main():
     if out.exists():p.error('new external output required')
     out.mkdir(parents=True);owner=a.adapter_root.resolve() if a.adapter_root else PACKAGE;kind='http_tls' if a.adapter_root else 'http'
     win=os.name=='nt';suffix='.exe' if win else '';host={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64')
-    lock=json.loads((owner/'release.lock.json').read_text());sdk_lock=lock['sdk'];pin=sdk_lock['hosts'][host];name='nyra-sdk-'+sdk_lock['version']+'-'+host
+    lock=json.loads((owner/'release.lock.json').read_text());sdk_lock=lock['sdk'];pin=sdk_lock['hosts'].get(host);name='nyra-sdk-'+sdk_lock['version']+'-'+host
+    if pin is None:raise ValueError('qualified SDK '+sdk_lock['version']+' pins are pending for '+host)
     report={'format':'nyra-http-release-ci-v1','status':'running','package':kind,'host':host,'source_commit':revision(owner),'commands':[],'sdk_version':sdk_lock['version'],'sdk_archive_sha256':pin['archive_sha256'],'sdk_manifest_sha256':pin['manifest_sha256']}
     def save():(out/'ci-report.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd,env=None):
@@ -28,6 +30,7 @@ def main():
     def clone(name,url,ref):
         dest=out/'packages'/name;run(name+'-init',['git','init',dest]);run(name+'-eol',['git','-C',dest,'config','core.autocrlf','false']);run(name+'-remote',['git','-C',dest,'remote','add','origin',url]);run(name+'-fetch',['git','-C',dest,'fetch','--depth','1','origin',ref]);run(name+'-checkout',['git','-C',dest,'checkout','--detach','FETCH_HEAD']);assert revision(dest)==ref;return dest
     try:
+        run('provider-layout-unit',[sys.executable,PACKAGE/'tests/tools/test_native_provider.py'])
         run('sdk-layout-unit',[sys.executable,PACKAGE/'tests/tools/test_sdk_layout.py'])
         if a.sdk:
             sdk=a.sdk.expanduser().resolve()
@@ -64,7 +67,7 @@ def main():
             provider_env=os.environ.copy()
             if sys.platform=='darwin':provider_env['MACOSX_DEPLOYMENT_TARGET']='14.0'
             if a.openssl_root:
-                provider=a.openssl_root.expanduser().resolve()
+                provider=source_layout(a.openssl_root.expanduser(),out/'openssl-provider',win)
             else:
                 run('openssl',[sys.executable,tls/'scripts/build_openssl.py','--out-dir',out/'openssl','--perl','C:/Strawberry/perl/bin/perl.exe' if win else 'perl','--build-cli','--jobs','4'],provider_env)
                 provider=out/'openssl'/('openssl-'+json.loads((tls/'openssl.lock.json').read_text())['version'])
