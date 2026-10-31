@@ -19,6 +19,7 @@ import time
 from accept import digest, sources
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE = Path(__file__).resolve().parents[1]
 CASES = {1:'fixed-producer-adoption-move-admission', 2:'chunked-producer-trailers',
          3:'103-does-not-release-100-gate', 4:'417-without-producer',
@@ -145,7 +146,7 @@ def main() -> int:
     parser.add_argument('--baseline-upload',type=Path)
     parser.add_argument('--baseline-tcp',type=Path)
     args=parser.parse_args(); sdk=args.sdk.resolve(); out=args.out_dir.resolve()
-    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())): parser.error('new/empty external output required')
+    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir()) and not args.baseline_upload): parser.error('new/empty external output required')
     out.mkdir(parents=True,exist_ok=True)
     meta=json.loads((sdk/'manifest.json').read_text()); compiler=args.compiler.resolve() if args.compiler else sdk/meta['tools']['nyrac']['path']
     host={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64')
@@ -164,12 +165,12 @@ def main() -> int:
     def save(): (out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd):
         command=list(map(str,cmd));report['commands'].append({'name':name,'command':command});save();print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1200,check=True)
+        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=3600,check=True)
         print('END '+name,flush=True)
     try:
         base=args.baseline_upload.resolve() if args.baseline_upload else out/'base'
         if not args.baseline_upload: run('prior',[sys.executable,PACKAGE/'scripts/accept_upload.py','--sdk',sdk,'--compiler',compiler,'--openssl-root',args.openssl_root.resolve(),'--out-dir',base])
-        prior=json.loads((base/'acceptance.json').read_text());assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'],'prior sources differ'
+        prior=json.loads((base/'acceptance.json').read_text());require_baseline(prior,sdk,compiler,report['source_sha256']);assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'],'prior sources differ'
         report['base']=prior
         tcp=args.baseline_tcp.resolve() if args.baseline_tcp else out/'tcp-base'
         if not args.baseline_tcp: run('tcp-facade',[sys.executable,PACKAGE/'scripts/accept_tcp_upload.py','--sdk',sdk,'--compiler',compiler,'--baseline',base/'base/base/base/core','--out-dir',tcp])

@@ -8,6 +8,7 @@ import argparse, json, os, platform, socket, ssl, subprocess, sys, threading, ti
 from pathlib import Path
 from accept import digest, sources
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE=Path(__file__).resolve().parents[1]
 CASES={1:'post-302-get',2:'post-307-replay-opt-in',3:'post-307-rejected',4:'cross-origin-filter',5:'cross-origin-rejected',6:'cycle-hop-limit',7:'duplicate-location',8:'cancel-before-follow',9:'relative-303-no-body-drain',10:'malformed-location',11:'original-deadline',12:'missing-location-terminal'}
 
@@ -94,9 +95,9 @@ class RedirectPeer:
         return {'case':self.case,'name':(CASES|{13:'https-downgrade-rejected'})[self.case],'status':'passed','duration_seconds':round(time.monotonic()-start,3),'requests':self.records}
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--sdk',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--http-tls',type=Path);p.add_argument('--tls',type=Path,default=PACKAGE.parent/'tls');p.add_argument('--openssl-root',type=Path);p.add_argument('--openssl-cli');p.add_argument('--out-dir',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--baseline',type=Path);p.add_argument('--sdk',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--http-tls',type=Path);p.add_argument('--tls',type=Path,default=PACKAGE.parent/'tls');p.add_argument('--openssl-root',type=Path);p.add_argument('--openssl-cli');p.add_argument('--out-dir',type=Path,required=True);a=p.parse_args()
     out=a.out_dir.resolve();secure=a.http_tls is not None;sdk=a.sdk.resolve();compiler=a.compiler.resolve()
-    if out.exists() and any(out.iterdir()):p.error('new/empty external output required')
+    if out.exists() and any(out.iterdir()) and not a.baseline:p.error('new/empty external output required')
     if out==PACKAGE or PACKAGE in out.parents:p.error('outputs must be outside package')
     if secure and a.openssl_root is None:p.error('--openssl-root required for HTTPS')
     out.mkdir(parents=True,exist_ok=True)
@@ -111,13 +112,16 @@ def main():
     def save():(out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd):
         report['commands'].append({'name':name,'command':list(map(str,cmd))});save();print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log:subprocess.run(list(map(str,cmd)),env=env,stdout=log,stderr=subprocess.STDOUT,timeout=600,check=True)
+        with (out/(name+'.log')).open('w') as log:subprocess.run(list(map(str,cmd)),env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800,check=True)
         print('END '+name,flush=True)
     try:
         cmd=[sys.executable,PACKAGE/'scripts/accept_clients.py','--sdk',sdk,'--compiler',compiler,'--out-dir',out/'base']
         if secure:cmd+=['--http-tls',a.http_tls.resolve(),'--tls',a.tls.resolve(),'--openssl-root',a.openssl_root.resolve()]
         if a.openssl_cli:cmd+=['--openssl-cli',a.openssl_cli]
-        run('base',cmd);base=json.loads((out/'base/acceptance.json').read_text());assert base['status']=='passed';report['base']=base
+        if a.baseline:
+            if a.baseline.resolve()!=out/'base':raise ValueError('baseline must retain the existing local layout')
+        else:run('base',cmd)
+        base=json.loads((out/'base/acceptance.json').read_text());assert base['status']=='passed';require_baseline(base,sdk,compiler,report['source_sha256']);report['base']=base
         for mode in (['tcp','https'] if secure else ['tcp']):
             directory=out/'base'/('redirect-'+mode);directory.mkdir();deps='  http:\n    path: ../project/http\n  net_core:\n    path: ../project/net_core\n'
             if mode=='https':deps+='  tls:\n    path: ../project/tls\n  http_tls:\n    path: ../project/http_tls\n'

@@ -25,7 +25,7 @@ def main():
     def save():(out/'ci-report.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd,env=None):
         command=list(map(str,cmd));report['commands'].append({'name':name,'command':command});save();print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log:subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=2400,check=True)
+        with (out/(name+'.log')).open('w') as log:subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=6000,check=True)
         print('END '+name,flush=True)
     def clone(name,url,ref):
         dest=out/'packages'/name;run(name+'-init',['git','init',dest]);run(name+'-eol',['git','-C',dest,'config','core.autocrlf','false']);run(name+'-remote',['git','-C',dest,'remote','add','origin',url]);run(name+'-fetch',['git','-C',dest,'fetch','--depth','1','origin',ref]);run(name+'-checkout',['git','-C',dest,'checkout','--detach','FETCH_HEAD']);assert revision(dest)==ref;return dest

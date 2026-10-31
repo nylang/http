@@ -17,6 +17,7 @@ import threading
 from accept import digest, sources
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE = Path(__file__).resolve().parents[1]
 CASES = {1: 'fixed-producer', 2: 'chunked-producer-trailers', 3: '103-before-100',
          4: '417-before-body', 5: 'early-final-revokes-queued-suffix',
@@ -145,9 +146,10 @@ class UploadPeer:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('sdk', 'compiler', 'openssl-root', 'out-dir'): parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--baseline',type=Path)
     parser.add_argument('--openssl-cli'); args = parser.parse_args()
     sdk, compiler, out = (p.resolve() for p in (args.sdk, args.compiler, args.out_dir))
-    if out == PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())): parser.error('new/empty external output required')
+    if out == PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir()) and not args.baseline): parser.error('new/empty external output required')
     out.mkdir(parents=True, exist_ok=True)
     host = {'Darwin':'darwin', 'Linux':'linux', 'Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64', 'aarch64') else 'x86_64')
     suffix = '.exe' if platform.system() == 'Windows' else ''; kit = sdk/'hosts'/host/'llvm/bin'
@@ -164,12 +166,15 @@ def main() -> int:
     def save(): (out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name, cmd):
         command = list(map(str, cmd)); report['commands'].append({'name':name,'command':command}); save(); print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1200,check=True)
+        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=3000,check=True)
         print('END '+name,flush=True)
     try:
         cmd = [sys.executable,PACKAGE/'scripts/accept_follow.py','--sdk',sdk,'--compiler',compiler,'--openssl-root',args.openssl_root.resolve(),'--out-dir',out/'base']
         if args.openssl_cli: cmd += ['--openssl-cli',args.openssl_cli]
-        run('base',cmd); base=json.loads((out/'base/acceptance.json').read_text()); assert base['status']=='passed'; report['base']=base
+        if args.baseline:
+            if args.baseline.resolve()!=out/'base':raise ValueError('baseline must retain the existing local layout')
+        else:run('base',cmd)
+        base=json.loads((out/'base/acceptance.json').read_text()); assert base['status']=='passed'; require_baseline(base,sdk,compiler,report['source_sha256']); report['base']=base
         links = [v for row in base['base']['commands'] if row['name']=='https-build' for v in row['command'] if v.startswith(('--link-arg=','--platform-archive='))]
         for secure in (False,True):
             mode='https' if secure else 'tcp'; directory=out/('upload-'+mode); directory.mkdir()

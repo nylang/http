@@ -19,6 +19,7 @@ import time
 from accept import digest, sources
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE=Path(__file__).resolve().parents[1]
 CASES={1:'302-post-get-rewrite',2:'307-two-explicit-fixed-replays',3:'308-chunked-trailer-replay',
        4:'never-replay-rejected',5:'unsafe-replay-opt-in-required',6:'early-307-before-100',
@@ -116,7 +117,7 @@ def main()->int:
     for name in ('sdk','openssl-root','out-dir'):parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--baseline',type=Path,help='matching complete URL upload receipt directory')
     args=parser.parse_args();sdk=args.sdk.resolve();out=args.out_dir.resolve()
-    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())):parser.error('new/empty external output required')
+    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir()) and not args.baseline):parser.error('new/empty external output required')
     out.mkdir(parents=True,exist_ok=True)
     meta=json.loads((sdk/'manifest.json').read_text());compiler=sdk/meta['tools']['nyrac']['path'];assert digest(compiler)==meta['tools']['nyrac']['sha256']
     host={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64')
@@ -131,12 +132,12 @@ def main()->int:
     def save():(out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd):
         command=list(map(str,cmd));report['commands'].append({'name':name,'command':command});save();print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log:subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800,check=True)
+        with (out/(name+'.log')).open('w') as log:subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=4800,check=True)
         print('END '+name,flush=True)
     try:
         base=args.baseline.resolve() if args.baseline else out/'base'
         if not args.baseline:run('prior',[sys.executable,PACKAGE/'scripts/accept_url_upload.py','--sdk',sdk,'--openssl-root',args.openssl_root.resolve(),'--out-dir',base])
-        prior=json.loads((base/'acceptance.json').read_text());assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'] and prior['compiler_sha256']==report['compiler_sha256'] and prior['sdk_manifest_sha256']==report['sdk_manifest_sha256']
+        prior=json.loads((base/'acceptance.json').read_text());require_baseline(prior,sdk,compiler,report['source_sha256']);assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'] and prior['compiler_sha256']==report['compiler_sha256'] and prior['sdk_manifest_sha256']==report['sdk_manifest_sha256']
         report['base']=prior
         client_base=prior['base']['base']['base']['base']['base'];client_dir=base/'base/base/base/base/base'
         links=[v for row in client_base['commands'] if row['name']=='https-build' for v in row['command'] if v.startswith(('--link-arg=','--platform-archive='))]

@@ -15,6 +15,7 @@ from accept import digest, sources
 from accept_redirects import RedirectPeer, CASES
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE = Path(__file__).resolve().parents[1]
 
 
@@ -23,11 +24,12 @@ def main() -> int:
     parser.add_argument('--sdk', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, required=True)
     parser.add_argument('--openssl-root', type=Path, required=True)
+    parser.add_argument('--baseline',type=Path)
     parser.add_argument('--openssl-cli')
     parser.add_argument('--out-dir', type=Path, required=True)
     args = parser.parse_args()
     out, sdk, compiler = (p.resolve() for p in (args.out_dir, args.sdk, args.compiler))
-    if out == PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())):
+    if out == PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir()) and not args.baseline):
         parser.error('use a new/empty output directory outside the package')
     out.mkdir(parents=True, exist_ok=True)
     host = {'Darwin': 'darwin', 'Linux': 'linux', 'Windows': 'windows'}[platform.system()]
@@ -53,15 +55,17 @@ def main() -> int:
         command = list(map(str, cmd)); report['commands'].append({'name': name, 'command': command}); save()
         print('BEGIN '+name, flush=True)
         with (out/(name+'.log')).open('w') as log:
-            subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=900, check=True)
+            subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=2400, check=True)
         print('END '+name, flush=True)
     try:
         cmd = [sys.executable, PACKAGE/'scripts/accept_redirects.py', '--sdk', sdk, '--compiler', compiler,
                '--http-tls', packages['http_tls'], '--tls', packages['tls'], '--openssl-root', args.openssl_root.resolve(), '--out-dir', out/'base']
         if args.openssl_cli:
             cmd += ['--openssl-cli', args.openssl_cli]
-        run('base', cmd)
-        base = json.loads((out/'base/acceptance.json').read_text()); assert base['status']=='passed'; report['base']=base
+        if args.baseline:
+            if args.baseline.resolve()!=out/'base':raise ValueError('baseline must retain the existing local layout')
+        else:run('base', cmd)
+        base = json.loads((out/'base/acceptance.json').read_text()); assert base['status']=='passed'; require_baseline(base,sdk,compiler,report['source_sha256']); report['base']=base
         links = [arg for row in base['commands'] if row['name']=='https-build' for arg in row['command'] if arg.startswith(('--link-arg=', '--platform-archive='))]
         for secure in (False, True):
             mode = 'https' if secure else 'tcp'

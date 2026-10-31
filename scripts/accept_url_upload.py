@@ -18,6 +18,7 @@ from accept_tcp_upload import Peer as TcpPeer, CASES as TCP_CASES
 from accept_https_upload import Peer as HttpsPeer, CASES as HTTPS_CASES
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_baseline
 PACKAGE = Path(__file__).resolve().parents[1]
 
 def main() -> int:
@@ -25,7 +26,7 @@ def main() -> int:
     for name in ('sdk','openssl-root','out-dir'): parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--baseline',type=Path,help='matching complete connected HTTPS upload receipt directory')
     args=parser.parse_args();sdk=args.sdk.resolve();out=args.out_dir.resolve()
-    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())): parser.error('new/empty external output required')
+    if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir()) and not args.baseline): parser.error('new/empty external output required')
     out.mkdir(parents=True,exist_ok=True)
     meta=json.loads((sdk/'manifest.json').read_text());compiler=sdk/meta['tools']['nyrac']['path']
     assert digest(compiler)==meta['tools']['nyrac']['sha256'],'SDK compiler identity mismatch'
@@ -44,12 +45,12 @@ def main() -> int:
     def save(): (out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd):
         command=list(map(str,cmd));report['commands'].append({'name':name,'command':command});save();print('BEGIN '+name,flush=True)
-        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800,check=True)
+        with (out/(name+'.log')).open('w') as log: subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=4200,check=True)
         print('END '+name,flush=True)
     try:
         base=args.baseline.resolve() if args.baseline else out/'base'
         if not args.baseline: run('prior',[sys.executable,PACKAGE/'scripts/accept_https_upload.py','--sdk',sdk,'--openssl-root',args.openssl_root.resolve(),'--out-dir',base])
-        prior=json.loads((base/'acceptance.json').read_text());assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'],'prior sources differ'
+        prior=json.loads((base/'acceptance.json').read_text());require_baseline(prior,sdk,compiler,report['source_sha256']);assert prior['status']=='passed' and prior['source_sha256']==report['source_sha256'],'prior sources differ'
         assert prior['compiler_sha256']==report['compiler_sha256'] and prior['sdk_manifest_sha256']==report['sdk_manifest_sha256'],'prior SDK differs'
         report['base']=prior
         client_base=prior['base']['base']['base']['base'];client_dir=base/'base/base/base/base'

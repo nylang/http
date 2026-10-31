@@ -4,7 +4,7 @@
 
 """Exercise connected TCP/optional verified HTTPS clients with controlled loopback peers."""
 from __future__ import annotations
-import argparse, hashlib, json, os
+import argparse, ast, hashlib, json, os
 from pathlib import Path
 import platform, shutil, socket, ssl, subprocess, sys, threading, time
 from accept import digest, sources
@@ -161,10 +161,10 @@ class Peer:
         return {'case':self.case,'name':(COMMON|SECURE)[self.case],'status':'passed','duration_seconds':round(time.monotonic()-started,3),**self.record}
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--sdk',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--resume',action='store_true');p.add_argument('--resume-source-commit');p.add_argument('--sdk',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True)
     p.add_argument('--http-tls',type=Path);p.add_argument('--tls',type=Path,default=PACKAGE.parent/'tls');p.add_argument('--openssl-root',type=Path);p.add_argument('--openssl-cli');p.add_argument('--out-dir',type=Path,required=True)
     a=p.parse_args();sdk=a.sdk.resolve();compiler=a.compiler.resolve();out=a.out_dir.resolve();secure=a.http_tls is not None
-    if out.exists() and any(out.iterdir()):p.error('new/empty external output required')
+    if out.exists() and any(out.iterdir()) and not a.resume:p.error('new/empty external output required')
     if secure and a.openssl_root is None:p.error('--openssl-root is required for HTTPS')
     if PACKAGE==out or PACKAGE in out.parents:p.error('outputs must be outside package')
     out.mkdir(parents=True,exist_ok=True);win=platform.system()=='Windows';suffix='.exe' if win else '';os_name={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()];arch='arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64';host=os_name+'-'+arch
@@ -176,8 +176,31 @@ def main():
     packages={'http':PACKAGE,'net_core':net}
     if secure:packages|={'http_tls':a.http_tls.resolve(),'tls':a.tls.resolve()}
     report={'format':'nyra-http-connected-clients-v1','status':'running','host':host,'compiler_origin':'public-sdk' if digest(compiler)==json.loads((sdk/'manifest.json').read_text())['tools']['nyrac']['sha256'] else 'source-candidate','compiler_sha256':digest(compiler),'sdk_version':json.loads((sdk/'manifest.json').read_text())['version'],'sdk_manifest_sha256':digest(sdk/'manifest.json'),'source_fallback_disabled':True,'source_sha256':{name:sources(path) for name,path in packages.items()},'commands':[],'cases':[],'url_control_cases':[],'plain_tls_link_inputs':[]}
+    completed=set()
+    if a.resume:
+        prior=json.loads((out/'acceptance.json').read_text())
+        if prior['sdk_manifest_sha256']!=report['sdk_manifest_sha256'] or prior['compiler_sha256']!=report['compiler_sha256'] or prior['host']!=host:raise ValueError('resume SDK/compiler/host changed')
+        if not a.resume_source_commit or len(a.resume_source_commit)!=40:raise ValueError('original tooling commit is required for interrupted-gate continuation')
+        for package, files in prior['source_sha256'].items():
+            for relative, checksum in files.items():
+                current=packages[package]/relative
+                if digest(current)==checksum:continue
+                if package!='http' or Path(relative).suffix!='.py':raise ValueError('resume package/fixture input changed')
+                old=subprocess.check_output(['git','show',a.resume_source_commit+':'+relative],cwd=PACKAGE)
+                if hashlib.sha256(old).hexdigest()!=checksum:raise ValueError('original tooling snapshot differs from receipt')
+                def semantic_helpers(text):
+                    return [ast.dump(node,include_attributes=False) for node in ast.parse(text).body if not isinstance(node,(ast.Import,ast.ImportFrom)) and not (isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)) and node.name=='main') and not isinstance(node,ast.If)]
+                if semantic_helpers(old)!=semantic_helpers(current.read_bytes()):raise ValueError('test generator/peer inputs changed; cannot reuse cases')
+        report['resume_original_tooling_commit']=a.resume_source_commit
+        completed={row['name'] for row in prior['commands'][:-1]}
+        report['commands']=list(prior['commands'])
+        report['previous_attempt']=prior
+        report['resume_scope']='Reuse complete core/build prerequisites; retry interrupted compilation and run connected behavior cases.'
     def save():(out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(name,cmd):
+        if name in completed:
+            if not (out/(name+'.log')).is_file():raise ValueError('missing completed step log')
+            return
         report['commands'].append({'name':name,'command':list(map(str,cmd))});save();print('BEGIN '+name,flush=True)
         with (out/(name+'.log')).open('w') as log:subprocess.run(list(map(str,cmd)),env=env,stdout=log,stderr=subprocess.STDOUT,timeout=300,check=True)
         print('END '+name,flush=True)
@@ -186,13 +209,13 @@ def main():
         report['core']=json.loads((out/'core/acceptance.json').read_text())
         stage=out/'project'
         for name,path in packages.items():
-            shutil.copytree(path,stage/name,ignore=shutil.ignore_patterns('.git','docs','__pycache__'))
+            shutil.copytree(path,stage/name,dirs_exist_ok=a.resume,ignore=shutil.ignore_patterns('.git','docs','__pycache__'))
             deps='  stdlib:\n    precompiled: '+json.dumps(str(sdk_entry(sdk, host, 'stdlib')))+'\n'
             for dep in {'http':['net_core'],'http_tls':['http','tls','net_core'],'tls':['net_core'],'net_core':[]}[name]:deps+='  '+dep+':\n    path: ../'+dep+'\n'
             (stage/name/'package.yaml').write_text('name: '+name+'\nversion: 0.1.0\nlicense: MIT\ndependencies:\n'+deps+'directories:\n  interface:\n    - interface\n  private:\n    - private\n    - tests\n')
         report['staged_manifest_sha256']={name:digest(stage/name/'package.yaml') for name in packages}
         fixture=out/'fixture.o';run('fixture',[env['CC'],'-std=c11','-O2','-Wall','-Wextra','-Werror','-D_CRT_SECURE_NO_WARNINGS','-c',PACKAGE/'tests/data/client_fixture.c','-o',fixture])
-        fixtures=out/'fixtures';fixtures.mkdir()
+        fixtures=out/'fixtures';fixtures.mkdir(exist_ok=a.resume)
         base_links=['--platform-archive='+str(runtime/'lib/libnyra_platform.a'),'--link-arg='+str(out/'core/net-native/libnet_core_native.a'),'--link-arg='+str(fixture)]
         base_links+=['--link-arg=-l'+name for name in (('ws2_32','iphlpapi') if win else ('pthread',))]
         dns_flags=['--cflag=-DNET_CORE_TEST_DNS']
@@ -201,7 +224,7 @@ def main():
         dns_fixture=out/'dns-fixture.o'
         run('dns-fixture',[env['CC'],'-std=c11','-O2','-Wall','-Wextra','-Werror','-c',net/'tests/native/n3_fixture.c','-o',dns_fixture])
         for mode in (['tcp','https'] if secure else ['tcp']):
-            directory=out/(mode+'-consumer');directory.mkdir();deps='  http:\n    path: ../project/http\n  net_core:\n    path: ../project/net_core\n'
+            directory=out/(mode+'-consumer');directory.mkdir(exist_ok=a.resume);deps='  http:\n    path: ../project/http\n  net_core:\n    path: ../project/net_core\n'
             links=base_links.copy()
             if mode=='https':
                 deps+='  http_tls:\n    path: ../project/http_tls\n  tls:\n    path: ../project/tls\n'
