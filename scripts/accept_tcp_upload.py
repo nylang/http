@@ -18,6 +18,7 @@ import time
 from accept import digest, sources
 
 from sdk_layout import sdk_package
+from baseline_receipt import require_equivalent_sources
 PACKAGE = Path(__file__).resolve().parents[1]
 CASES = {1:'fixed-producer-adoption-move-admission', 2:'chunked-producer-trailers',
          3:'103-does-not-release-100-gate', 4:'417-without-producer',
@@ -120,11 +121,16 @@ class Peer:
         return {'case':self.case,'name':CASES[self.case],'status':'passed','elapsed_seconds':time.monotonic()-started,**self.record}
 
 def main() -> int:
+    global PACKAGE
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('sdk','out-dir'): parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--compiler',type=Path)
+    parser.add_argument('--package-root',type=Path)
+    parser.add_argument('--baseline-source-commit')
     parser.add_argument('--baseline',type=Path,help='optional completed core acceptance directory for development; source inventories must match')
-    args=parser.parse_args(); sdk=args.sdk.resolve(); out=args.out_dir.resolve()
+    args=parser.parse_args();
+    if args.package_root:PACKAGE=args.package_root.resolve()
+    sdk=args.sdk.resolve(); out=args.out_dir.resolve()
     if out==PACKAGE or PACKAGE in out.parents or (out.exists() and any(out.iterdir())): parser.error('new/empty external output required')
     out.mkdir(parents=True,exist_ok=True)
     meta=json.loads((sdk/'manifest.json').read_text()); compiler=args.compiler.resolve() if args.compiler else sdk/meta['tools']['nyrac']['path']
@@ -149,7 +155,11 @@ def main() -> int:
         base=args.baseline.resolve() if args.baseline else out/'core'
         if not args.baseline: run('core',[sys.executable,PACKAGE/'scripts/accept.py','--sdk',sdk,'--compiler',compiler,'--out-dir',base])
         prior=json.loads((base/'acceptance.json').read_text()); assert prior['status']=='passed'
-        assert prior['source_sha256']==sources(PACKAGE) and prior['net_core_source_sha256']==report['net_core_source_sha256'],'baseline sources differ'
+        if prior['source_sha256']!=sources(PACKAGE):
+            if not args.baseline_source_commit:raise ValueError('baseline sources differ')
+            report['baseline_source_equivalence']=require_equivalent_sources(prior['source_sha256'],PACKAGE,args.baseline_source_commit)
+        assert prior['net_core_source_sha256']==report['net_core_source_sha256'],'baseline native sources differ'
+        report['qualification_tooling']={'path':str(Path(__file__).resolve()),'sha256':digest(Path(__file__)),'source_package_root':str(PACKAGE)}
         assert prior['compiler_sha256']==report['compiler_sha256'] and prior['sdk_manifest_sha256']==report['sdk_manifest_sha256'],'baseline SDK differs'
         report['base']=prior
         project=out/'consumer';project.mkdir()
