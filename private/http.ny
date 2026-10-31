@@ -55,10 +55,9 @@ pub struct HttpHeadParser {
   cell: arc<HttpParserData>?;
 }
 
-func http_fail(state: arc<HttpParserData>, kind: HttpErrorKind) -> HttpError {
-  var cell: arc<HttpParserData> = state;
-  let error: HttpError = HttpError{kind: kind, offset: cell.total};
-  cell.failure = error;
+method(HttpParserData) Fail(kind: HttpErrorKind) -> HttpError {
+  let error: HttpError = HttpError{kind: kind, offset: self.total};
+  self.failure = error;
 
   return error;
 }
@@ -67,7 +66,7 @@ func http_fail(state: arc<HttpParserData>, kind: HttpErrorKind) -> HttpError {
  * @brief Construct an incremental head parser for the selected request/response mode.
  * @returns A parser with validated limits, or InvalidArgument before allocating parser state.
  */
-pub func HttpNew(
+pub static method(HttpHeadParser) NewParser(
   response: bool,
   request_method: ref string,
   limits: ref HttpHeadLimits
@@ -91,11 +90,11 @@ pub func HttpNew(
     || caps.max_line_bytes > 65536
     || caps.max_fields < 1
     || caps.max_fields > 128 {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
-  if response && !HttpToken(request_method) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+  if response && !HttpLexeme.New(request_method).IsToken() {
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   let head: arc<HttpHeadData> = new arc<HttpHeadData>{response: response, minor: -1};
@@ -115,7 +114,7 @@ pub func HttpNew(
  *   above.
  */
 pub static method(HttpHeadParser) NewRequest(limits: ref HttpHeadLimits) -> Result<HttpHeadParser, HttpError> {
-  return HttpNew(false, "", limits);
+  return HttpHeadParser.NewParser(false, "", limits);
 }
 
 /**
@@ -128,7 +127,7 @@ pub static method(HttpHeadParser) NewResponse(
   request_method: ref string,
   limits: ref HttpHeadLimits
 ) -> Result<HttpHeadParser, HttpError> {
-  return HttpNew(true, request_method, limits);
+  return HttpHeadParser.NewParser(true, request_method, limits);
 }
 
 /**
@@ -158,7 +157,7 @@ pub method(HttpHeadParser) operator drop() -> void {
 pub method(HttpHeadParser) Push(bytes: ref NetBytes) -> Result<intptr, HttpError> {
   let optional: arc<HttpParserData>? = self.cell;
   if optional == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpParserData> = optional as arc<HttpParserData>;
@@ -167,32 +166,32 @@ pub method(HttpHeadParser) Push(bytes: ref NetBytes) -> Result<intptr, HttpError
   }
 
   if state.complete {
-    return 0 as intptr;
+    return 0ip;
   }
 
-  var i: intptr = 0 as intptr;
+  var i: intptr = 0;
   while i < bytes.Len() {
-    var ch: uint8 = 0u8;
+    var ch: uint8 = 0;
     unsafe {
       ch = bytes.Data()[i as int32];
     }
 
-    state.total = state.total + (1 as int64);
+    state.total = state.total + (1i64);
     if state.total > state.limits.max_head_bytes as int64 {
-      return http_fail(state, HttpErrorKind.LimitExceeded);
+      return (state).Fail(HttpErrorKind.LimitExceeded);
     }
 
-    i = i + (1 as intptr);
+    i = i + (1ip);
     if state.cr {
       state.cr = false;
       if ch != 10u8 {
-        return http_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       let line: string = string.ViewFrom(&state.line[0] as *const int8, state.used);
-      let failure: HttpErrorKind? = http_line(state, line);
+      let failure: HttpErrorKind? = (state).ParseLine(line);
       if failure != nil {
-        return http_fail(state, failure as HttpErrorKind);
+        return (state).Fail(failure as HttpErrorKind);
       }
 
       state.used = 0;
@@ -203,11 +202,11 @@ pub method(HttpHeadParser) Push(bytes: ref NetBytes) -> Result<intptr, HttpError
       state.cr = true;
     } else {
       if ch == 10u8 {
-        return http_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       if state.used >= state.limits.max_line_bytes {
-        return http_fail(state, HttpErrorKind.LimitExceeded);
+        return (state).Fail(HttpErrorKind.LimitExceeded);
       }
 
       state.line[state.used] = ch;
@@ -240,7 +239,7 @@ pub method(HttpHeadParser) IsComplete() -> bool {
 pub method(HttpHeadParser) Head() -> Result<HttpHead, HttpError> {
   let optional: arc<HttpParserData>? = self.cell;
   if optional == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let state: arc<HttpParserData> = optional as arc<HttpParserData>;
@@ -249,7 +248,7 @@ pub method(HttpHeadParser) Head() -> Result<HttpHead, HttpError> {
   }
 
   if !state.complete {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   return HttpHead{cell: state.head};
@@ -262,7 +261,7 @@ pub method(HttpHeadParser) Head() -> Result<HttpHead, HttpError> {
 pub method(HttpHeadParser) EndInput() -> Result<HttpHead, HttpError> {
   let optional: arc<HttpParserData>? = self.cell;
   if optional == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let state: arc<HttpParserData> = optional as arc<HttpParserData>;
@@ -271,7 +270,7 @@ pub method(HttpHeadParser) EndInput() -> Result<HttpHead, HttpError> {
   }
 
   if !state.complete {
-    return http_fail(state, HttpErrorKind.UnexpectedEof);
+    return (state).Fail(HttpErrorKind.UnexpectedEof);
   }
 
   return HttpHead{cell: state.head};
@@ -368,12 +367,12 @@ pub method(HttpHead) FieldCount() -> int32 {
  */
 pub method(HttpHead) FieldAt(index: int32) -> Result<HttpField, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   let state: arc<HttpHeadData> = self.cell as arc<HttpHeadData>;
   if index < 0 || index >= state.field_count {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   return state.fields[index];
@@ -386,7 +385,7 @@ pub method(HttpHead) FieldAt(index: int32) -> Result<HttpField, HttpError> {
  */
 pub method(HttpHead) BodyPlan() -> Result<HttpBodyPlan, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   return (self.cell as arc<HttpHeadData>).plan;

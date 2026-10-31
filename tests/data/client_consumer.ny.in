@@ -60,7 +60,7 @@ func main() -> int32 {
   ).get_if<NetEndpoint>()) as NetEndpoint;
   var token: NetCancellation = NetCancellation.New();
   var options: NetOperationOptions = NetOperationOptions{
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 8000000000u64),
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 8000000000u64),
     cancellation: token
   };
   var connection: TcpConnection = TcpConnection{};
@@ -84,11 +84,11 @@ func main() -> int32 {
   }
 
   if n == 11 {
-    options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 3000000000u64);
+    options.deadline = NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 3000000000u64);
   }
 
   if n == 25 || n == 44 {
-    options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 500000000u64);
+    options.deadline = NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 500000000u64);
   }
 
   var host: string = "localhost";

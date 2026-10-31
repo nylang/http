@@ -12,8 +12,8 @@ import "private/grammar.ny";
  * @brief Normalize and validate body framing bounds shared by decoder and encoder.
  * @returns Validated limits, or InvalidArgument for unsafe or unsupported bounds.
  */
-pub func HttpNormalizeBodyLimits(limits: ref HttpBodyLimits) -> Result<HttpBodyLimits, HttpError> {
-  var caps: HttpBodyLimits = limits;
+pub method(HttpBodyLimits) Normalize() -> Result<HttpBodyLimits, HttpError> {
+  var caps: HttpBodyLimits = self;
   if caps.max_body_bytes == 0u64 {
     caps.max_body_bytes = 16777216u64;
   }
@@ -37,7 +37,7 @@ pub func HttpNormalizeBodyLimits(limits: ref HttpBodyLimits) -> Result<HttpBodyL
     || caps.max_line_bytes > 65536
     || caps.max_trailers < 1
     || caps.max_trailers > 128 {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   return caps;
@@ -47,51 +47,51 @@ pub func HttpNormalizeBodyLimits(limits: ref HttpBodyLimits) -> Result<HttpBodyL
  * @brief Apply framing, routing, authentication and connection-nominated trailer restrictions.
  * @returns True when the field must be rejected as a trailer for this head.
  */
-pub func HttpTrailerForbidden(head: ref HttpHead, name: ref string) -> bool {
-  if HttpEqual(name, "Content-Length")
-    || HttpEqual(name, "Transfer-Encoding")
-    || HttpEqual(name, "Host")
-    || HttpEqual(name, "Connection")
-    || HttpEqual(name, "Trailer")
-    || HttpEqual(name, "TE")
-    || HttpEqual(name, "Upgrade")
-    || HttpEqual(name, "Keep-Alive")
-    || HttpEqual(name, "Proxy-Connection")
-    || HttpEqual(name, "Authorization")
-    || HttpEqual(name, "Proxy-Authorization")
-    || HttpEqual(name, "WWW-Authenticate")
-    || HttpEqual(name, "Proxy-Authenticate")
-    || HttpEqual(name, "Authentication-Info")
-    || HttpEqual(name, "Proxy-Authentication-Info")
-    || HttpEqual(name, "Content-Type")
-    || HttpEqual(name, "Content-Encoding")
-    || HttpEqual(name, "Content-Range")
-    || HttpEqual(name, "Content-Language")
-    || HttpEqual(name, "Content-Location")
-    || HttpEqual(name, "Content-Disposition")
-    || HttpEqual(name, "Cache-Control")
-    || HttpEqual(name, "Location")
-    || HttpEqual(name, "Set-Cookie")
-    || HttpEqual(name, "Cookie")
-    || HttpEqual(name, "Range")
-    || HttpEqual(name, "Expect")
-    || HttpEqual(name, "Max-Forwards") {
+pub method(HttpHead) ForbidsTrailer(name: ref string) -> bool {
+  if (name).EqualAsciiIgnoreCase("Content-Length")
+    || (name).EqualAsciiIgnoreCase("Transfer-Encoding")
+    || (name).EqualAsciiIgnoreCase("Host")
+    || (name).EqualAsciiIgnoreCase("Connection")
+    || (name).EqualAsciiIgnoreCase("Trailer")
+    || (name).EqualAsciiIgnoreCase("TE")
+    || (name).EqualAsciiIgnoreCase("Upgrade")
+    || (name).EqualAsciiIgnoreCase("Keep-Alive")
+    || (name).EqualAsciiIgnoreCase("Proxy-Connection")
+    || (name).EqualAsciiIgnoreCase("Authorization")
+    || (name).EqualAsciiIgnoreCase("Proxy-Authorization")
+    || (name).EqualAsciiIgnoreCase("WWW-Authenticate")
+    || (name).EqualAsciiIgnoreCase("Proxy-Authenticate")
+    || (name).EqualAsciiIgnoreCase("Authentication-Info")
+    || (name).EqualAsciiIgnoreCase("Proxy-Authentication-Info")
+    || (name).EqualAsciiIgnoreCase("Content-Type")
+    || (name).EqualAsciiIgnoreCase("Content-Encoding")
+    || (name).EqualAsciiIgnoreCase("Content-Range")
+    || (name).EqualAsciiIgnoreCase("Content-Language")
+    || (name).EqualAsciiIgnoreCase("Content-Location")
+    || (name).EqualAsciiIgnoreCase("Content-Disposition")
+    || (name).EqualAsciiIgnoreCase("Cache-Control")
+    || (name).EqualAsciiIgnoreCase("Location")
+    || (name).EqualAsciiIgnoreCase("Set-Cookie")
+    || (name).EqualAsciiIgnoreCase("Cookie")
+    || (name).EqualAsciiIgnoreCase("Range")
+    || (name).EqualAsciiIgnoreCase("Expect")
+    || (name).EqualAsciiIgnoreCase("Max-Forwards") {
     return true;
   }
 
   var f: int32 = 0;
-  while f < head.FieldCount() {
-    let field: HttpField = (head.FieldAt(f).get_if<HttpField>()) as HttpField;
-    if HttpEqual(field.name, "Connection") {
+  while f < self.FieldCount() {
+    let field: HttpField = (self.FieldAt(f).get_if<HttpField>()) as HttpField;
+    if (field.name).EqualAsciiIgnoreCase("Connection") {
       var i: int32 = 0;
       while i < field.value.length {
         let start: int32 = i;
-        while i < field.value.length && HttpChar(field.value, i) != 44 {
+        while i < field.value.length && (field.value).ByteAtOr(i, 0) != 44 {
           i = i + 1;
         }
 
-        let token: string = HttpTrim(field.value.Substring(start, i - start));
-        if HttpEqual(token, name) {
+        let token: string = HttpLexeme.New(field.value.Substring(start, i - start)).TrimWhitespace();
+        if (token).EqualAsciiIgnoreCase(name) {
           return true;
         }
 

@@ -46,10 +46,9 @@ pub struct HttpBodyDecoder {
   cell: arc<HttpBodyData>?;
 }
 
-func http_body_fail(state: arc<HttpBodyData>, kind: HttpErrorKind) -> HttpError {
-  var cell: arc<HttpBodyData> = state;
-  let error: HttpError = HttpError{kind: kind, offset: cell.total};
-  cell.failure = error;
+method(HttpBodyData) Fail(kind: HttpErrorKind) -> HttpError {
+  let error: HttpError = HttpError{kind: kind, offset: self.total};
+  self.failure = error;
 
   return error;
 }
@@ -70,7 +69,7 @@ pub static method(HttpBodyDecoder) New(
   }
 
   let plan: HttpBodyPlan = (planned.get_if<HttpBodyPlan>()) as HttpBodyPlan;
-  let checked: Result<HttpBodyLimits, HttpError> = HttpNormalizeBodyLimits(limits);
+  let checked: Result<HttpBodyLimits, HttpError> = (limits).Normalize();
   if checked.IsErr() {
     return (checked.get_if<HttpError>()) as HttpError;
   }
@@ -78,12 +77,12 @@ pub static method(HttpBodyDecoder) New(
   let caps: HttpBodyLimits = (checked.get_if<HttpBodyLimits>()) as HttpBodyLimits;
   var phase: HttpBodyPhase = HttpBodyPhase.Done;
   if plan.kind == HttpBodyKind.Upgrade || plan.kind == HttpBodyKind.Tunnel {
-    return HttpMakeError(HttpErrorKind.Unsupported);
+    return HttpError{kind: HttpErrorKind.Unsupported};
   }
 
   if plan.kind == HttpBodyKind.ContentLength {
     if plan.length > caps.max_body_bytes {
-      return HttpMakeError(HttpErrorKind.LimitExceeded);
+      return HttpError{kind: HttpErrorKind.LimitExceeded};
     }
 
     if plan.length != 0u64 {
@@ -123,9 +122,9 @@ pub method(HttpBodyDecoder) operator drop() -> void {
   self.cell = nil;
 }
 
-func http_body_ows(text: ref string, start: int32) -> int32 {
+method(HttpLexeme) SkipWhitespace(start: int32) -> int32 {
   var i: int32 = start;
-  while i < text.length && (HttpChar(text, i) == 32 || HttpChar(text, i) == 9) {
+  while i < self.raw.length && ((self.raw).ByteAtOr(i, 0) == 32 || (self.raw).ByteAtOr(i, 0) == 9) {
     i = i + 1;
   }
 
@@ -133,12 +132,11 @@ func http_body_ows(text: ref string, start: int32) -> int32 {
 }
 
 // Bound the size arithmetic before accepting chunk extensions; ignored extensions must still satisfy syntax limits.
-func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKind? {
-  var cell: arc<HttpBodyData> = state;
+method(HttpBodyData) ParseChunkSize(text: ref string) -> HttpErrorKind? {
   var i: int32 = 0;
-  var size: uint64 = 0u64;
-  while i < text.length && HttpHex(HttpChar(text, i)) {
-    let ch: int32 = HttpChar(text, i);
+  var size: uint64 = 0;
+  while i < text.length && HttpWireByte.New((text).ByteAtOr(i, 0)).IsHex() {
+    let ch: int32 = (text).ByteAtOr(i, 0);
     var digit: uint64 = (ch - 48) as uint64;
     if ch >= 97 {
       digit = (ch - 87) as uint64;
@@ -160,14 +158,14 @@ func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKin
 
   // RFC 9112 chunk-ext: BWS ';' BWS token [BWS '=' BWS (token / quoted-string)].
   while i < text.length {
-    i = http_body_ows(text, i);
-    if i >= text.length || HttpChar(text, i) != 59 {
+    i = HttpLexeme.New(text).SkipWhitespace(i);
+    if i >= text.length || (text).ByteAtOr(i, 0) != 59 {
       return HttpErrorKind.Malformed;
     }
 
-    i = http_body_ows(text, i + 1);
+    i = HttpLexeme.New(text).SkipWhitespace(i + 1);
     let start: int32 = i;
-    while i < text.length && HttpTchar(HttpChar(text, i)) {
+    while i < text.length && HttpWireByte.New((text).ByteAtOr(i, 0)).IsTokenCharacter() {
       i = i + 1;
     }
 
@@ -176,18 +174,18 @@ func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKin
     }
 
     let end: int32 = i;
-    i = http_body_ows(text, i);
-    if i < text.length && HttpChar(text, i) == 61 {
-      i = http_body_ows(text, i + 1);
+    i = HttpLexeme.New(text).SkipWhitespace(i);
+    if i < text.length && (text).ByteAtOr(i, 0) == 61 {
+      i = HttpLexeme.New(text).SkipWhitespace(i + 1);
       if i >= text.length {
         return HttpErrorKind.Malformed;
       }
 
-      if HttpChar(text, i) == 34 {
+      if (text).ByteAtOr(i, 0) == 34 {
         i = i + 1;
         var closed: bool = false;
         while i < text.length {
-          let ch: int32 = HttpChar(text, i);
+          let ch: int32 = (text).ByteAtOr(i, 0);
           i = i + 1;
           if ch == 34 {
             closed = true;
@@ -199,7 +197,7 @@ func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKin
               return HttpErrorKind.Malformed;
             }
 
-            let escaped: int32 = HttpChar(text, i);
+            let escaped: int32 = (text).ByteAtOr(i, 0);
             i = i + 1;
             if escaped != 9 && (escaped < 32 || escaped == 127) {
               return HttpErrorKind.Malformed;
@@ -214,7 +212,7 @@ func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKin
         }
       } else {
         let value_start: int32 = i;
-        while i < text.length && HttpTchar(HttpChar(text, i)) {
+        while i < text.length && HttpWireByte.New((text).ByteAtOr(i, 0)).IsTokenCharacter() {
           i = i + 1;
         }
 
@@ -227,34 +225,33 @@ func http_chunk_size(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKin
     }
   }
 
-  if size > cell.limits.max_body_bytes - cell.decoded {
+  if size > self.limits.max_body_bytes - self.decoded {
     return HttpErrorKind.LimitExceeded;
   }
 
-  cell.remaining = size;
+  self.remaining = size;
   if size == 0u64 {
-    cell.phase = HttpBodyPhase.Trailers;
+    self.phase = HttpBodyPhase.Trailers;
   } else {
-    cell.phase = HttpBodyPhase.Data;
+    self.phase = HttpBodyPhase.Data;
   }
 
   return nil;
 }
 
-func http_body_line(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKind? {
-  var cell: arc<HttpBodyData> = state;
-  if cell.phase == HttpBodyPhase.Size {
-    return http_chunk_size(cell, text);
+method(HttpBodyData) ParseFramingLine(text: ref string) -> HttpErrorKind? {
+  if self.phase == HttpBodyPhase.Size {
+    return self.ParseChunkSize(text);
   }
 
   if text.length == 0 {
-    cell.phase = HttpBodyPhase.Done;
+    self.phase = HttpBodyPhase.Done;
 
     return nil;
   }
 
   var colon: int32 = 0;
-  while colon < text.length && HttpChar(text, colon) != 58 {
+  while colon < text.length && (text).ByteAtOr(colon, 0) != 58 {
     colon = colon + 1;
   }
 
@@ -263,21 +260,21 @@ func http_body_line(state: arc<HttpBodyData>, text: ref string) -> HttpErrorKind
   }
 
   let name: string = text.Substring(0, colon);
-  let value: string = HttpTrim(text.Substring(colon + 1, text.length - colon - 1));
-  if !HttpToken(name) || !HttpValue(value) {
+  let value: string = HttpLexeme.New(text.Substring(colon + 1, text.length - colon - 1)).TrimWhitespace();
+  if !HttpLexeme.New(name).IsToken() || !HttpLexeme.New(value).IsFieldValue() {
     return HttpErrorKind.Malformed;
   }
 
-  if HttpTrailerForbidden(cell.head, name) {
+  if (self.head).ForbidsTrailer(name) {
     return HttpErrorKind.InvalidFraming;
   }
 
-  if cell.trailer_count >= cell.limits.max_trailers {
+  if self.trailer_count >= self.limits.max_trailers {
     return HttpErrorKind.LimitExceeded;
   }
 
-  cell.trailers[cell.trailer_count] = HttpField{name: name, value: value};
-  cell.trailer_count = cell.trailer_count + 1;
+  self.trailers[self.trailer_count] = HttpField{name: name, value: value};
+  self.trailer_count = self.trailer_count + 1;
 
   return nil;
 }
@@ -297,7 +294,7 @@ pub method(HttpBodyDecoder) Push(
   output: ref NetMutableBytes
 ) -> Result<HttpBodyProgress, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpBodyData> = self.cell as arc<HttpBodyData>;
@@ -309,17 +306,17 @@ pub method(HttpBodyDecoder) Push(
     return HttpBodyProgress{state: HttpBodyState.Complete};
   }
 
-  var i: intptr = 0 as intptr;
+  var i: intptr = 0;
   while i < bytes.Len() {
     if state.phase == HttpBodyPhase.Fixed
       || state.phase == HttpBodyPhase.Data
       || state.phase == HttpBodyPhase.Eof {
       let budget: uint64 = state.limits.max_body_bytes - state.decoded;
       if budget == 0u64 {
-        return http_body_fail(state, HttpErrorKind.LimitExceeded);
+        return (state).Fail(HttpErrorKind.LimitExceeded);
       }
 
-      if output.Len() == (0 as intptr) {
+      if output.Len() == (0ip) {
         return HttpBodyProgress{consumed: i, state: HttpBodyState.NeedOutput};
       }
 
@@ -328,8 +325,8 @@ pub method(HttpBodyDecoder) Push(
         count = output.Len();
       }
 
-      if count >(2147483647 as intptr) {
-        count = 2147483647 as intptr;
+      if count >(2147483647ip) {
+        count = 2147483647ip;
       }
 
       if (count as uint64) > budget {
@@ -377,40 +374,40 @@ pub method(HttpBodyDecoder) Push(
     }
 
     if state.framing >= state.limits.max_framing_bytes {
-      return http_body_fail(state, HttpErrorKind.LimitExceeded);
+      return (state).Fail(HttpErrorKind.LimitExceeded);
     }
 
-    var ch: uint8 = 0u8;
+    var ch: uint8 = 0;
     unsafe {
       ch = bytes.Data()[i as int32];
     }
 
-    i = i + (1 as intptr);
-    state.total = state.total + (1 as int64);
+    i = i + (1ip);
+    state.total = state.total + (1i64);
     state.framing = state.framing + 1;
     if state.phase == HttpBodyPhase.DataCr {
       if ch != 13u8 {
-        return http_body_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       state.phase = HttpBodyPhase.DataLf;
     } else if state.phase == HttpBodyPhase.DataLf {
       if ch != 10u8 {
-        return http_body_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       state.phase = HttpBodyPhase.Size;
     } else if state.cr {
       state.cr = false;
       if ch != 10u8 {
-        return http_body_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       let line: string = string.ViewFrom(&state.line[0] as *const int8, state.used);
-      let failure: HttpErrorKind? = http_body_line(state, line);
+      let failure: HttpErrorKind? = (state).ParseFramingLine(line);
       state.used = 0;
       if failure != nil {
-        return http_body_fail(state, failure as HttpErrorKind);
+        return (state).Fail(failure as HttpErrorKind);
       }
 
       if state.phase == HttpBodyPhase.Done {
@@ -420,11 +417,11 @@ pub method(HttpBodyDecoder) Push(
       state.cr = true;
     } else {
       if ch == 10u8 {
-        return http_body_fail(state, HttpErrorKind.Malformed);
+        return (state).Fail(HttpErrorKind.Malformed);
       }
 
       if state.used >= state.limits.max_line_bytes {
-        return http_body_fail(state, HttpErrorKind.LimitExceeded);
+        return (state).Fail(HttpErrorKind.LimitExceeded);
       }
 
       state.line[state.used] = ch;
@@ -441,7 +438,7 @@ pub method(HttpBodyDecoder) Push(
  */
 pub method(HttpBodyDecoder) EndInput() -> Result<bool, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpBodyData> = self.cell as arc<HttpBodyData>;
@@ -454,7 +451,7 @@ pub method(HttpBodyDecoder) EndInput() -> Result<bool, HttpError> {
   }
 
   if state.phase != HttpBodyPhase.Done {
-    return http_body_fail(state, HttpErrorKind.UnexpectedEof);
+    return (state).Fail(HttpErrorKind.UnexpectedEof);
   }
 
   return true;
@@ -479,7 +476,7 @@ pub method(HttpBodyDecoder) IsComplete() -> bool {
  */
 pub method(HttpBodyDecoder) TrailerCount() -> Result<int32, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let state: arc<HttpBodyData> = self.cell as arc<HttpBodyData>;
@@ -488,7 +485,7 @@ pub method(HttpBodyDecoder) TrailerCount() -> Result<int32, HttpError> {
   }
 
   if state.phase != HttpBodyPhase.Done {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   return state.trailer_count;
@@ -509,7 +506,7 @@ pub method(HttpBodyDecoder) TrailerAt(index: int32) -> Result<HttpField, HttpErr
   }
 
   if index < 0 || index >= ((count.get_if<int32>()) as int32) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   return (self.cell as arc<HttpBodyData>).trailers[index];

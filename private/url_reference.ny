@@ -13,10 +13,19 @@ import "private/url.ny";
 
 /** @brief Shared URI-reference resolution and explicit redirect/replay policy. */
 
-func redirect_last_slash(text: ref string) -> int32 {
-  var i: int32 = text.length - 1;
+/** @brief URI path value; excludes OS normalization and percent-decoding policy. */
+struct HttpUriPath {
+  readonly raw: string;
+}
+
+static method(HttpUriPath) New(raw: ref string) -> HttpUriPath {
+  return HttpUriPath{raw: raw};
+}
+
+method(HttpUriPath) LastSlash() -> int32 {
+  var i: int32 = self.raw.length - 1;
   while i >= 0 {
-    if text[i] == '/' {
+    if self.raw[i] == '/' {
       return i;
     }
 
@@ -26,17 +35,17 @@ func redirect_last_slash(text: ref string) -> int32 {
   return -1;
 }
 
-func redirect_remove_last(text: ref string) -> string {
-  let slash: int32 = redirect_last_slash(text);
+method(HttpUriPath) WithoutLastSegment() -> string {
+  let slash: int32 = HttpUriPath.New(self.raw).LastSlash();
   if slash < 0 {
     return "";
   }
 
-  return text.Substring(0, slash);
+  return self.raw.Substring(0, slash);
 }
 
-func redirect_dot_segments(path: ref string) -> string {
-  var input: string = path;
+method(HttpUriPath) RemoveDotSegments() -> string {
+  var input: string = self.raw;
   var output: string = "";
   while input.length != 0 {
     if input.StartsWith("../") {
@@ -49,10 +58,10 @@ func redirect_dot_segments(path: ref string) -> string {
       input = "/";
     } else if input.StartsWith("/../") {
       input = input.Substring(3, input.length - 3);
-      output = redirect_remove_last(output);
+      output = HttpUriPath.New(output).WithoutLastSegment();
     } else if input.Equal("/..") {
       input = "/";
-      output = redirect_remove_last(output);
+      output = HttpUriPath.New(output).WithoutLastSegment();
     } else if input.Equal(".") || input.Equal("..") {
       input = "";
     } else {
@@ -84,11 +93,11 @@ func redirect_dot_segments(path: ref string) -> string {
  */
 pub method(HttpUrl) Resolve(reference: ref string) -> Result<HttpUrl, HttpError> {
   if !self.IsValid() {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   if reference.length > 8192 {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   let origin: string = self.Scheme().Concat("://").Concat(self.HostField());
@@ -119,7 +128,7 @@ pub method(HttpUrl) Resolve(reference: ref string) -> Result<HttpUrl, HttpError>
   } else if reference.length == 0 || reference.StartsWith("#") {
     absolute = self.ToString().Concat(reference);
   } else {
-    let slash: int32 = redirect_last_slash(target);
+    let slash: int32 = HttpUriPath.New(target).LastSlash();
     absolute = origin.Concat(target.Substring(0, slash + 1)).Concat(reference);
   }
 
@@ -142,7 +151,7 @@ pub method(HttpUrl) Resolve(reference: ref string) -> Result<HttpUrl, HttpError>
   }
 
   return HttpUrl.Parse(
-    raw.Scheme().Concat("://").Concat(raw.HostField()).Concat(redirect_dot_segments(path)).Concat(suffix)
+    raw.Scheme().Concat("://").Concat(raw.HostField()).Concat(HttpUriPath.New(path).RemoveDotSegments()).Concat(suffix)
   );
 }
 

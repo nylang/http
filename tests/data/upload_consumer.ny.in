@@ -87,7 +87,7 @@ func main() -> int32 {
   var token: NetCancellation = NetCancellation.New();
   let options: NetOperationOptions = NetOperationOptions{
     cancellation: token,
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 8000000000u64)
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 8000000000u64)
   };
   let endpoint: NetEndpoint = (NetEndpoint.New(
     IpAddress.V4(127u8, 0u8, 0u8, 1u8),
@@ -131,7 +131,7 @@ func main() -> int32 {
     }
 
     token.Cancel();
-    if options.Check(NetClock.NowNanoseconds()).IsOk()
+    if options.CheckNow().IsOk()
       || exchange.Stats().request_bytes_sent != wire.length as uint64 {
       return 4;
     }
@@ -149,7 +149,7 @@ func main() -> int32 {
   var released: bool = false;
   while !complete && rounds < 10000 {
     rounds = rounds + 1;
-    if options.Check(NetClock.NowNanoseconds()).IsErr() {
+    if options.CheckNow().IsErr() {
       return 5;
     }
 
@@ -162,7 +162,7 @@ func main() -> int32 {
     if state == HttpUploadState.WaitingContinue {
       if n == 6 && !released {
         Thread.Sleep(80u32);
-        if options.Check(NetClock.NowNanoseconds()).IsErr() || exchange.ContinueUpload().IsErr() {
+        if options.CheckNow().IsErr() || exchange.ContinueUpload().IsErr() {
           return 7;
         }
 

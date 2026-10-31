@@ -30,7 +30,7 @@ func main() -> int32 {
   var resolver: AsyncResolver = move((made_pool.get_if<AsyncResolver>()) as AsyncResolver);
   var token: NetCancellation = NetCancellation.New();
   var options: NetOperationOptions = NetOperationOptions{
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 3000000000u64),
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 3000000000u64),
     cancellation: token
   };
   var address: string = "@@SCHEME@@://net-core-gated.invalid:1/";
@@ -43,7 +43,7 @@ func main() -> int32 {
   }
 
   if n == 2 {
-    options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 150000000u64);
+    options.deadline = NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 150000000u64);
   }
 
   var thread: Thread = Thread{};
@@ -92,9 +92,9 @@ func main() -> int32 {
 
   @@CONFIG@@
   let url: HttpUrl = (HttpUrl.Parse(address).get_if<HttpUrl>()) as HttpUrl;
-  let started: uint64 = NetClock.NowNanoseconds();
+  let started: uint64 = Instant.Now().ToDurationSinceEpochish().ToNanoseconds();
   var opened: Result<@@CLIENT@@, @@ERROR@@> = @@OPEN@@;
-  let elapsed: uint64 = NetClock.NowNanoseconds() - started;
+  let elapsed: uint64 = Instant.Now().ToDurationSinceEpochish().ToNanoseconds() - started;
   if n == 3 {
     let joined: Result<Unit, ThreadError> = thread.Join();
     if joined.IsErr() {

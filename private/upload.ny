@@ -13,7 +13,7 @@ part of HttpExchange;
  */
 pub method(HttpClientExchange) UploadState() -> Result<HttpUploadState, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let s: arc<HttpExchangeData> = self.cell as arc<HttpExchangeData>;
@@ -22,14 +22,14 @@ pub method(HttpClientExchange) UploadState() -> Result<HttpUploadState, HttpErro
   }
 
   if !s.streaming {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   if s.stopped {
     return HttpUploadState.Stopped;
   }
 
-  if !http_exchange_head_sent(s) {
+  if !(s).HeadSent() {
     return HttpUploadState.SendingHead;
   }
 
@@ -37,7 +37,7 @@ pub method(HttpClientExchange) UploadState() -> Result<HttpUploadState, HttpErro
     return HttpUploadState.Finished;
   }
 
-  if http_exchange_reading(s) {
+  if (s).IsReading() {
     return HttpUploadState.ReadingResponse;
   }
 
@@ -67,18 +67,18 @@ pub method(HttpClientExchange) SupplyBody(buffer: ref NetBuffer) -> Result<Unit,
   }
 
   if ((status.get_if<HttpUploadState>()) as HttpUploadState) != HttpUploadState.NeedBody {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   var s: arc<HttpExchangeData> = self.cell as arc<HttpExchangeData>;
-  if buffer.Len() <= (0 as intptr) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+  if buffer.Len() <= (0ip) {
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   let budget: intptr = s.limits.max_retained_request_bytes as intptr;
-  if buffer.RetainedBytes() >(16384 as intptr)
+  if buffer.RetainedBytes() >(16384ip)
     || buffer.RetainedBytes() > budget - s.head_wire.RetainedBytes() {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   var limit: uint64 = s.limits.body.max_body_bytes;
@@ -88,7 +88,7 @@ pub method(HttpClientExchange) SupplyBody(buffer: ref NetBuffer) -> Result<Unit,
 
   let count: uint64 = buffer.Len() as uint64;
   if s.supplied > limit || count > limit - s.supplied {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   let plan: HttpBodyPlan = (s.request.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan;
@@ -98,11 +98,11 @@ pub method(HttpClientExchange) SupplyBody(buffer: ref NetBuffer) -> Result<Unit,
         s.supplied > plan.length || count > plan.length - s.supplied
       )
     ) {
-    return HttpMakeError(HttpErrorKind.InvalidFraming);
+    return HttpError{kind: HttpErrorKind.InvalidFraming};
   }
 
   s.body = buffer;
-  s.body_cursor = 0 as intptr;
+  s.body_cursor = 0ip;
   s.body_length = buffer.Len();
   s.supplied = s.supplied + count;
 
@@ -118,7 +118,7 @@ pub method(HttpClientExchange) SupplyBody(buffer: ref NetBuffer) -> Result<Unit,
  */
 pub method(HttpClientExchange) FinishBody(trailers: ref <HttpField>[]) -> Result<Unit, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var s: arc<HttpExchangeData> = self.cell as arc<HttpExchangeData>;
@@ -128,26 +128,26 @@ pub method(HttpClientExchange) FinishBody(trailers: ref <HttpField>[]) -> Result
 
   if !s.streaming
     || s.stopped
-    || !http_exchange_head_sent(s)
+    || !(s).HeadSent()
     || s.await_continue
-    || http_exchange_reading(s)
+    || (s).IsReading()
     || s.body_cursor < s.body_length
     || s.pending_cursor < s.pending.Len() {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   let plan: HttpBodyPlan = (s.request.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan;
   if !s.finish_queued && plan.kind == HttpBodyKind.ContentLength && s.supplied != plan.length {
-    return http_exchange_fail(s, HttpMakeError(HttpErrorKind.UnexpectedEof));
+    return (s).Fail(HttpError{kind: HttpErrorKind.UnexpectedEof});
   }
 
-  if !s.finish_queued && s.supplied == 0u64 && http_upload_expected(s.request) {
-    return http_exchange_fail(s, HttpMakeError(HttpErrorKind.InvalidFraming));
+  if !s.finish_queued && s.supplied == 0u64 && (s.request).ExpectsContinue() {
+    return (s).Fail(HttpError{kind: HttpErrorKind.InvalidFraming});
   }
 
   let finished: Result<bool, HttpError> = s.writer.Finish(trailers);
   if finished.IsErr() {
-    return http_exchange_fail(s,(finished.get_if<HttpError>()) as HttpError);
+    return (s).Fail((finished.get_if<HttpError>()) as HttpError);
   }
 
   s.finish_queued = true;
@@ -155,11 +155,11 @@ pub method(HttpClientExchange) FinishBody(trailers: ref <HttpField>[]) -> Result
   return Unit{};
 }
 
-func http_upload_expected(request: ref HttpHead) -> bool {
+method(HttpHead) ExpectsContinue() -> bool {
   var i: int32 = 0;
-  while i < request.FieldCount() {
-    let field: HttpField = (request.FieldAt(i).get_if<HttpField>()) as HttpField;
-    if HttpEqual(field.name, "Expect") {
+  while i < self.FieldCount() {
+    let field: HttpField = (self.FieldAt(i).get_if<HttpField>()) as HttpField;
+    if (field.name).EqualAsciiIgnoreCase("Expect") {
       return true;
     }
 
@@ -184,7 +184,7 @@ pub method(HttpClientExchange) ContinueUpload() -> Result<Unit, HttpError> {
   }
 
   if ((status.get_if<HttpUploadState>()) as HttpUploadState) != HttpUploadState.WaitingContinue {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   var s: arc<HttpExchangeData> = self.cell as arc<HttpExchangeData>;

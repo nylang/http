@@ -46,19 +46,18 @@ pub struct HttpBodyWriter {
   cell: arc<HttpWriteData>?;
 }
 
-func http_write_fail(state: arc<HttpWriteData>, kind: HttpErrorKind) -> HttpError {
-  var cell: arc<HttpWriteData> = state;
-  let error: HttpError = HttpError{kind: kind, offset: cell.total};
-  cell.failure = error;
+method(HttpWriteData) Fail(kind: HttpErrorKind) -> HttpError {
+  let error: HttpError = HttpError{kind: kind, offset: self.total};
+  self.failure = error;
 
   return error;
 }
 
-func http_write_declarations(head: ref HttpHead, kind: HttpBodyKind) -> HttpErrorKind? {
+method(HttpHead) ValidateBodyPlan(kind: HttpBodyKind) -> HttpErrorKind? {
   var f: int32 = 0;
-  while f < head.FieldCount() {
-    let field: HttpField = (head.FieldAt(f).get_if<HttpField>()) as HttpField;
-    if HttpEqual(field.name, "Trailer") {
+  while f < self.FieldCount() {
+    let field: HttpField = (self.FieldAt(f).get_if<HttpField>()) as HttpField;
+    if (field.name).EqualAsciiIgnoreCase("Trailer") {
       if kind != HttpBodyKind.Chunked {
         return HttpErrorKind.InvalidFraming;
       }
@@ -66,12 +65,12 @@ func http_write_declarations(head: ref HttpHead, kind: HttpBodyKind) -> HttpErro
       var i: int32 = 0;
       while true {
         let start: int32 = i;
-        while i < field.value.length && HttpChar(field.value, i) != 44 {
+        while i < field.value.length && (field.value).ByteAtOr(i, 0) != 44 {
           i = i + 1;
         }
 
-        let name: string = HttpTrim(field.value.Substring(start, i - start));
-        if !HttpToken(name) || HttpTrailerForbidden(head, name) {
+        let name: string = HttpLexeme.New(field.value.Substring(start, i - start)).TrimWhitespace();
+        if !HttpLexeme.New(name).IsToken() || self.ForbidsTrailer(name) {
           return HttpErrorKind.InvalidFraming;
         }
 
@@ -89,19 +88,19 @@ func http_write_declarations(head: ref HttpHead, kind: HttpBodyKind) -> HttpErro
   return nil;
 }
 
-func http_write_declared(head: ref HttpHead, name: ref string) -> bool {
+method(HttpHead) DeclaresTrailer(name: ref string) -> bool {
   var f: int32 = 0;
-  while f < head.FieldCount() {
-    let field: HttpField = (head.FieldAt(f).get_if<HttpField>()) as HttpField;
-    if HttpEqual(field.name, "Trailer") {
+  while f < self.FieldCount() {
+    let field: HttpField = (self.FieldAt(f).get_if<HttpField>()) as HttpField;
+    if (field.name).EqualAsciiIgnoreCase("Trailer") {
       var i: int32 = 0;
       while i < field.value.length {
         let start: int32 = i;
-        while i < field.value.length && HttpChar(field.value, i) != 44 {
+        while i < field.value.length && (field.value).ByteAtOr(i, 0) != 44 {
           i = i + 1;
         }
 
-        if HttpEqual(HttpTrim(field.value.Substring(start, i - start)), name) {
+        if (HttpLexeme.New(field.value.Substring(start, i - start)).TrimWhitespace()).EqualAsciiIgnoreCase(name) {
           return true;
         }
 
@@ -115,7 +114,13 @@ func http_write_declared(head: ref HttpHead, name: ref string) -> bool {
   return false;
 }
 
-func http_write_chunk_header(size: int32) -> string {
+// A positive admitted chunk size determines one hexadecimal framing header.
+struct HttpChunkHeader {
+  readonly size: int32;
+}
+
+method(HttpChunkHeader) Encode() -> string {
+  let size: int32 = self.size;
   var digits: <int8>[8] = <int8>[8] {
   };
   var cursor: int32 = 8;
@@ -152,23 +157,23 @@ pub static method(HttpBodyWriter) New(
   }
 
   let plan: HttpBodyPlan = (planned.get_if<HttpBodyPlan>()) as HttpBodyPlan;
-  let checked: Result<HttpBodyLimits, HttpError> = HttpNormalizeBodyLimits(limits);
+  let checked: Result<HttpBodyLimits, HttpError> = (limits).Normalize();
   if checked.IsErr() {
     return (checked.get_if<HttpError>()) as HttpError;
   }
 
   let caps: HttpBodyLimits = (checked.get_if<HttpBodyLimits>()) as HttpBodyLimits;
   if plan.kind == HttpBodyKind.Upgrade || plan.kind == HttpBodyKind.Tunnel {
-    return HttpMakeError(HttpErrorKind.Unsupported);
+    return HttpError{kind: HttpErrorKind.Unsupported};
   }
 
   if plan.kind == HttpBodyKind.ContentLength && plan.length > caps.max_body_bytes {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
-  let declaration: HttpErrorKind? = http_write_declarations(head, plan.kind);
+  let declaration: HttpErrorKind? = (head).ValidateBodyPlan(plan.kind);
   if declaration != nil {
-    return HttpMakeError(declaration as HttpErrorKind);
+    return HttpError{kind: declaration as HttpErrorKind};
   }
 
   var phase: HttpWritePhase = HttpWritePhase.Data;
@@ -222,7 +227,7 @@ pub method(HttpBodyWriter) Push(
   output: ref NetMutableBytes
 ) -> Result<HttpBodyProgress, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpWriteData> = self.cell as arc<HttpWriteData>;
@@ -230,17 +235,17 @@ pub method(HttpBodyWriter) Push(
     return state.failure as HttpError;
   }
 
-  if state.finishing && bytes.Len() != (0 as intptr) {
-    return http_write_fail(state, HttpErrorKind.InvalidState);
+  if state.finishing && bytes.Len() != (0ip) {
+    return (state).Fail(HttpErrorKind.InvalidState);
   }
 
-  if (state.kind == HttpBodyKind.None && bytes.Len() != (0 as intptr))
+  if (state.kind == HttpBodyKind.None && bytes.Len() != (0ip))
     || (state.kind == HttpBodyKind.ContentLength && (bytes.Len() as uint64) > state.remaining) {
-    return http_write_fail(state, HttpErrorKind.InvalidFraming);
+    return (state).Fail(HttpErrorKind.InvalidFraming);
   }
 
   if (bytes.Len() as uint64) > state.limits.max_body_bytes - state.decoded {
-    return http_write_fail(state, HttpErrorKind.LimitExceeded);
+    return (state).Fail(HttpErrorKind.LimitExceeded);
   }
 
   if state.phase == HttpWritePhase.Done {
@@ -248,11 +253,11 @@ pub method(HttpBodyWriter) Push(
   }
 
   if state.phase == HttpWritePhase.Ready {
-    if bytes.Len() == (0 as intptr) {
+    if bytes.Len() == (0ip) {
       return HttpBodyProgress{state: HttpBodyState.NeedInput};
     }
 
-    if output.Len() == (0 as intptr) {
+    if output.Len() == (0ip) {
       return HttpBodyProgress{state: HttpBodyState.NeedOutput};
     }
 
@@ -261,10 +266,10 @@ pub method(HttpBodyWriter) Push(
       count = bytes.Len() as int32;
     }
 
-    let header: string = http_write_chunk_header(count);
+    let header: string = HttpChunkHeader{size: count}.Encode();
     if header.length - 2 > state.limits.max_line_bytes
       || header.length + 2 > state.limits.max_framing_bytes - state.framing_reserved {
-      return http_write_fail(state, HttpErrorKind.LimitExceeded);
+      return (state).Fail(HttpErrorKind.LimitExceeded);
     }
 
     state.framing_reserved = state.framing_reserved + header.length + 2;
@@ -312,7 +317,7 @@ pub method(HttpBodyWriter) Push(
       next = HttpBodyState.Complete;
     } else if state.phase == HttpWritePhase.Frame {
       next = HttpBodyState.NeedOutput;
-    } else if bytes.Len() == (0 as intptr) {
+    } else if bytes.Len() == (0ip) {
       next = HttpBodyState.NeedInput;
     } else if count as intptr == output.Len() {
       next = HttpBodyState.NeedOutput;
@@ -321,11 +326,11 @@ pub method(HttpBodyWriter) Push(
     return HttpBodyProgress{produced: count as intptr, state: next};
   }
 
-  if bytes.Len() == (0 as intptr) {
+  if bytes.Len() == (0ip) {
     return HttpBodyProgress{state: HttpBodyState.NeedInput};
   }
 
-  if output.Len() == (0 as intptr) {
+  if output.Len() == (0ip) {
     return HttpBodyProgress{state: HttpBodyState.NeedOutput};
   }
 
@@ -334,8 +339,8 @@ pub method(HttpBodyWriter) Push(
     count = output.Len();
   }
 
-  if count >(2147483647 as intptr) {
-    count = 2147483647 as intptr;
+  if count >(2147483647ip) {
+    count = 2147483647ip;
   }
 
   if state.kind != HttpBodyKind.UntilEof && (count as uint64) > state.remaining {
@@ -388,7 +393,7 @@ pub method(HttpBodyWriter) Push(
  */
 pub method(HttpBodyWriter) Finish(trailers: ref <HttpField>[]) -> Result<bool, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpWriteData> = self.cell as arc<HttpWriteData>;
@@ -398,7 +403,7 @@ pub method(HttpBodyWriter) Finish(trailers: ref <HttpField>[]) -> Result<bool, H
 
   if state.finishing {
     if trailers.length != 0 {
-      return http_write_fail(state, HttpErrorKind.InvalidState);
+      return (state).Fail(HttpErrorKind.InvalidState);
     }
 
     return state.phase == HttpWritePhase.Done;
@@ -406,12 +411,12 @@ pub method(HttpBodyWriter) Finish(trailers: ref <HttpField>[]) -> Result<bool, H
 
   if (state.kind == HttpBodyKind.ContentLength || state.kind == HttpBodyKind.Chunked)
     && state.remaining != 0u64 {
-    return http_write_fail(state, HttpErrorKind.UnexpectedEof);
+    return (state).Fail(HttpErrorKind.UnexpectedEof);
   }
 
   if state.kind != HttpBodyKind.Chunked {
     if trailers.length != 0 {
-      return http_write_fail(state, HttpErrorKind.InvalidFraming);
+      return (state).Fail(HttpErrorKind.InvalidFraming);
     }
 
     state.finishing = true;
@@ -421,24 +426,24 @@ pub method(HttpBodyWriter) Finish(trailers: ref <HttpField>[]) -> Result<bool, H
   }
 
   if trailers.length > state.limits.max_trailers {
-    return http_write_fail(state, HttpErrorKind.LimitExceeded);
+    return (state).Fail(HttpErrorKind.LimitExceeded);
   }
 
   var size: int32 = 5;
   var i: int32 = 0;
   while i < trailers.length {
     let field: HttpField = trailers[i];
-    if !HttpToken(field.name) || !HttpValue(field.value) {
-      return http_write_fail(state, HttpErrorKind.Malformed);
+    if !HttpLexeme.New(field.name).IsToken() || !HttpLexeme.New(field.value).IsFieldValue() {
+      return (state).Fail(HttpErrorKind.Malformed);
     }
 
-    if HttpTrailerForbidden(state.head, field.name) || !http_write_declared(state.head, field.name) {
-      return http_write_fail(state, HttpErrorKind.InvalidFraming);
+    if (state.head).ForbidsTrailer(field.name) || !(state.head).DeclaresTrailer(field.name) {
+      return (state).Fail(HttpErrorKind.InvalidFraming);
     }
 
     if field.name.length > state.limits.max_line_bytes
       || field.value.length > state.limits.max_line_bytes - field.name.length - 2 {
-      return http_write_fail(state, HttpErrorKind.LimitExceeded);
+      return (state).Fail(HttpErrorKind.LimitExceeded);
     }
 
     size = size + field.name.length + field.value.length + 4;
@@ -446,7 +451,7 @@ pub method(HttpBodyWriter) Finish(trailers: ref <HttpField>[]) -> Result<bool, H
   }
 
   if size > state.limits.max_framing_bytes - state.framing_reserved {
-    return http_write_fail(state, HttpErrorKind.LimitExceeded);
+    return (state).Fail(HttpErrorKind.LimitExceeded);
   }
 
   var wire: StringBuffer = StringBuffer.NewWithCapacity(size);

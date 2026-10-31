@@ -7,24 +7,24 @@ part of HttpProtocolTests;
 @test(tag = "http_core")
 func test_http_response_sequence_smoke() {
   var made: Result<HttpResponseParser, HttpError> = HttpResponseParser.New("GET", HttpResponseLimits{});
-  http_test_assert(made.IsOk(), "response sequence construction succeeds");
+  AssertTrueMsg(made.IsOk(), "response sequence construction succeeds");
   var parser: HttpResponseParser = move((made.get_if<HttpResponseParser>()) as HttpResponseParser);
   let wire: string = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\nabc";
   let fed: Result<HttpResponseProgress, HttpError> = parser.Push(NetBytes.FromString(wire));
-  http_test_assert(
+  AssertTrueMsg(
     fed.IsOk() && !parser.IsComplete(),
     "informational response does not complete request association"
   );
 }
 
-func http_test_body_writer(head: ref HttpHead, limits: ref HttpBodyLimits) -> HttpBodyWriter {
+static method(HttpBodyWriter) TestNew(head: ref HttpHead, limits: ref HttpBodyLimits) -> HttpBodyWriter {
   var made: Result<HttpBodyWriter, HttpError> = HttpBodyWriter.New(head, limits);
-  http_test_assert(made.IsOk(), "body writer construction succeeds");
+  AssertTrueMsg(made.IsOk(), "body writer construction succeeds");
 
   return move((made.get_if<HttpBodyWriter>()) as HttpBodyWriter);
 }
 
-func http_test_write(writer: ref mut HttpBodyWriter, payload: ref string, capacity: int32) -> string {
+method(HttpBodyWriter) TestWrite(payload: ref string, capacity: int32) -> string {
   var output: StringBuffer = StringBuffer.New();
   var used: intptr = 0 as intptr;
   var storage: owned <uint8>[] = new <uint8>[capacity];
@@ -38,14 +38,14 @@ func http_test_write(writer: ref mut HttpBodyWriter, payload: ref string, capaci
       used,
       (payload.length as intptr) - used
     ).get_if<NetBytes>()) as NetBytes;
-    let fed: Result<HttpBodyProgress, HttpError> = writer.Push(input, range);
-    http_test_assert(fed.IsOk(), "streaming writer call succeeds");
+    let fed: Result<HttpBodyProgress, HttpError> = self.Push(input, range);
+    AssertTrueMsg(fed.IsOk(), "streaming writer call succeeds");
     if fed.IsErr() {
       return output.Take();
     }
 
     let step: HttpBodyProgress = (fed.get_if<HttpBodyProgress>()) as HttpBodyProgress;
-    http_test_assert(
+    AssertTrueMsg(
       step.consumed >= (0 as intptr)
         && step.consumed <= input.Len()
         && step.produced >= (0 as intptr)
@@ -58,12 +58,12 @@ func http_test_write(writer: ref mut HttpBodyWriter, payload: ref string, capaci
     }
 
     if step.state == HttpBodyState.NeedInput || step.state == HttpBodyState.Complete {
-      http_test_assert(used == payload.length as intptr, "writer never silently discards supplied payload");
+      AssertTrueMsg(used == payload.length as intptr, "writer never silently discards supplied payload");
 
       return output.Take();
     }
 
-    http_test_assert(
+    AssertTrueMsg(
       step.produced != (0 as intptr) || step.consumed != (0 as intptr),
       "writer progresses with nonempty output capacity"
     );
@@ -74,42 +74,42 @@ func http_test_write(writer: ref mut HttpBodyWriter, payload: ref string, capaci
     calls = calls + 1;
   }
 
-  http_test_assert(false, "writer terminates within bounded test calls");
+  AssertTrueMsg(false, "writer terminates within bounded test calls");
 
   return output.Take();
 }
 
-func http_test_response_parser(verb: ref string, limits: ref HttpResponseLimits) -> HttpResponseParser {
+static method(HttpResponseParser) TestNew(verb: ref string, limits: ref HttpResponseLimits) -> HttpResponseParser {
   var made: Result<HttpResponseParser, HttpError> = HttpResponseParser.New(verb, limits);
-  http_test_assert(made.IsOk(), "response parser construction succeeds");
+  AssertTrueMsg(made.IsOk(), "response parser construction succeeds");
 
   return move((made.get_if<HttpResponseParser>()) as HttpResponseParser);
 }
 
-func http_test_response_feed(parser: ref mut HttpResponseParser, wire: ref string) -> intptr {
+method(HttpResponseParser) TestFeed(wire: ref string) -> intptr {
   var used: intptr = 0 as intptr;
-  while used < wire.length as intptr && !parser.IsComplete() {
+  while used < wire.length as intptr && !self.IsComplete() {
     let input: NetBytes = (NetBytes.FromString(wire).Slice(
       used,
       (wire.length as intptr) - used
     ).get_if<NetBytes>()) as NetBytes;
-    let fed: Result<HttpResponseProgress, HttpError> = parser.Push(input);
-    http_test_assert(fed.IsOk(), "valid response sequence is accepted");
+    let fed: Result<HttpResponseProgress, HttpError> = self.Push(input);
+    AssertTrueMsg(fed.IsOk(), "valid response sequence is accepted");
     if fed.IsErr() {
       return used;
     }
 
     let step: HttpResponseProgress = (fed.get_if<HttpResponseProgress>()) as HttpResponseProgress;
-    http_test_assert(step.consumed >(0 as intptr), "response fragments advance");
+    AssertTrueMsg(step.consumed >(0 as intptr), "response fragments advance");
     if step.consumed == (0 as intptr) {
       return used;
     }
 
     used = used + step.consumed;
     if step.state == HttpResponseState.Informational {
-      let head: HttpHead = (parser.Head().get_if<HttpHead>()) as HttpHead;
-      http_test_assert(
-        head.Status() >= 100 && head.Status() < 200 && head.Status() != 101 && !parser.IsComplete(),
+      let head: HttpHead = (self.Head().get_if<HttpHead>()) as HttpHead;
+      AssertTrueMsg(
+        head.Status() >= 100 && head.Status() < 200 && head.Status() != 101 && !self.IsComplete(),
         "each non-switching informational event is observable"
       );
     }
@@ -120,17 +120,17 @@ func http_test_response_feed(parser: ref mut HttpResponseParser, wire: ref strin
 
 @test(tag = "http_core")
 func test_http_body_writer_fixed_capacities() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\n");
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\n");
   var capacity: int32 = 1;
   while capacity <= 6 {
-    var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-    http_test_assert(
-      http_test_write(writer, "abcde", capacity).Equal("abcde") && writer.IsComplete(),
+    var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+    AssertTrueMsg(
+      (writer).TestWrite("abcde", capacity).Equal("abcde") && writer.IsComplete(),
       "fixed bodies preserve accepted bytes under partial output"
     );
-    http_test_assert(writer.Finish(new <HttpField>[0]).IsOk(), "exact fixed length finishes idempotently");
-    http_test_assert(
-      http_test_write(writer, "", capacity).length == 0,
+    AssertTrueMsg(writer.Finish(new <HttpField>[0]).IsOk(), "exact fixed length finishes idempotently");
+    AssertTrueMsg(
+      (writer).TestWrite("", capacity).length == 0,
       "completed fixed writer emits no duplicate bytes"
     );
     capacity = capacity + 1;
@@ -139,20 +139,20 @@ func test_http_body_writer_fixed_capacities() {
 
 @test(tag = "http_core")
 func test_http_body_writer_fixed_shortage_and_excess() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n");
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-  http_test_assert(
-    http_test_write(writer, "ab", 1).Equal("ab"),
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n");
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+  AssertTrueMsg(
+    (writer).TestWrite("ab", 1).Equal("ab"),
     "accepted prefix remains exact before a short source"
   );
   let end: Result<bool, HttpError> = writer.Finish(new <HttpField>[0]);
-  http_test_assert(
+  AssertTrueMsg(
     end.IsErr()
       && ((end.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.UnexpectedEof
       && !writer.IsComplete(),
     "short fixed input is a terminal EOF error"
   );
-  var excessive: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
+  var excessive: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
   var storage: <uint8>[1] = <uint8>[1] {
   };
   storage[0] = 165u8;
@@ -161,13 +161,13 @@ func test_http_body_writer_fixed_shortage_and_excess() {
     1 as intptr
   ).get_if<NetMutableBytes>()) as NetMutableBytes;
   let fed: Result<HttpBodyProgress, HttpError> = excessive.Push(NetBytes.FromString("abcd"), output);
-  http_test_assert(
+  AssertTrueMsg(
     fed.IsErr()
       && ((fed.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.InvalidFraming
       && storage[0] == 165u8,
     "excess fixed payload fails without writing any output"
   );
-  http_test_assert(
+  AssertTrueMsg(
     excessive.Push(
       NetBytes.FromString("abc"),
       output
@@ -178,23 +178,23 @@ func test_http_body_writer_fixed_shortage_and_excess() {
 
 @test(tag = "http_core")
 func test_http_body_writer_absent_and_metadata_length() {
-  let head: HttpHead = http_test_head(
+  let head: HttpHead = HttpHead.TestParse(
     true,
     "HEAD",
     "HTTP/1.1 200 OK\r\nContent-Length: 18446744073709551615\r\n\r\n"
   );
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-  http_test_assert(
-    writer.IsComplete() && http_test_write(writer, "", 1).length == 0,
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+  AssertTrueMsg(
+    writer.IsComplete() && (writer).TestWrite("", 1).length == 0,
     "HEAD metadata length never creates output"
   );
-  http_test_assert(
+  AssertTrueMsg(
     writer.Push(NetBytes.FromString("x"), NetMutableBytes{}).IsErr() && !writer.IsComplete(),
     "no-body plans reject accidental payload"
   );
-  let zero: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
-  var empty: HttpBodyWriter = http_test_body_writer(zero, HttpBodyLimits{});
-  http_test_assert(
+  let zero: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n");
+  var empty: HttpBodyWriter = HttpBodyWriter.TestNew(zero, HttpBodyLimits{});
+  AssertTrueMsg(
     empty.IsComplete() && empty.Finish(new <HttpField>[0]).IsOk(),
     "zero fixed length needs no body framing"
   );
@@ -202,22 +202,22 @@ func test_http_body_writer_absent_and_metadata_length() {
 
 @test(tag = "http_core")
 func test_http_body_writer_eof_and_budget() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.0 200 OK\r\n\r\n");
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_body_bytes: 3u64});
-  http_test_assert(
-    http_test_write(writer, "abc", 1).Equal("abc") && !writer.IsComplete(),
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.0 200 OK\r\n\r\n");
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_body_bytes: 3u64});
+  AssertTrueMsg(
+    (writer).TestWrite("abc", 1).Equal("abc") && !writer.IsComplete(),
     "close-delimited output remains open until Finish"
   );
-  http_test_assert(
+  AssertTrueMsg(
     writer.Finish(new <HttpField>[0]).IsOk() && writer.IsComplete(),
     "EOF framing generates no synthetic wire terminator"
   );
-  var excessive: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_body_bytes: 3u64});
+  var excessive: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_body_bytes: 3u64});
   let fed: Result<HttpBodyProgress, HttpError> = excessive.Push(
     NetBytes.FromString("abcd"),
     NetMutableBytes{}
   );
-  http_test_assert(
+  AssertTrueMsg(
     fed.IsErr() && ((fed.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded,
     "offered payload cannot bypass body caps under backpressure"
   );
@@ -225,27 +225,27 @@ func test_http_body_writer_eof_and_budget() {
 
 @test(tag = "http_core")
 func test_http_body_writer_chunked_capacities_and_roundtrip() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
   var capacity: int32 = 1;
   while capacity <= 12 {
-    var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-    let payload: string = http_test_write(writer, "abc", capacity);
-    http_test_assert(writer.Finish(new <HttpField>[0]).IsOk(), "chunked Finish queues terminal framing");
-    let wire: string = payload.Concat(http_test_write(writer, "", capacity));
-    http_test_assert(
+    var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+    let payload: string = (writer).TestWrite("abc", capacity);
+    AssertTrueMsg(writer.Finish(new <HttpField>[0]).IsOk(), "chunked Finish queues terminal framing");
+    let wire: string = payload.Concat((writer).TestWrite("", capacity));
+    AssertTrueMsg(
       wire.Equal("3\r\nabc\r\n0\r\n\r\n") && writer.IsComplete(),
       "partial framing is emitted exactly once at every output capacity"
     );
-    var decoder: HttpBodyDecoder = http_test_body(
+    var decoder: HttpBodyDecoder = HttpBodyDecoder.TestNew(
       "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n",
       HttpBodyLimits{}
     );
-    http_test_assert(
-      http_test_body_feed(decoder, wire.Concat("NEXT")).Equal("abc") && decoder.IsComplete(),
+    AssertTrueMsg(
+      (decoder).TestFeed(wire.Concat("NEXT")).Equal("abc") && decoder.IsComplete(),
       "generated chunk wire roundtrips with a preserved next-message suffix"
     );
-    http_test_assert(
-      writer.Finish(new <HttpField>[0]).IsOk() && http_test_write(writer, "", capacity).length == 0,
+    AssertTrueMsg(
+      writer.Finish(new <HttpField>[0]).IsOk() && (writer).TestWrite("", capacity).length == 0,
       "repeated empty Finish never duplicates the zero chunk"
     );
     capacity = capacity + 1;
@@ -254,7 +254,7 @@ func test_http_body_writer_chunked_capacities_and_roundtrip() {
 
 @test(tag = "http_core")
 func test_http_body_writer_large_chunk_bound() {
-  let head: HttpHead = http_test_head(
+  let head: HttpHead = HttpHead.TestParse(
     false,
     "",
     "POST / HTTP/1.1\r\nHost: example.test\r\nTransfer-Encoding: chunked\r\n\r\n"
@@ -267,59 +267,68 @@ func test_http_body_writer_large_chunk_bound() {
   }
 
   let data: string = payload.Take();
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-  let first: string = http_test_write(writer, data, 37);
-  http_test_assert(writer.Finish(new <HttpField>[0]).IsOk(), "large streaming source can finish");
-  let wire: string = first.Concat(http_test_write(writer, "", 7));
-  http_test_assert(
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+  let first: string = (writer).TestWrite(data, 37);
+  AssertTrueMsg(writer.Finish(new <HttpField>[0]).IsOk(), "large streaming source can finish");
+  let wire: string = first.Concat((writer).TestWrite("", 7));
+  AssertTrueMsg(
     wire.Substring(0, 6).Equal("4000\r\n") && wire.Substring(16392, 5).Equal("e20\r\n"),
     "generated chunks are bounded to 16 KiB with canonical lowercase sizes"
   );
   var decoded_result: Result<HttpBodyDecoder, HttpError> = HttpBodyDecoder.New(head, HttpBodyLimits{});
   var decoder: HttpBodyDecoder = move((decoded_result.get_if<HttpBodyDecoder>()) as HttpBodyDecoder);
-  http_test_assert(
-    http_test_body_feed(decoder, wire).Equal(data) && decoder.IsComplete(),
+  AssertTrueMsg(
+    (decoder).TestFeed(wire).Equal(data) && decoder.IsComplete(),
     "request bodies roundtrip without buffering the source in the writer"
   );
 }
 
 @test(tag = "http_core")
 func test_http_body_writer_owned_trailers_and_move() {
-  let head: HttpHead = http_test_head(
+  let head: HttpHead = HttpHead.TestParse(
     true,
     "GET",
     "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: x-hash, X-End\r\n\r\n"
   );
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
-  let payload: string = http_test_write(writer, "a", 1);
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
+  let payload: string = (writer).TestWrite("a", 1);
   var trailers: <HttpField>[2] = <HttpField>[2] {
   };
   trailers[0] = HttpField{name: "X-Hash", value: "first"};
   trailers[1] = HttpField{name: "x-hash", value: "second"};
   let finish: Result<bool, HttpError> = writer.Finish(trailers);
-  http_test_assert(
+  AssertTrueMsg(
     finish.IsOk() && ! ((finish.get_if<bool>()) as bool),
     "captured trailers remain pending until wire drain"
   );
   trailers[0].value = "changed";
   trailers[1].name = "Changed";
   var moved: HttpBodyWriter = move(writer);
-  let wire: string = payload.Concat(http_test_write(moved, "", 1));
+  let wire: string = payload.Concat((moved).TestWrite("", 1));
   moved = HttpBodyWriter{};
-  http_test_assert(
+  AssertTrueMsg(
     wire.Equal("1\r\na\r\n0\r\nX-Hash: first\r\nx-hash: second\r\n\r\n"),
     "trailers are owned, ordered, case-preserved and independent of source mutation/drop"
   );
-  http_test_assert(
+  AssertTrueMsg(
     moved.Finish(new <HttpField>[0]).IsErr() && moved.Push(NetBytes{}, NetMutableBytes{}).IsErr(),
     "default body writer is closed"
   );
 }
 
-func http_test_writer_new_reject(wire: ref string, expected: HttpErrorKind) -> void {
-  let head: HttpHead = http_test_head(true, "GET", wire);
+// Immutable fixture inputs and expected protocol result.
+struct HttpBodyWriterRejectCase {
+  readonly wire: string;
+  readonly expected: HttpErrorKind;
+}
+
+method(HttpBodyWriterRejectCase) Run() -> void {
+  let wire: string = self.wire;
+  let expected: HttpErrorKind = self.expected;
+
+  let head: HttpHead = HttpHead.TestParse(true, "GET", wire);
   var made: Result<HttpBodyWriter, HttpError> = HttpBodyWriter.New(head, HttpBodyLimits{});
-  http_test_assert(
+  AssertTrueMsg(
     made.IsErr() && ((made.get_if<HttpError>()) as HttpError).kind == expected,
     "unsafe writer construction is rejected before output"
   );
@@ -327,49 +336,52 @@ func http_test_writer_new_reject(wire: ref string, expected: HttpErrorKind) -> v
 
 @test(tag = "http_core")
 func test_http_body_writer_trailer_declarations() {
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nContent-Length: 0\r\nTrailer: X-End\r\n\r\n",
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: Content-Length\r\n\r\n",
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-End,\r\n\r\n",
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: \r\n\r\n",
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-Bad\r\nConnection: x-bad\r\n\r\n",
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_writer_new_reject(
-    "HTTP/1.1 200 OK\r\nContent-Length: 18446744073709551615\r\n\r\n",
-    HttpErrorKind.LimitExceeded
-  );
-  http_test_writer_new_reject("HTTP/1.1 101 Switching\r\n\r\n", HttpErrorKind.Unsupported);
+  HttpBodyWriterRejectCase{wire: "HTTP/1.1 200 OK\r\nContent-Length: 0\r\nTrailer: X-End\r\n\r\n",
+    expected: HttpErrorKind.InvalidFraming}.Run();
+  HttpBodyWriterRejectCase{
+    wire: "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: Content-Length\r\n\r\n",
+    expected: HttpErrorKind.InvalidFraming
+  }.Run();
+  HttpBodyWriterRejectCase{wire: "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-End,\r\n\r\n",
+    expected: HttpErrorKind.InvalidFraming}.Run();
+  HttpBodyWriterRejectCase{wire: "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: \r\n\r\n",
+    expected: HttpErrorKind.InvalidFraming}.Run();
+  HttpBodyWriterRejectCase{
+    wire: "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-Bad\r\nConnection: x-bad\r\n\r\n",
+    expected: HttpErrorKind.InvalidFraming
+  }.Run();
+  HttpBodyWriterRejectCase{wire: "HTTP/1.1 200 OK\r\nContent-Length: 18446744073709551615\r\n\r\n",
+    expected: HttpErrorKind.LimitExceeded}.Run();
+  HttpBodyWriterRejectCase{wire: "HTTP/1.1 101 Switching\r\n\r\n", expected: HttpErrorKind.Unsupported}.Run();
 }
 
-func http_test_finish_reject(trailer: HttpField, caps: ref HttpBodyLimits, expected: HttpErrorKind) -> void {
-  let head: HttpHead = http_test_head(
+// Immutable fixture inputs and expected protocol result.
+struct HttpTrailerRejectCase {
+  readonly trailer: HttpField;
+  readonly caps: HttpBodyLimits;
+  readonly expected: HttpErrorKind;
+}
+
+method(HttpTrailerRejectCase) Run() -> void {
+  let trailer: HttpField = self.trailer;
+  let caps: HttpBodyLimits = self.caps;
+  let expected: HttpErrorKind = self.expected;
+
+  let head: HttpHead = HttpHead.TestParse(
     true,
     "GET",
     "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-End\r\n\r\n"
   );
-  var writer: HttpBodyWriter = http_test_body_writer(head, caps);
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, caps);
   var trailers: <HttpField>[1] = <HttpField>[1] {
   };
   trailers[0] = trailer;
   let ended: Result<bool, HttpError> = writer.Finish(trailers);
-  http_test_assert(
+  AssertTrueMsg(
     ended.IsErr() && ((ended.get_if<HttpError>()) as HttpError).kind == expected,
     "trailer violation is rejected before terminal wire generation"
   );
-  http_test_assert(
+  AssertTrueMsg(
     writer.Push(
       NetBytes{},
       NetMutableBytes{}
@@ -380,58 +392,41 @@ func http_test_finish_reject(trailer: HttpField, caps: ref HttpBodyLimits, expec
 
 @test(tag = "http_core")
 func test_http_body_writer_trailer_validation() {
-  http_test_finish_reject(
-    HttpField{name: "X-Other", value: "x"},
-    HttpBodyLimits{},
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_finish_reject(
-    HttpField{name: "Content-Type", value: "text/plain"},
-    HttpBodyLimits{},
-    HttpErrorKind.InvalidFraming
-  );
-  http_test_finish_reject(HttpField{name: "Bad Name", value: "x"}, HttpBodyLimits{}, HttpErrorKind.Malformed);
-  http_test_finish_reject(
-    HttpField{name: "X-End", value: "x\r\nInjected: y"},
-    HttpBodyLimits{},
-    HttpErrorKind.Malformed
-  );
-  http_test_finish_reject(
-    HttpField{name: "X-End", value: "long"},
-    HttpBodyLimits{max_line_bytes: 10},
-    HttpErrorKind.LimitExceeded
-  );
-  http_test_finish_reject(
-    HttpField{name: "X-End", value: "a"},
-    HttpBodyLimits{max_framing_bytes: 14},
-    HttpErrorKind.LimitExceeded
-  );
+  HttpTrailerRejectCase{trailer: HttpField{name: "X-Other", value: "x"}, caps: HttpBodyLimits{},
+    expected: HttpErrorKind.InvalidFraming}.Run();
+  HttpTrailerRejectCase{trailer: HttpField{name: "Content-Type", value: "text/plain"}, caps: HttpBodyLimits{},
+    expected: HttpErrorKind.InvalidFraming}.Run();
+  HttpTrailerRejectCase{trailer: HttpField{name: "Bad Name", value: "x"}, caps: HttpBodyLimits{},
+    expected: HttpErrorKind.Malformed}.Run();
+  HttpTrailerRejectCase{trailer: HttpField{name: "X-End", value: "x\r\nInjected: y"}, caps: HttpBodyLimits{},
+    expected: HttpErrorKind.Malformed}.Run();
+  HttpTrailerRejectCase{trailer: HttpField{name: "X-End", value: "long"}, caps: HttpBodyLimits{max_line_bytes: 10},
+    expected: HttpErrorKind.LimitExceeded}.Run();
+  HttpTrailerRejectCase{trailer: HttpField{name: "X-End", value: "a"}, caps: HttpBodyLimits{max_framing_bytes: 14},
+    expected: HttpErrorKind.LimitExceeded}.Run();
 }
 
 @test(tag = "http_core")
 func test_http_body_writer_framing_budget() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
-  var exact: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_framing_bytes: 10});
-  let prefix: string = http_test_write(exact, "a", 1);
-  http_test_assert(
-    exact.Finish(new <HttpField>[0]).IsOk() && prefix.Concat(http_test_write(
-      exact,
-      "",
-      1
-    )).Equal("1\r\na\r\n0\r\n\r\n"),
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+  var exact: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_framing_bytes: 10});
+  let prefix: string = (exact).TestWrite("a", 1);
+  AssertTrueMsg(
+    exact.Finish(new <HttpField>[0]).IsOk() && prefix.Concat((exact).TestWrite("",
+      1)).Equal("1\r\na\r\n0\r\n\r\n"),
     "exact framing budget includes header, data delimiter and terminal chunk"
   );
-  var terminal: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_framing_bytes: 9});
-  http_test_assert(
-    http_test_write(terminal, "a", 1).Equal("1\r\na\r\n"),
+  var terminal: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_framing_bytes: 9});
+  AssertTrueMsg(
+    (terminal).TestWrite("a", 1).Equal("1\r\na\r\n"),
     "accepted payload is preserved before terminal budget failure"
   );
   let finish: Result<bool, HttpError> = terminal.Finish(new <HttpField>[0]);
-  http_test_assert(
+  AssertTrueMsg(
     finish.IsErr() && ((finish.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded,
     "terminal metadata is included in framing admission"
   );
-  var first: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_framing_bytes: 4});
+  var first: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_framing_bytes: 4});
   var storage: <uint8>[1] = <uint8>[1] {
   };
   storage[0] = 165u8;
@@ -440,13 +435,13 @@ func test_http_body_writer_framing_budget() {
     1 as intptr
   ).get_if<NetMutableBytes>()) as NetMutableBytes;
   let fed: Result<HttpBodyProgress, HttpError> = first.Push(NetBytes.FromString("a"), output);
-  http_test_assert(
+  AssertTrueMsg(
     fed.IsErr() && storage[0] == 165u8,
     "chunk header and suffix are reserved before any header output"
   );
-  var line: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{max_line_bytes: 1});
+  var line: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{max_line_bytes: 1});
   let wide: Result<HttpBodyProgress, HttpError> = line.Push(NetBytes.FromString("0123456789abcdef"), output);
-  http_test_assert(
+  AssertTrueMsg(
     wide.IsErr()
       && ((wide.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded
       && storage[0] == 165u8,
@@ -456,8 +451,8 @@ func test_http_body_writer_framing_budget() {
 
 @test(tag = "http_core")
 func test_http_body_writer_announced_chunk_shortage_and_finish_drain() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
   var storage: <uint8>[1] = <uint8>[1] {
   };
   let output: NetMutableBytes = (NetMutableBytes.FromRaw(
@@ -468,42 +463,39 @@ func test_http_body_writer_announced_chunk_shortage_and_finish_drain() {
     NetBytes.FromString("abc"),
     output
   ).get_if<HttpBodyProgress>()) as HttpBodyProgress;
-  http_test_assert(
+  AssertTrueMsg(
     header.consumed == (0 as intptr) && header.produced == (1 as intptr),
     "partial chunk header reports no accepted payload"
   );
   let short: Result<bool, HttpError> = writer.Finish(new <HttpField>[0]);
-  http_test_assert(
+  AssertTrueMsg(
     short.IsErr() && ((short.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.UnexpectedEof,
     "announced chunk cannot be abandoned by Finish"
   );
-  var draining: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
+  var draining: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
   let prefix: HttpBodyProgress = (draining.Push(
     NetBytes.FromString("a"),
     output
   ).get_if<HttpBodyProgress>()) as HttpBodyProgress;
-  http_test_assert(prefix.consumed == (0 as intptr), "chunk framing can precede payload acceptance");
-  let payload: string = http_test_write(draining, "a", 1);
-  http_test_assert(draining.Finish(new <HttpField>[0]).IsOk(), "finish can queue final metadata");
-  http_test_assert(
-    !draining.IsComplete() && http_test_write(
-      draining,
-      "",
-      1
-    ).Equal("0\r\n\r\n") && draining.IsComplete() && payload.Equal("\r\na\r\n"),
+  AssertTrueMsg(prefix.consumed == (0 as intptr), "chunk framing can precede payload acceptance");
+  let payload: string = (draining).TestWrite("a", 1);
+  AssertTrueMsg(draining.Finish(new <HttpField>[0]).IsOk(), "finish can queue final metadata");
+  AssertTrueMsg(
+    !draining.IsComplete() && (draining).TestWrite("",
+      1).Equal("0\r\n\r\n") && draining.IsComplete() && payload.Equal("\r\na\r\n"),
     "final drain owns pending metadata and emits no payload twice"
   );
 }
 
 @test(tag = "http_core")
 func test_http_body_writer_finish_behind_pending_delimiter() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n");
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
   let blocked: HttpBodyProgress = (writer.Push(
     NetBytes.FromString("a"),
     NetMutableBytes{}
   ).get_if<HttpBodyProgress>()) as HttpBodyProgress;
-  http_test_assert(
+  AssertTrueMsg(
     blocked.consumed == (0 as intptr)
       && blocked.produced == (0 as intptr)
       && blocked.state == HttpBodyState.NeedOutput,
@@ -519,7 +511,7 @@ func test_http_body_writer_finish_behind_pending_delimiter() {
     NetBytes.FromString("a"),
     output
   ).get_if<HttpBodyProgress>()) as HttpBodyProgress;
-  http_test_assert(
+  AssertTrueMsg(
     header.consumed == (0 as intptr) && header.produced == (3 as intptr) && string.ViewFrom(
       &storage[0] as *const int8,
       3
@@ -530,24 +522,24 @@ func test_http_body_writer_finish_behind_pending_delimiter() {
     NetBytes.FromString("a"),
     output
   ).get_if<HttpBodyProgress>()) as HttpBodyProgress;
-  http_test_assert(
+  AssertTrueMsg(
     copied.consumed == (1 as intptr) && copied.produced == (1 as intptr) && storage[0] == 97u8,
     "payload copy queues but does not emit its delimiter"
   );
-  http_test_assert(
+  AssertTrueMsg(
     writer.Finish(new <HttpField>[0]).IsOk(),
     "Finish accepts a fully copied chunk with pending delimiter"
   );
-  http_test_assert(
-    http_test_write(writer, "", 1).Equal("\r\n0\r\n\r\n") && writer.IsComplete(),
+  AssertTrueMsg(
+    (writer).TestWrite("", 1).Equal("\r\n0\r\n\r\n") && writer.IsComplete(),
     "pending data CRLF precedes final chunk under one-byte output"
   );
 }
 
 @test(tag = "http_core")
 func test_http_body_writer_binary_and_trailer_count() {
-  let head: HttpHead = http_test_head(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n");
-  var writer: HttpBodyWriter = http_test_body_writer(head, HttpBodyLimits{});
+  let head: HttpHead = HttpHead.TestParse(true, "GET", "HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n");
+  var writer: HttpBodyWriter = HttpBodyWriter.TestNew(head, HttpBodyLimits{});
   var bytes: <uint8>[3] = <uint8>[3] {
   };
   bytes[1] = 255u8;
@@ -562,7 +554,7 @@ func test_http_body_writer_binary_and_trailer_count() {
   ).get_if<NetMutableBytes>()) as NetMutableBytes;
   let step: HttpBodyProgress = (writer.Push(input, output).get_if<HttpBodyProgress>()) as HttpBodyProgress;
   bytes[1] = 0u8;
-  http_test_assert(
+  AssertTrueMsg(
     step.produced == (3 as intptr)
       && storage[0] == 0u8
       && storage[1] == 255u8
@@ -570,49 +562,47 @@ func test_http_body_writer_binary_and_trailer_count() {
       && storage[3] == 165u8,
     "writer copies opaque octets into independent caller-owned output only"
   );
-  let chunked: HttpHead = http_test_head(
+  let chunked: HttpHead = HttpHead.TestParse(
     true,
     "GET",
     "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nTrailer: X-End\r\n\r\n"
   );
-  var capped: HttpBodyWriter = http_test_body_writer(chunked, HttpBodyLimits{max_trailers: 1});
+  var capped: HttpBodyWriter = HttpBodyWriter.TestNew(chunked, HttpBodyLimits{max_trailers: 1});
   var fields: <HttpField>[2] = <HttpField>[2] {
   };
   fields[0] = HttpField{name: "X-End", value: "a"};
   fields[1] = HttpField{name: "X-End", value: "b"};
   let excess: Result<bool, HttpError> = capped.Finish(fields);
-  http_test_assert(
+  AssertTrueMsg(
     excess.IsErr() && ((excess.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded,
     "duplicate ordinary trailers still consume the trailer count budget"
   );
   var invalid: Result<HttpBodyWriter, HttpError> = HttpBodyWriter.New(HttpHead{}, HttpBodyLimits{});
-  http_test_assert(invalid.IsErr(), "default unvalidated head cannot construct a writer");
+  AssertTrueMsg(invalid.IsErr(), "default unvalidated head cannot construct a writer");
 }
 
 @test(tag = "http_core")
 func test_http_response_sequence_every_split() {
-  let heads: string = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 103 Early Hints\r\nLink: </a>\r\n\r\nHTTP/1.1 199 Extension\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n";
+  let heads: string = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 103 Early Hints\r\nLink: </a>\r\n\r\nHTTP/1.1 1"
+    .Concat("99 Extension\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n");
   var split: int32 = 0;
   while split <= heads.length {
-    var parser: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
-    let first: intptr = http_test_response_feed(parser, heads.Substring(0, split));
-    let rest: intptr = http_test_response_feed(
-      parser,
-      heads.Substring(split, heads.length - split).Concat("abcNEXT")
-    );
-    http_test_assert(
+    var parser: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
+    let first: intptr = (parser).TestFeed(heads.Substring(0, split));
+    let rest: intptr = (parser).TestFeed(heads.Substring(split, heads.length - split).Concat("abcNEXT"));
+    AssertTrueMsg(
       first + rest == heads.length as intptr && parser.InformationalCount() == 3 && parser.IsComplete(),
       "all response splits preserve body/pipeline suffixes and final association"
     );
     let head: HttpHead = (parser.EndInput().get_if<HttpHead>()) as HttpHead;
-    http_test_assert(
+    AssertTrueMsg(
       head.Status() == 200 && ((head.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan).length == 3u64,
       "final framing remains associated with the original GET"
     );
     let again: HttpResponseProgress = (
       parser.Push(NetBytes.FromString("abcNEXT")).get_if<HttpResponseProgress>()
     ) as HttpResponseProgress;
-    http_test_assert(
+    AssertTrueMsg(
       again.consumed == (0 as intptr) && again.state == HttpResponseState.Final,
       "final association cannot advance into a body or next request"
     );
@@ -623,33 +613,33 @@ func test_http_response_sequence_every_split() {
 @test(tag = "http_core")
 func test_http_response_informational_count_limits() {
   let wire: string = "HTTP/1.1 100 Continue\r\n\r\n";
-  var parser: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{max_informational: 1});
-  http_test_assert(
+  var parser: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{max_informational: 1});
+  AssertTrueMsg(
     parser.Push(NetBytes.FromString(wire)).IsOk() && parser.InformationalCount() == 1,
     "first informational response consumes the count budget"
   );
   let excess: Result<HttpResponseProgress, HttpError> = parser.Push(NetBytes.FromString(wire));
-  http_test_assert(
+  AssertTrueMsg(
     excess.IsErr()
       && ((excess.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded
       && ((excess.get_if<HttpError>()) as HttpError).offset == (wire.length * 2) as int64,
     "excess informational response fails at an aggregate byte offset"
   );
-  http_test_assert(
+  AssertTrueMsg(
     parser.Head().IsErr() && parser.EndInput().IsErr() && !parser.IsComplete(),
     "count failure cannot expose a final response"
   );
-  var defaults: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
+  var defaults: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
   var i: int32 = 0;
   while i < 16 {
-    http_test_assert(
+    AssertTrueMsg(
       defaults.Push(NetBytes.FromString(wire)).IsOk(),
       "default informational count includes 16 events"
     );
     i = i + 1;
   }
 
-  http_test_assert(
+  AssertTrueMsg(
     defaults.Push(NetBytes.FromString(wire)).IsErr(),
     "default count rejects the seventeenth event"
   );
@@ -657,7 +647,7 @@ func test_http_response_informational_count_limits() {
     "GET",
     HttpResponseLimits{max_informational: 65}
   );
-  http_test_assert(bad.IsErr(), "hard informational cap cannot be increased beyond 64");
+  AssertTrueMsg(bad.IsErr(), "hard informational cap cannot be increased beyond 64");
 }
 
 @test(tag = "http_core")
@@ -665,38 +655,38 @@ func test_http_response_aggregate_and_per_head_limits() {
   let info: string = "HTTP/1.1 100 Continue\r\n\r\n";
   let final_head: string = "HTTP/1.1 200 OK\r\nContent-Length: 1\r\n\r\n";
   let wire: string = info.Concat(final_head);
-  var exact: HttpResponseParser = http_test_response_parser(
+  var exact: HttpResponseParser = HttpResponseParser.TestNew(
     "GET",
     HttpResponseLimits{max_total_head_bytes: wire.length}
   );
-  http_test_assert(
-    http_test_response_feed(exact, wire.Concat("aNEXT")) == wire.length as intptr && exact.IsComplete(),
+  AssertTrueMsg(
+    (exact).TestFeed(wire.Concat("aNEXT")) == wire.length as intptr && exact.IsComplete(),
     "aggregate head cap excludes final body and next-message bytes"
   );
-  var short: HttpResponseParser = http_test_response_parser(
+  var short: HttpResponseParser = HttpResponseParser.TestNew(
     "GET",
     HttpResponseLimits{max_total_head_bytes: wire.length - 1}
   );
-  http_test_assert(short.Push(NetBytes.FromString(info)).IsOk(), "initial head fits aggregate cap");
+  AssertTrueMsg(short.Push(NetBytes.FromString(info)).IsOk(), "initial head fits aggregate cap");
   let excess: Result<HttpResponseProgress, HttpError> = short.Push(NetBytes.FromString(final_head));
-  http_test_assert(
+  AssertTrueMsg(
     excess.IsErr()
       && ((excess.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded
       && ((excess.get_if<HttpError>()) as HttpError).offset == (wire.length - 1) as int64,
     "aggregate limit is enforced in the middle of a final head"
   );
-  var fields: HttpResponseParser = http_test_response_parser(
+  var fields: HttpResponseParser = HttpResponseParser.TestNew(
     "GET",
     HttpResponseLimits{head: HttpHeadLimits{max_fields: 1}}
   );
-  http_test_assert(
+  AssertTrueMsg(
     fields.Push(NetBytes.FromString(info)).IsOk(),
     "per-head field counts reset after informational events"
   );
   let fed: Result<HttpResponseProgress, HttpError> = fields.Push(
     NetBytes.FromString("HTTP/1.1 200 OK\r\nX: a\r\nY: b\r\n\r\n")
   );
-  http_test_assert(
+  AssertTrueMsg(
     fed.IsErr() && ((fed.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.LimitExceeded,
     "per-head field caps remain active for the final response"
   );
@@ -707,20 +697,20 @@ func test_http_response_eof_every_prefix() {
   let wire: string = "HTTP/1.1 100 Continue\r\n\r\nHTTP/1.1 103 Hints\r\n\r\nHTTP/1.1 204 Empty\r\n\r\n";
   var i: int32 = 0;
   while i < wire.length {
-    var parser: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
-    http_test_assert(
-      http_test_response_feed(parser, wire.Substring(0, i)) == i as intptr,
+    var parser: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
+    AssertTrueMsg(
+      (parser).TestFeed(wire.Substring(0, i)) == i as intptr,
       "valid incomplete prefix is consumed"
     );
     let end: Result<HttpHead, HttpError> = parser.EndInput();
-    http_test_assert(
+    AssertTrueMsg(
       end.IsErr()
         && ((end.get_if<HttpError>()) as HttpError).kind == HttpErrorKind.UnexpectedEof
         && ((end.get_if<HttpError>()) as HttpError).offset == i as int64
         && !parser.IsComplete(),
       "EOF after informational or partial final heads cannot complete the response"
     );
-    http_test_assert(
+    AssertTrueMsg(
       parser.Push(NetBytes.FromString(wire)).IsErr(),
       "truncated sequence cannot restart on a new response"
     );
@@ -731,53 +721,51 @@ func test_http_response_eof_every_prefix() {
 @test(tag = "http_core")
 func test_http_response_head_connect_and_101_context() {
   let info: string = "HTTP/1.1 100 Continue\r\n\r\n";
-  var head_parser: HttpResponseParser = http_test_response_parser("HEAD", HttpResponseLimits{});
+  var head_parser: HttpResponseParser = HttpResponseParser.TestNew("HEAD", HttpResponseLimits{});
   let head_wire: string = info.Concat("HTTP/1.1 200 OK\r\nContent-Length: 999\r\n\r\n");
-  http_test_assert(
-    http_test_response_feed(head_parser, head_wire.Concat("NEXT")) == head_wire.length as intptr,
+  AssertTrueMsg(
+    (head_parser).TestFeed(head_wire.Concat("NEXT")) == head_wire.length as intptr,
     "HEAD preserves next-message suffix after informational heads"
   );
   let head: HttpHead = (head_parser.Head().get_if<HttpHead>()) as HttpHead;
-  http_test_assert(
+  AssertTrueMsg(
     ((head.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan).kind == HttpBodyKind.None,
     "originating HEAD context survives all response parser resets"
   );
-  var tunnel: HttpResponseParser = http_test_response_parser("CONNECT", HttpResponseLimits{});
+  var tunnel: HttpResponseParser = HttpResponseParser.TestNew("CONNECT", HttpResponseLimits{});
   let tunnel_wire: string = info.Concat("HTTP/1.1 200 OK\r\n\r\n");
-  http_test_assert(
-    http_test_response_feed(tunnel, tunnel_wire.Concat("OPAQUE")) == tunnel_wire.length as intptr,
+  AssertTrueMsg(
+    (tunnel).TestFeed(tunnel_wire.Concat("OPAQUE")) == tunnel_wire.length as intptr,
     "CONNECT preserves tunnel payload exactly"
   );
   let tunnel_head: HttpHead = (tunnel.Head().get_if<HttpHead>()) as HttpHead;
-  http_test_assert(
+  AssertTrueMsg(
     ((tunnel_head.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan).kind == HttpBodyKind.Tunnel,
     "successful CONNECT remains an explicit tunnel handoff"
   );
-  var upgrade: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
+  var upgrade: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
   let switched: string = info.Concat("HTTP/1.1 101 Switching\r\n\r\n");
-  http_test_assert(
-    http_test_response_feed(
-      upgrade,
-      switched.Concat("PROTOCOL")
-    ) == switched.length as intptr && upgrade.IsComplete() && upgrade.InformationalCount() == 1,
+  AssertTrueMsg(
+    (upgrade).TestFeed(switched.Concat("PROTOCOL")) == switched.length as intptr && upgrade.IsComplete()
+      && upgrade.InformationalCount() == 1,
     "101 ends response sequencing without consuming upgraded bytes or counting as an interim response"
   );
 }
 
 @test(tag = "http_core")
 func test_http_response_owned_events_and_partial_next_head() {
-  var parser: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
-  http_test_assert(parser.Head().IsErr(), "pending event query does not poison response parsing");
-  http_test_assert(
+  var parser: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
+  AssertTrueMsg(parser.Head().IsErr(), "pending event query does not poison response parsing");
+  AssertTrueMsg(
     parser.Push(NetBytes.FromString("HTTP/1.1 103 Hints\r\nX-Owned: kept\r\n\r\n")).IsOk(),
     "informational head is published"
   );
   let info: HttpHead = (parser.Head().get_if<HttpHead>()) as HttpHead;
-  http_test_assert(
+  AssertTrueMsg(
     parser.Push(NetBytes{}).IsOk() && parser.Head().IsOk(),
     "empty input preserves the last informational event"
   );
-  http_test_assert(
+  AssertTrueMsg(
     parser.Push(NetBytes.FromString("HTTP/1.1 2")).IsOk() && parser.Head().IsErr(),
     "starting a new head clears stale event publication"
   );
@@ -785,14 +773,14 @@ func test_http_response_owned_events_and_partial_next_head() {
   let fed: Result<HttpResponseProgress, HttpError> = moved.Push(
     NetBytes.FromString("00 OK\r\nContent-Length: 0\r\n\r\nNEXT")
   );
-  http_test_assert(fed.IsOk() && moved.IsComplete(), "move retains in-progress final association");
+  AssertTrueMsg(fed.IsOk() && moved.IsComplete(), "move retains in-progress final association");
   let final: HttpHead = (moved.Head().get_if<HttpHead>()) as HttpHead;
   moved = HttpResponseParser{};
-  http_test_assert(
+  AssertTrueMsg(
     ((info.FieldAt(0).get_if<HttpField>()) as HttpField).value.Equal("kept") && final.Status() == 200,
     "retained event heads own metadata after cursor reset/move/drop"
   );
-  http_test_assert(
+  AssertTrueMsg(
     moved.Push(NetBytes{}).IsErr() && moved.Head().IsErr() && moved.EndInput().IsErr(),
     "default sequence parser is closed"
   );
@@ -801,20 +789,20 @@ func test_http_response_owned_events_and_partial_next_head() {
 @test(tag = "http_core")
 func test_http_response_malformed_and_sticky_aggregate_offset() {
   let info: string = "HTTP/1.1 100 Continue\r\n\r\n";
-  var parser: HttpResponseParser = http_test_response_parser("GET", HttpResponseLimits{});
-  http_test_assert(parser.Push(NetBytes.FromString(info)).IsOk(), "informational prefix is valid");
+  var parser: HttpResponseParser = HttpResponseParser.TestNew("GET", HttpResponseLimits{});
+  AssertTrueMsg(parser.Push(NetBytes.FromString(info)).IsOk(), "informational prefix is valid");
   let bad: string = "HTTP/1.1 200 OK\r\nContent-Length: 0\r\nTransfer-Encoding: chunked\r\n\r\n";
   let fed: Result<HttpResponseProgress, HttpError> = parser.Push(NetBytes.FromString(bad));
-  http_test_assert(fed.IsErr(), "final framing conflict is rejected");
+  AssertTrueMsg(fed.IsErr(), "final framing conflict is rejected");
   let error: HttpError = (fed.get_if<HttpError>()) as HttpError;
-  http_test_assert(
+  AssertTrueMsg(
     error.kind == HttpErrorKind.InvalidFraming && error.offset == (info.length + bad.length) as int64,
     "inner head error offsets include preceding informational heads exactly once"
   );
   let again: Result<HttpResponseProgress, HttpError> = parser.Push(
     NetBytes.FromString("HTTP/1.1 204 OK\r\n\r\n")
   );
-  http_test_assert(
+  AssertTrueMsg(
     again.IsErr()
       && ((again.get_if<HttpError>()) as HttpError).offset == error.offset
       && parser.Head().IsErr()
@@ -825,7 +813,7 @@ func test_http_response_malformed_and_sticky_aggregate_offset() {
     "GET\r\nBad",
     HttpResponseLimits{}
   );
-  http_test_assert(invalid.IsErr(), "request context cannot contain injection bytes");
+  AssertTrueMsg(invalid.IsErr(), "request context cannot contain injection bytes");
 }
 
 @test(tag = "http_core")
@@ -837,17 +825,14 @@ func test_http_response_borrowed_method_context_and_limits() {
   chars[2] = 65 as int8;
   chars[3] = 68 as int8;
   let verb: string = string.ViewFrom(&chars[0], 4);
-  var parser: HttpResponseParser = http_test_response_parser(verb, HttpResponseLimits{});
+  var parser: HttpResponseParser = HttpResponseParser.TestNew(verb, HttpResponseLimits{});
   chars[0] = 71 as int8;
   chars[1] = 69 as int8;
   chars[2] = 84 as int8;
   chars[3] = 32 as int8;
-  http_test_response_feed(
-    parser,
-    "HTTP/1.1 103 Hints\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 9\r\n\r\nNEXT"
-  );
+  (parser).TestFeed("HTTP/1.1 103 Hints\r\n\r\nHTTP/1.1 200 OK\r\nContent-Length: 9\r\n\r\nNEXT");
   let head: HttpHead = (parser.Head().get_if<HttpHead>()) as HttpHead;
-  http_test_assert(
+  AssertTrueMsg(
     parser.IsComplete()
       && ((head.BodyPlan().get_if<HttpBodyPlan>()) as HttpBodyPlan).kind == HttpBodyKind.None,
     "originating HEAD context owns its bytes through informational resets"
@@ -860,7 +845,7 @@ func test_http_response_borrowed_method_context_and_limits() {
     "GET",
     HttpResponseLimits{head: HttpHeadLimits{max_line_bytes: -1}}
   );
-  http_test_assert(
+  AssertTrueMsg(
     aggregate.IsErr() && per_head.IsErr(),
     "response constructors validate both aggregate and nested head caps"
   );

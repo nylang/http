@@ -14,31 +14,36 @@ import "private/http.ny";
 /** @brief Head serialization validates both individual fields and the resulting framing. */
 
 // Validate the complete head before publishing wire bytes so malformed metadata cannot leak as a partial request.
-func http_serialize(
-  start: ref string,
-  fields: ref <HttpField>[],
-  response: bool,
-  request_method: ref string
-) -> Result<NetBuffer, HttpError> {
+// Own the immutable serialization context; fields are borrowed only by Encode.
+struct HttpHeadEncoding {
+  readonly start: string;
+  readonly response: bool;
+  readonly request_method: string;
+}
+
+method(HttpHeadEncoding) Encode(fields: ref <HttpField>[]) -> Result<NetBuffer, HttpError> {
+  let start: string = self.start;
+  let response: bool = self.response;
+  let request_method: string = self.request_method;
   if start.length > 8192 || fields.length > 100 {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   var size: int32 = start.length + 4;
   var i: int32 = 0;
   while i < fields.length {
     let field: HttpField = fields[i];
-    if !HttpToken(field.name) || !HttpValue(field.value) {
-      return HttpMakeError(HttpErrorKind.Malformed);
+    if !HttpLexeme.New(field.name).IsToken() || !HttpLexeme.New(field.value).IsFieldValue() {
+      return HttpError{kind: HttpErrorKind.Malformed};
     }
 
     if field.name.length > 8192 || field.value.length > 8192 - field.name.length - 2 {
-      return HttpMakeError(HttpErrorKind.LimitExceeded);
+      return HttpError{kind: HttpErrorKind.LimitExceeded};
     }
 
     let line_size: int32 = field.name.length + field.value.length + 4;
     if line_size > 32768 - size {
-      return HttpMakeError(HttpErrorKind.LimitExceeded);
+      return HttpError{kind: HttpErrorKind.LimitExceeded};
     }
 
     size = size + line_size;
@@ -59,7 +64,7 @@ func http_serialize(
 
   buffer.Append("\r\n");
   let wire: string = buffer.Take();
-  var made: Result<HttpHeadParser, HttpError> = HttpNew(response, request_method, HttpHeadLimits{});
+  var made: Result<HttpHeadParser, HttpError> = HttpHeadParser.NewParser(response, request_method, HttpHeadLimits{});
   if made.IsErr() {
     return (made.get_if<HttpError>()) as HttpError;
   }
@@ -71,12 +76,12 @@ func http_serialize(
   }
 
   if !parser.IsComplete() || ((parsed.get_if<intptr>()) as intptr) != wire.length as intptr {
-    return HttpMakeError(HttpErrorKind.Malformed);
+    return HttpError{kind: HttpErrorKind.Malformed};
   }
 
   let copied: Result<NetBuffer, NetError> = NetBuffer.CopyFrom(NetBytes.FromString(wire));
   if copied.IsErr() {
-    return HttpMakeError(HttpErrorKind.ResourceExhausted);
+    return HttpError{kind: HttpErrorKind.ResourceExhausted};
   }
 
   return (copied.get_if<NetBuffer>()) as NetBuffer;
@@ -88,22 +93,22 @@ func http_serialize(
  * @returns Ok with NetBuffer on success; Err with HttpError on the failure paths described
  *   above.
  */
-pub static method(HttpWriter) Request(
+pub static method(HttpHead) EncodeRequest(
   verb: ref string,
   target: ref string,
   fields: ref <HttpField>[]
 ) -> Result<NetBuffer, HttpError> {
-  if !HttpToken(verb) || !HttpTarget(verb, target) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+  if !HttpLexeme.New(verb).IsToken() || !HttpLexeme.New(verb).AcceptsTarget(target) {
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   if verb.length > 8192 || target.length > 8192 - verb.length - 10 {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   let start: string = verb.Concat(" ").Concat(target).Concat(" HTTP/1.1");
 
-  return http_serialize(start, fields, false, "");
+  return HttpHeadEncoding{start: start, response: false, request_method: ""}.Encode(fields);
 }
 
 /**
@@ -111,18 +116,19 @@ pub static method(HttpWriter) Request(
  * @returns Ok with NetBuffer on success; Err with HttpError on the failure paths described
  *   above.
  */
-pub static method(HttpWriter) Response(
+pub static method(HttpHead) EncodeResponse(
   status: int32,
   reason: ref string,
   fields: ref <HttpField>[],
   request_method: ref string
 ) -> Result<NetBuffer, HttpError> {
-  if status < 100 || status > 599 || !HttpValue(reason) || !HttpToken(request_method) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+  if status < 100 || status > 599 || !HttpLexeme.New(reason).IsFieldValue()
+    || !HttpLexeme.New(request_method).IsToken() {
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   if reason.length > 8192 - 13 {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   var digits: <int8>[3] = <int8>[3] {
@@ -133,5 +139,5 @@ pub static method(HttpWriter) Response(
   let code: string = string.ViewFrom(&digits[0], 3);
   let start: string = "HTTP/1.1 ".Concat(code).Concat(" ").Concat(reason);
 
-  return http_serialize(start, fields, true, request_method);
+  return HttpHeadEncoding{start: start, response: true, request_method: request_method}.Encode(fields);
 }

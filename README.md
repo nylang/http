@@ -1,5 +1,8 @@
 # http
 
+Development API 0.2.0 requires a matching Nyra SDK 1.0.5 or newer.
+Rebuild precompiled consumers against the matching interfaces and runtime.
+
 Independent MIT-licensed Nyra HTTP package. The protocol core consumes public
 net_core byte ranges, writes heads into owned NetBuffers and decodes bodies into
 caller-owned output. The protocol core has no transport operations or TLS
@@ -612,3 +615,12 @@ linking and execution; delivery of the 1.0.4 SDK remains separate.
 ## Module architecture
 
 See [module responsibilities, ownership and dependency boundaries](ARCHITECTURE.md).
+
+## Coding-rule lint
+
+`package.yaml` selects the portable `lint.yaml` profile. It requires the
+1.0.5 P7 analyzer candidate (or a later SDK containing those rules); the
+published 1.0.4 analyzer does not implement them. `import: default` inherits
+the selected workspace profile when present, otherwise analyzer SDK defaults.
+No sibling source path is required. Run `nyra-analyzer lint . --json`. Existing
+violations remain migration debt; lint success is not runtime qualification.

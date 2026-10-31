@@ -7,27 +7,46 @@ import "stdlib:stdlib.ny";
 import "net_core:net_core.ny";
 import "interface/http.ni";
 
+/** @brief Retained HTTP wire lexeme; grammar operations preserve original bytes. */
+pub struct HttpLexeme {
+  readonly raw: string;
+}
+
+/** @brief Retain source bytes without decoding, folding or normalization.
+ * @returns Independent lexeme retaining its source payload; empty input is valid. */
+@inline pub static method(HttpLexeme) New(raw: ref string) -> HttpLexeme {
+  return HttpLexeme{raw: raw};
+}
+
+/** @brief HTTP/URI ASCII byte observation; out-of-range integers remain invalid values. */
+pub struct HttpWireByte {
+  readonly value: int32;
+}
+
+/** @brief Retain an integer byte observation without narrowing.
+ * @returns Value suitable for grammar predicates, including negative miss sentinels. */
+@inline pub static method(HttpWireByte) New(value: int32) -> HttpWireByte {
+  return HttpWireByte{value: value};
+}
+
 /**
  * @brief Read an HTTP source byte through a bounds-checked byte accessor.
  * @returns The widened source byte, or the implementation sentinel outside the range.
  */
-pub func HttpChar(text: ref string, index: int32) -> int32 {
-  return (text[index] as uint8) as int32;
-}
-
 /**
  * @brief Recognize the HTTP token character grammar.
  * @returns True only for admitted token bytes.
  */
-pub func HttpTchar(ch: int32) -> bool {
-  if (ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122) {
+pub method(HttpWireByte) IsTokenCharacter() -> bool {
+  if (self.value >= 48 && self.value <= 57) || (self.value >= 65 && self.value <= 90) || (self.value >= 97
+    && self.value <= 122) {
     return true;
   }
 
   let punctuation: string = "!#$%&'*+-.^_`|~";
   var i: int32 = 0;
   while i < punctuation.length {
-    if HttpChar(punctuation, i) == ch {
+    if (punctuation).ByteAtOr(i, 0) == self.value {
       return true;
     }
 
@@ -41,14 +60,14 @@ pub func HttpTchar(ch: int32) -> bool {
  * @brief Validate a nonempty HTTP token without decoding its bytes.
  * @returns True when every byte satisfies the token grammar.
  */
-pub func HttpToken(text: ref string) -> bool {
-  if text.length == 0 {
+pub method(HttpLexeme) IsToken() -> bool {
+  if self.raw.length == 0 {
     return false;
   }
 
   var i: int32 = 0;
-  while i < text.length {
-    if !HttpTchar(HttpChar(text, i)) {
+  while i < self.raw.length {
+    if !HttpWireByte.New((self.raw).ByteAtOr(i, 0)).IsTokenCharacter() {
       return false;
     }
 
@@ -62,10 +81,10 @@ pub func HttpToken(text: ref string) -> bool {
  * @brief Validate field-value bytes before admitting or emitting an HTTP header.
  * @returns True when the value contains no forbidden control or injection bytes.
  */
-pub func HttpValue(text: ref string) -> bool {
+pub method(HttpLexeme) IsFieldValue() -> bool {
   var i: int32 = 0;
-  while i < text.length {
-    let ch: int32 = HttpChar(text, i);
+  while i < self.raw.length {
+    let ch: int32 = (self.raw).ByteAtOr(i, 0);
     if (ch < 32 && ch != 9) || ch == 127 {
       return false;
     }
@@ -80,61 +99,34 @@ pub func HttpValue(text: ref string) -> bool {
  * @brief Compare HTTP ASCII case-insensitive identifiers without locale conversion.
  * @returns True when lengths and ASCII-folded bytes match.
  */
-pub func HttpEqual(left: ref string, right: ref string) -> bool {
-  if left.length != right.length {
-    return false;
-  }
-
-  var i: int32 = 0;
-  while i < left.length {
-    var a: int32 = HttpChar(left, i);
-    var b: int32 = HttpChar(right, i);
-    if a >= 65 && a <= 90 {
-      a = a + 32;
-    }
-
-    if b >= 65 && b <= 90 {
-      b = b + 32;
-    }
-
-    if a != b {
-      return false;
-    }
-
-    i = i + 1;
-  }
-
-  return true;
-}
-
 /**
  * @brief Remove HTTP optional whitespace from both ends of a field component.
  * @returns The retained trimmed string value.
  */
-pub func HttpTrim(text: ref string) -> string {
+pub method(HttpLexeme) TrimWhitespace() -> string {
   var begin: int32 = 0;
-  var end: int32 = text.length;
-  while begin < end && (text[begin] == ' ' || text[begin] == '\t') {
+  var end: int32 = self.raw.length;
+  while begin < end && (self.raw[begin] == ' ' || self.raw[begin] == '\t') {
     begin = begin + 1;
   }
 
-  while end > begin && (text[end - 1] == ' ' || text[end - 1] == '\t') {
+  while end > begin && (self.raw[end - 1] == ' ' || self.raw[end - 1] == '\t') {
     end = end - 1;
   }
 
-  return text.Substring(begin, end - begin);
+  return self.raw.Substring(begin, end - begin);
 }
 
 /**
  * @brief Recognize the supported HTTP version spellings.
  * @returns The supported minor-version discriminator, or the invalid-version sentinel.
  */
-pub func HttpVersion(text: ref string) -> int32 {
-  if text.Equal("HTTP/1.0") {
+pub method(HttpLexeme) MinorVersion() -> int32 {
+  if self.raw.Equal("HTTP/1.0") {
     return 0;
   }
 
-  if text.Equal("HTTP/1.1") {
+  if self.raw.Equal("HTTP/1.1") {
     return 1;
   }
 
@@ -145,17 +137,18 @@ pub func HttpVersion(text: ref string) -> int32 {
  * @brief Recognize ASCII hexadecimal bytes for HTTP framing and escaped targets.
  * @returns True for decimal digits and ASCII a-f or A-F.
  */
-pub func HttpHex(ch: int32) -> bool {
-  return (ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 70) || (ch >= 97 && ch <= 102);
+pub method(HttpWireByte) IsHex() -> bool {
+  return (self.value >= 48 && self.value <= 57) || (self.value >= 65 && self.value <= 70) || (self.value >= 97
+    && self.value <= 102);
 }
 
 /**
  * @brief Validate request-target syntax in the context of the originating method.
  * @returns True for an admitted target spelling without fragment or injection bytes.
  */
-pub func HttpTarget(verb: ref string, target: ref string) -> bool {
+pub method(HttpLexeme) AcceptsTarget(target: ref string) -> bool {
   if target.Equal("*") {
-    return verb.Equal("OPTIONS");
+    return self.raw.Equal("OPTIONS");
   }
 
   if target.length == 0 || target[0] != '/' {
@@ -164,13 +157,14 @@ pub func HttpTarget(verb: ref string, target: ref string) -> bool {
 
   var i: int32 = 0;
   while i < target.length {
-    let ch: int32 = HttpChar(target, i);
+    let ch: int32 = (target).ByteAtOr(i, 0);
     if ch <= 32 || ch >= 127 || ch == 35 || ch == 92 {
       return false;
     }
 
     if ch == 37 {
-      if target.length - i < 3 || !HttpHex(HttpChar(target, i + 1)) || !HttpHex(HttpChar(target, i + 2)) {
+      if target.length - i < 3 || !HttpWireByte.New((target).ByteAtOr(i + 1, 0)).IsHex()
+        || !HttpWireByte.New((target).ByteAtOr(i + 2, 0)).IsHex() {
         return false;
       }
 
@@ -187,23 +181,23 @@ pub func HttpTarget(verb: ref string, target: ref string) -> bool {
  * @brief Validate an HTTP authority field, including numeric address forms.
  * @returns True for an admitted host/port spelling.
  */
-pub func HttpHost(text: ref string) -> bool {
-  if text.length == 0 {
+pub method(HttpLexeme) IsHost() -> bool {
+  if self.raw.length == 0 {
     return false;
   }
 
   var end: int32 = 0;
-  if text[0] == '[' {
+  if self.raw[0] == '[' {
     end = 1;
-    while end < text.length && text[end] != ']' {
+    while end < self.raw.length && self.raw[end] != ']' {
       end = end + 1;
     }
 
-    if end == text.length {
+    if end == self.raw.length {
       return false;
     }
 
-    let literal: string = text.Substring(1, end - 1);
+    let literal: string = self.raw.Substring(1, end - 1);
     if literal.Find("%") >= 0 {
       return false;
     }
@@ -219,8 +213,8 @@ pub func HttpHost(text: ref string) -> bool {
 
     end = end + 1;
   } else {
-    while end < text.length && text[end] != ':' {
-      let ch: int32 = HttpChar(text, end);
+    while end < self.raw.length && self.raw[end] != ':' {
+      let ch: int32 = (self.raw).ByteAtOr(end, 0);
       if ! ((ch >= 48 && ch <= 57)
         || (ch >= 65 && ch <= 90)
         || (ch >= 97 && ch <= 122)
@@ -239,18 +233,18 @@ pub func HttpHost(text: ref string) -> bool {
     }
   }
 
-  if end == text.length {
+  if end == self.raw.length {
     return true;
   }
 
-  if text[end] != ':' || end + 1 == text.length {
+  if self.raw[end] != ':' || end + 1 == self.raw.length {
     return false;
   }
 
-  var port: uint32 = 0u32;
+  var port: uint32 = 0;
   end = end + 1;
-  while end < text.length {
-    let ch: int32 = HttpChar(text, end);
+  while end < self.raw.length {
+    let ch: int32 = (self.raw).ByteAtOr(end, 0);
     if ch < 48 || ch > 57 {
       return false;
     }
@@ -269,48 +263,11 @@ pub func HttpHost(text: ref string) -> bool {
  * @brief Construct a protocol error before any input offset has been committed.
  * @returns The requested protocol error kind with the default offset.
  */
-pub func HttpMakeError(kind: HttpErrorKind) -> HttpError {
-  return HttpError{kind: kind};
-}
 /**
  * @brief Fold only ASCII letters in a URL scheme or host component.
  * @returns A retained lowercase spelling without Unicode or IDNA normalization.
  */
-pub func UrlLower(text: ref string) -> string {
-  var out: StringBuffer = StringBuffer.New();
-  var i: int32 = 0;
-  while i < text.length {
-    var c: int32 = (text[i] as uint8) as int32;
-    if c >= 65 && c <= 90 {
-      c = c + 32;
-    }
-
-    var byte: int8 = c as int8;
-    out.Append(string.ViewFrom(&byte, 1));
-    i = i + 1;
-  }
-
-  return out.Take();
-}
-
 /**
  * @brief Format a URL port or generated length as unsigned decimal text.
  * @returns Exact locale-independent base-10 text.
  */
-pub func UrlDecimal(n: uint64) -> string {
-  if n == 0u64 {
-    return "0";
-  }
-
-  var value: uint64 = n;
-  var out: string = "";
-  while value != 0u64 {
-    var digit: StringBuffer = StringBuffer.New();
-    var byte: int8 = (((value % 10u64) as int32) + 48) as int8;
-    digit.Append(string.ViewFrom(&byte, 1));
-    out = digit.Take().Concat(out);
-    value = value / 10u64;
-  }
-
-  return out;
-}

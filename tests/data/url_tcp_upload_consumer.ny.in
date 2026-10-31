@@ -23,7 +23,7 @@ func main() -> int32 {
 
   let options: NetOperationOptions = NetOperationOptions{
     cancellation: token,
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), timeout)
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), timeout)
   };
   var pool: AsyncResolver = AsyncResolver{};
   if n != 1 {
@@ -170,9 +170,9 @@ func main() -> int32 {
   var terminal: HttpClientError? = nil;
   while count<10000 && !complete {
     count = count + 1;
-    let started: uint64 = NetClock.NowNanoseconds();
+    let started: uint64 = Instant.Now().ToDurationSinceEpochish().ToNanoseconds();
     let result: Result<HttpClientEvent, HttpClientError> = client.Next();
-    let elapsed: uint64 = NetClock.NowNanoseconds() - started;
+    let elapsed: uint64 = Instant.Now().ToDurationSinceEpochish().ToNanoseconds() - started;
     if elapsed>maximum_next_ns {
       maximum_next_ns = elapsed;
     }

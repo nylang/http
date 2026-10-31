@@ -26,49 +26,41 @@ pub struct HttpUrl {
   cell: arc<HttpUrlData>?;
 }
 
-func url_error(kind: HttpErrorKind, offset: int32) -> HttpError {
-  return HttpError{kind: kind, offset: offset as int64};
-}
-
-func url_hex(c: int32) -> bool {
-  return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
-}
-
 // Fold ASCII host bytes only; this parser deliberately does not apply Unicode or IDNA normalization.
 
 // Render the numeric authority port without introducing locale-dependent formatting.
 
-func url_unreserved(c: int32) -> bool {
-  return (c >= 'a' && c <= 'z')
-    || (c >= 'A' && c <= 'Z')
-    || (c >= '0' && c <= '9')
-    || c == '-'
-    || c == '.'
-    || c == '_'
-    || c == '~';
+method(HttpWireByte) IsUnreserved() -> bool {
+  return (self.value >= 'a' && self.value <= 'z')
+    || (self.value >= 'A' && self.value <= 'Z')
+    || (self.value >= '0' && self.value <= '9')
+    || self.value == '-'
+    || self.value == '.'
+    || self.value == '_'
+    || self.value == '~';
 }
 
-func url_subdelim(c: int32) -> bool {
-  return c == '!'
-    || c == '$'
-    || c == '&'
-    || c == '\''
-    || c == '('
-    || c == ')'
-    || c == '*'
-    || c == '+'
-    || c == ','
-    || c == ';'
-    || c == '=';
+method(HttpWireByte) IsSubdelimiter() -> bool {
+  return self.value == '!'
+    || self.value == '$'
+    || self.value == '&'
+    || self.value == '\''
+    || self.value == '('
+    || self.value == ')'
+    || self.value == '*'
+    || self.value == '+'
+    || self.value == ','
+    || self.value == ';'
+    || self.value == '=';
 }
 
 // Validate escaped bytes without decoding: routing and Host identity must retain the original URL spelling.
-func url_component(text: ref string, start: int32, end: int32, query: bool) -> int32 {
+method(HttpLexeme) InvalidUrlComponent(start: int32, end: int32, query: bool) -> int32 {
   var i: int32 = start;
   while i < end {
-    let c: int32 = text[i];
+    let c: int32 = self.raw[i];
     if c == '%' {
-      if i + 2 >= end || !url_hex(text[i + 1]) || !url_hex(text[i + 2]) {
+      if i + 2 >= end || !HttpWireByte.New(self.raw[i + 1]).IsHex() || !HttpWireByte.New(self.raw[i + 2]).IsHex() {
         return i;
       }
 
@@ -76,7 +68,8 @@ func url_component(text: ref string, start: int32, end: int32, query: bool) -> i
       continue;
     }
 
-    if !url_unreserved(c) && !url_subdelim(c) && c != ':' && c != '@' && c != '/' && ! (query && c == '?') {
+    if !HttpWireByte.New(c).IsUnreserved() && !HttpWireByte.New(c).IsSubdelimiter() && c != ':' && c != '@'
+      && c != '/' && ! (query && c == '?') {
       return i;
     }
 
@@ -87,14 +80,14 @@ func url_component(text: ref string, start: int32, end: int32, query: bool) -> i
 }
 
 // OS getaddrinfo may interpret shortened, octal, hex or integer forms as IPv4.
-func url_numeric_host(host: ref string) -> bool {
+method(HttpLexeme) LooksNumericHost() -> bool {
   var start: int32 = 0;
   var i: int32 = 0;
-  while i <= host.length {
-    if i == host.length || host[i] == '.' {
+  while i <= self.raw.length {
+    if i == self.raw.length || self.raw[i] == '.' {
       var j: int32 = start;
       var hex: bool = false;
-      if i - start > 2 && host[start] == '0' && host[start + 1] == 'x' {
+      if i - start > 2 && self.raw[start] == '0' && self.raw[start + 1] == 'x' {
         hex = true;
         j = j + 2;
       }
@@ -105,11 +98,11 @@ func url_numeric_host(host: ref string) -> bool {
 
       while j < i {
         if hex {
-          if !url_hex(host[j]) {
+          if !HttpWireByte.New(self.raw[j]).IsHex() {
             return false;
           }
         } else {
-          if host[j] < '0' || host[j] > '9' {
+          if self.raw[j] < '0' || self.raw[j] > '9' {
             return false;
           }
         }
@@ -137,14 +130,14 @@ func url_numeric_host(host: ref string) -> bool {
  */
 pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError> {
   if text.length > 8192 {
-    return url_error(HttpErrorKind.LimitExceeded, 8192);
+    return HttpError{kind: HttpErrorKind.LimitExceeded, offset: (8192) as int64};
   }
 
   var i: int32 = 0;
   while i < text.length {
     let c: int32 = (text[i] as uint8) as int32;
     if c <= 32 || c >= 127 || c == 92 {
-      return url_error(HttpErrorKind.Malformed, i);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (i) as int64};
     }
 
     i = i + 1;
@@ -152,26 +145,26 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
 
   let sep: int32 = text.Find("://");
   if sep < 0 {
-    return url_error(HttpErrorKind.Malformed, 0);
+    return HttpError{kind: HttpErrorKind.Malformed, offset: (0) as int64};
   }
 
-  let scheme: string = UrlLower(text.Substring(0, sep));
+  let scheme: string = (text.Substring(0, sep)).ToLowerAscii();
   if !scheme.Equal("http") && !scheme.Equal("https") {
-    return url_error(HttpErrorKind.Unsupported, 0);
+    return HttpError{kind: HttpErrorKind.Unsupported, offset: (0) as int64};
   }
 
   let start: int32 = sep + 3;
   var end: int32 = start;
   while end < text.length && text[end] != '/' && text[end] != '?' && text[end] != '#' {
     if text[end] == '@' {
-      return url_error(HttpErrorKind.Unsupported, end);
+      return HttpError{kind: HttpErrorKind.Unsupported, offset: (end) as int64};
     }
 
     end = end + 1;
   }
 
   if start == end {
-    return url_error(HttpErrorKind.Malformed, start);
+    return HttpError{kind: HttpErrorKind.Malformed, offset: (start) as int64};
   }
 
   var host: string = "";
@@ -182,26 +175,26 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
     var close: int32 = start + 1;
     while close < end && text[close] != ']' {
       if text[close] == '%' {
-        return url_error(HttpErrorKind.Unsupported, close);
+        return HttpError{kind: HttpErrorKind.Unsupported, offset: (close) as int64};
       }
 
       close = close + 1;
     }
 
     if close == end {
-      return url_error(HttpErrorKind.Malformed, start);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (start) as int64};
     }
 
     let literal: string = text.Substring(start + 1, close - start - 1);
     let parsed: Result<IpAddress, NetError> = IpAddress.Parse(literal);
     if parsed.IsErr() || ((parsed.get_if<IpAddress>()) as IpAddress).Family() != IpFamily.V6 {
-      return url_error(HttpErrorKind.Malformed, start);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (start) as int64};
     }
 
     host = ((parsed.get_if<IpAddress>()) as IpAddress).ToString();
     if close + 1 < end {
       if text[close + 1] != ':' {
-        return url_error(HttpErrorKind.Malformed, close + 1);
+        return HttpError{kind: HttpErrorKind.Malformed, offset: (close + 1) as int64};
       }
 
       port_start = close + 2;
@@ -212,25 +205,25 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
       stop = stop + 1;
     }
 
-    host = UrlLower(text.Substring(start, stop - start));
+    host = (text.Substring(start, stop - start)).ToLowerAscii();
     if stop < end {
       port_start = stop + 1;
     }
 
     if host.length == 0 || host.length > 253 {
-      return url_error(HttpErrorKind.Malformed, start);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (start) as int64};
     }
 
     let ip: Result<IpAddress, NetError> = IpAddress.Parse(host);
     if ip.IsOk() {
       if ((ip.get_if<IpAddress>()) as IpAddress).Family() != IpFamily.V4 {
-        return url_error(HttpErrorKind.Malformed, start);
+        return HttpError{kind: HttpErrorKind.Malformed, offset: (start) as int64};
       }
 
       host = ((ip.get_if<IpAddress>()) as IpAddress).ToString();
     } else {
-      if url_numeric_host(host) {
-        return url_error(HttpErrorKind.Unsupported, start);
+      if HttpLexeme.New(host).LooksNumericHost() {
+        return HttpError{kind: HttpErrorKind.Unsupported, offset: (start) as int64};
       }
 
       var label: int32 = 0;
@@ -238,14 +231,14 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
       while i <= host.length {
         if i == host.length || host[i] == '.' {
           if i == label || i - label > 63 || host[label] == '-' || host[i - 1] == '-' {
-            return url_error(HttpErrorKind.Malformed, start + label);
+            return HttpError{kind: HttpErrorKind.Malformed, offset: (start + label) as int64};
           }
 
           label = i + 1;
         } else {
           let c: int32 = host[i];
           if ! ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '-') {
-            return url_error(HttpErrorKind.Unsupported, start + i);
+            return HttpError{kind: HttpErrorKind.Unsupported, offset: (start + i) as int64};
           }
         }
 
@@ -262,19 +255,19 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
   let default_port: int32 = port;
   if port_start >= 0 {
     if port_start == end {
-      return url_error(HttpErrorKind.Malformed, port_start);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (port_start) as int64};
     }
 
     port = 0;
     i = port_start;
     while i < end {
       if text[i] < '0' || text[i] > '9' {
-        return url_error(HttpErrorKind.Malformed, i);
+        return HttpError{kind: HttpErrorKind.Malformed, offset: (i) as int64};
       }
 
       let digit: int32 = (text[i] as int32) - 48;
       if port >(65535 - digit) / 10 {
-        return url_error(HttpErrorKind.Malformed, i);
+        return HttpError{kind: HttpErrorKind.Malformed, offset: (i) as int64};
       }
 
       port = port * 10 + digit;
@@ -282,7 +275,7 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
     }
 
     if port == 0 {
-      return url_error(HttpErrorKind.Unsupported, port_start);
+      return HttpError{kind: HttpErrorKind.Unsupported, offset: (port_start) as int64};
     }
   }
 
@@ -292,7 +285,7 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
   }
 
   if port != default_port {
-    authority = authority.Concat(":").Concat(UrlDecimal(port as uint64));
+    authority = authority.Concat(":").Concat(((port as uint64) as uint64).ToString());
   }
 
   var fragment: int32 = end;
@@ -305,22 +298,22 @@ pub static method(HttpUrl) Parse(text: ref string) -> Result<HttpUrl, HttpError>
     query = query + 1;
   }
 
-  let bad_path: int32 = url_component(text, end, query, false);
+  let bad_path: int32 = HttpLexeme.New(text).InvalidUrlComponent(end, query, false);
   if bad_path >= 0 {
-    return url_error(HttpErrorKind.Malformed, bad_path);
+    return HttpError{kind: HttpErrorKind.Malformed, offset: (bad_path) as int64};
   }
 
   if query < fragment {
-    let bad: int32 = url_component(text, query + 1, fragment, true);
+    let bad: int32 = HttpLexeme.New(text).InvalidUrlComponent(query + 1, fragment, true);
     if bad >= 0 {
-      return url_error(HttpErrorKind.Malformed, bad);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (bad) as int64};
     }
   }
 
   if fragment < text.length {
-    let bad: int32 = url_component(text, fragment + 1, text.length, true);
+    let bad: int32 = HttpLexeme.New(text).InvalidUrlComponent(fragment + 1, text.length, true);
     if bad >= 0 {
-      return url_error(HttpErrorKind.Malformed, bad);
+      return HttpError{kind: HttpErrorKind.Malformed, offset: (bad) as int64};
     }
   }
 
@@ -429,25 +422,24 @@ pub method(HttpUrl) ToString() -> string {
 }
 
 // Generate routing fields in one place for buffered and streamed URL requests.
-func url_request_head(
-  url: ref HttpUrl,
+method(HttpUrl) BuildRequestHead(
   verb: ref string,
   fields: ref <HttpField>[],
   body_length: uint64,
   chunked: bool,
   streaming: bool
 ) -> Result<NetBuffer, HttpError> {
-  if !url.IsValid() {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+  if !self.IsValid() {
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   if fields.length > 126 {
-    return HttpMakeError(HttpErrorKind.LimitExceeded);
+    return HttpError{kind: HttpErrorKind.LimitExceeded};
   }
 
   var all: owned <HttpField>[] = new <HttpField>[fields.length + 2];
-  all[0] = HttpField{name: "Host", value: url.HostField()};
-  all[1] = HttpField{name: "Content-Length", value: UrlDecimal(body_length)};
+  all[0] = HttpField{name: "Host", value: self.HostField()};
+  all[1] = HttpField{name: "Content-Length", value: ((body_length) as uint64).ToString()};
   if chunked {
     all[1] = HttpField{name: "Transfer-Encoding", value: "chunked"};
   }
@@ -455,14 +447,14 @@ func url_request_head(
   var i: int32 = 0;
   while i < fields.length {
     let name: string = fields[i].name;
-    if HttpEqual(name, "Host")
-      || HttpEqual(name, "Content-Length")
-      || HttpEqual(name, "Transfer-Encoding") {
-      return HttpMakeError(HttpErrorKind.InvalidArgument);
+    if (name).EqualAsciiIgnoreCase("Host")
+      || (name).EqualAsciiIgnoreCase("Content-Length")
+      || (name).EqualAsciiIgnoreCase("Transfer-Encoding") {
+      return HttpError{kind: HttpErrorKind.InvalidArgument};
     }
 
-    if (!streaming && HttpEqual(name, "Expect")) || HttpEqual(name, "Upgrade") {
-      return HttpMakeError(HttpErrorKind.Unsupported);
+    if (!streaming && (name).EqualAsciiIgnoreCase("Expect")) || (name).EqualAsciiIgnoreCase("Upgrade") {
+      return HttpError{kind: HttpErrorKind.Unsupported};
     }
 
     all[i + 2] = fields[i];
@@ -470,10 +462,10 @@ func url_request_head(
   }
 
   if verb.Equal("CONNECT") {
-    return HttpMakeError(HttpErrorKind.Unsupported);
+    return HttpError{kind: HttpErrorKind.Unsupported};
   }
 
-  return HttpWriter.Request(verb, url.Target(), all);
+  return HttpHead.EncodeRequest(verb, self.Target(), all);
 }
 
 /**
@@ -489,7 +481,7 @@ pub method(HttpUrl) RequestHead(
   fields: ref <HttpField>[],
   body_length: uint64
 ) -> Result<NetBuffer, HttpError> {
-  return url_request_head(self, verb, fields, body_length, false, false);
+  return self.BuildRequestHead(verb, fields, body_length, false, false);
 }
 
 /**
@@ -515,17 +507,14 @@ pub method(HttpUrl) StreamingRequestHead(
         && plan.kind != HttpBodyKind.Chunked
     )
     || (plan.kind != HttpBodyKind.ContentLength && plan.length != 0u64) {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
-  let made: Result<NetBuffer, HttpError> = url_request_head(
-    self,
-    verb,
+  let made: Result<NetBuffer, HttpError> = self.BuildRequestHead(verb,
     fields,
     plan.length,
     plan.kind == HttpBodyKind.Chunked,
-    true
-  );
+    true);
   if made.IsErr() {
     return (made.get_if<HttpError>()) as HttpError;
   }

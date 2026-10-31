@@ -3,10 +3,12 @@
 HTTP modules distinguish immutable syntax, framing state, exchange policy and
 transport ownership. The product faces remain transport/provider independent.
 
-- `private/grammar.ny` owns byte grammar, ASCII comparison and value formatting;
+- `private/grammar.ny` owns immutable HttpLexeme/HttpWireByte grammar predicates;
+  generic byte access, ASCII comparison and decimal formatting use runtime values;
   it owns no mutable head, body, socket or exchange state.
 - `private/http.ny` with `scan.ny` owns head parsing and immutable head storage.
-- `private/writer.ny` owns canonical head construction through head-parser operations.
+- `private/writer.ny` owns HttpHeadEncoding inputs and HttpHead.EncodeRequest/EncodeResponse
+  through head-parser operations. The former empty HttpWriter namespace is removed.
 - `private/framing_rules.ny` owns body limits and trailer admission shared by the
   decoder and encoder, without owning either cursor.
 - `private/body.ny` owns incoming-body framing; `body_writer.ny` separately owns
@@ -28,3 +30,8 @@ Redirect policy consumes URL/reference operations; dialing consumes URL and TCP
 operations; the TCP adapter consumes the exchange contract. Protocol modules do
 not depend on clients or TLS. Tests have separate protocol and client selftest
 TUs. No private parser, body, exchange or TCP state bag becomes barrel-visible.
+
+Resource operations borrow the actual HttpParserData, HttpBodyData, HttpWriteData,
+HttpResponseData, HttpExchangeData, HttpTcpData and RedirectChainData owners. Each
+owner retains its cursor, admission and sticky failure invariants. URI dot-segment
+policy belongs to immutable HttpUriPath, independently of OS path handling.

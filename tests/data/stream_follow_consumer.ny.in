@@ -73,7 +73,7 @@ func main() -> int32 {
 
   let options: NetOperationOptions = NetOperationOptions{
     cancellation: token,
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), budget)
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), budget)
   };
   var plan: HttpBodyPlan = HttpBodyPlan{kind: HttpBodyKind.ContentLength, length: 6u64};
   if n == 3 || n == 20 {

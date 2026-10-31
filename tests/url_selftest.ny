@@ -5,17 +5,17 @@ part of HttpClientTests;
 
 /** @brief Strict URL normalization, injection boundaries and generated request association. */
 
-func url_test(text: ref string) -> HttpUrl {
+static method(HttpUrl) TestParse(text: ref string) -> HttpUrl {
   let parsed: Result<HttpUrl, HttpError> = HttpUrl.Parse(text);
-  client_assert(parsed.IsOk(), "URL parse succeeds");
+  AssertTrueMsg(parsed.IsOk(), "URL parse succeeds");
 
   return (parsed.get_if<HttpUrl>()) as HttpUrl;
 }
 
 @test(tag = "http_core")
 func test_http_url_authority_and_defaults() {
-  let a: HttpUrl = url_test("HtTp://ExAmPle.COM:00080");
-  client_assert(
+  let a: HttpUrl = HttpUrl.TestParse("HtTp://ExAmPle.COM:00080");
+  AssertTrueMsg(
     a.Scheme().Equal("http")
       && a.Host().Equal("example.com")
       && a.Port() == 80
@@ -24,36 +24,36 @@ func test_http_url_authority_and_defaults() {
       && a.ToString().Equal("http://example.com/"),
     "case, leading-zero/default port and empty path normalize"
   );
-  let b: HttpUrl = url_test("HTTPS://LOCALHOST:8443?q=1#fragment");
-  client_assert(
+  let b: HttpUrl = HttpUrl.TestParse("HTTPS://LOCALHOST:8443?q=1#fragment");
+  AssertTrueMsg(
     b.IsSecure()
       && b.Port() == 8443
       && b.Target().Equal("/?q=1")
       && b.ToString().Equal("https://localhost:8443/?q=1"),
     "nondefault port retained and fragment removed"
   );
-  client_assert(
-    url_test("https://example.com:443/?").ToString().Equal("https://example.com/?"),
+  AssertTrueMsg(
+    HttpUrl.TestParse("https://example.com:443/?").ToString().Equal("https://example.com/?"),
     "empty query delimiter retained"
   );
 }
 
 @test(tag = "http_core")
 func test_http_url_ip_identity_and_ports() {
-  let a: HttpUrl = url_test("https://[0:0:0:0:0:0:0:1]:443/a");
-  client_assert(
+  let a: HttpUrl = HttpUrl.TestParse("https://[0:0:0:0:0:0:0:1]:443/a");
+  AssertTrueMsg(
     a.Host().Equal("::1") && a.HostField().Equal("[::1]") && a.ToString().Equal("https://[::1]/a"),
     "IPv6 host canonical and Host bracketed"
   );
-  client_assert(url_test("http://127.0.0.1:65535").Port() == 65535, "largest nonzero port accepted");
-  client_assert(
+  AssertTrueMsg(HttpUrl.TestParse("http://127.0.0.1:65535").Port() == 65535, "largest nonzero port accepted");
+  AssertTrueMsg(
     HttpUrl.Parse("http://host:0").IsErr()
       && HttpUrl.Parse("http://host:").IsErr()
       && HttpUrl.Parse("http://host:65536").IsErr()
       && HttpUrl.Parse("http://host:999999999999999999999").IsErr(),
     "empty, zero and overflowing ports rejected"
   );
-  client_assert(
+  AssertTrueMsg(
     HttpUrl.Parse("http://[::1]extra/").IsErr()
       && HttpUrl.Parse("http://[127.0.0.1]/").IsErr()
       && HttpUrl.Parse("http://::1/").IsErr()
@@ -64,18 +64,18 @@ func test_http_url_ip_identity_and_ports() {
 
 @test(tag = "http_core")
 func test_http_url_escaped_target_is_opaque() {
-  let a: HttpUrl = url_test("http://example.com/a/../b%2fc?x=%0d%0A&y=/?:@!$'()*+,;=#frag%20ok");
-  client_assert(
+  let a: HttpUrl = HttpUrl.TestParse("http://example.com/a/../b%2fc?x=%0d%0A&y=/?:@!$'()*+,;=#frag%20ok");
+  AssertTrueMsg(
     a.Target().Equal("/a/../b%2fc?x=%0d%0A&y=/?:@!$'()*+,;="),
     "dot segments and escapes preserved without decoding into header syntax"
   );
-  client_assert(
+  AssertTrueMsg(
     HttpUrl.Parse("http://host/%").IsErr()
       && HttpUrl.Parse("http://host/?x=%G0").IsErr()
       && HttpUrl.Parse("http://host/#%a").IsErr(),
     "malformed triplets rejected in every component"
   );
-  client_assert(
+  AssertTrueMsg(
     HttpUrl.Parse("http://host/a[b]").IsErr() && HttpUrl.Parse("http://host/#x#y").IsErr(),
     "raw invalid component delimiters rejected"
   );
@@ -100,7 +100,7 @@ func test_http_url_rejects_ambiguous_authority() {
   bad[13] = "http:///path";
   var i: int32 = 0;
   while i < bad.length {
-    client_assert(HttpUrl.Parse(bad[i]).IsErr(), bad[i]);
+    AssertTrueMsg(HttpUrl.Parse(bad[i]).IsErr(), bad[i]);
     i = i + 1;
   }
 }
@@ -117,7 +117,7 @@ func test_http_url_controls_limits_and_default_value() {
   }
 
   high[12] = -1 as int8;
-  client_assert(
+  AssertTrueMsg(
     HttpUrl.Parse("http://host/a b").IsErr()
       && HttpUrl.Parse("http://host/\r\nX: y").IsErr()
       && HttpUrl.Parse("http://host\\evil/").IsErr()
@@ -136,12 +136,12 @@ func test_http_url_controls_limits_and_default_value() {
   }
 
   let limit: string = text.Take();
-  client_assert(
+  AssertTrueMsg(
     HttpUrl.Parse(limit).IsOk() && HttpUrl.Parse(limit.Concat("a")).IsErr(),
     "8192-byte URL cap exact"
   );
   let empty: HttpUrl = HttpUrl{};
-  client_assert(
+  AssertTrueMsg(
     !empty.IsValid()
       && empty.Host().length == 0
       && empty.Target().length == 0
@@ -166,17 +166,17 @@ func test_http_url_owned_and_generated_request() {
     i = i + 1;
   }
 
-  let url: HttpUrl = url_test(string.ViewFrom(&source[0], seed.length));
+  let url: HttpUrl = HttpUrl.TestParse(string.ViewFrom(&source[0], seed.length));
   source[7] = 'Z';
   var fields: owned <HttpField>[] = new <HttpField>[1];
   fields[0] = HttpField{name: "X-Test", value: "kept"};
   let made: Result<NetBuffer, HttpError> = url.RequestHead("POST", fields, 18446744073709551615u64);
-  client_assert(
+  AssertTrueMsg(
     made.IsOk() && url.Host().Equal("example.com"),
     "URL owns source bytes and serializes full uint64 without overflow"
   );
   let buffer: NetBuffer = (made.get_if<NetBuffer>()) as NetBuffer;
-  client_assert(
+  AssertTrueMsg(
     string.ViewFrom(
       buffer.Bytes().Data() as *const int8,
       buffer.Len() as int32
@@ -189,7 +189,7 @@ func test_http_url_owned_and_generated_request() {
 
 @test(tag = "http_core")
 func test_http_url_reserved_fields_and_request_injection() {
-  let url: HttpUrl = url_test("http://localhost/");
+  let url: HttpUrl = HttpUrl.TestParse("http://localhost/");
   var names: owned <string>[] = new <string>[5];
   names[0] = "hOsT";
   names[1] = "content-length";
@@ -200,7 +200,7 @@ func test_http_url_reserved_fields_and_request_injection() {
   while i < names.length {
     var fields: owned <HttpField>[] = new <HttpField>[1];
     fields[0] = HttpField{name: names[i], value: "x"};
-    client_assert(
+    AssertTrueMsg(
       url.RequestHead("GET", fields, 0u64).IsErr(),
       "caller cannot override URL association or unsupported negotiation"
     );
@@ -209,7 +209,7 @@ func test_http_url_reserved_fields_and_request_injection() {
 
   var fields: owned <HttpField>[] = new <HttpField>[1];
   fields[0] = HttpField{name: "X", value: "a\r\nHost: evil"};
-  client_assert(
+  AssertTrueMsg(
     url.RequestHead("CONNECT", new <HttpField>[0], 0u64).IsErr() && url.RequestHead(
       "GET\r\nInjected",
       new <HttpField>[0],
@@ -225,20 +225,20 @@ func test_http_url_dial_and_open_preflight_controls() {
   var token: NetCancellation = NetCancellation.New();
   token.Cancel();
   let options: NetOperationOptions = NetOperationOptions{cancellation: token};
-  let url: HttpUrl = url_test("http://127.0.0.1:1/");
+  let url: HttpUrl = HttpUrl.TestParse("http://127.0.0.1:1/");
   var made: Result<TcpConnection, HttpClientError> = url.Dial(resolver, HttpDialOptions{}, options);
-  client_assert(made.IsErr(), "cancelled URL dial fails before connection attempt");
+  AssertTrueMsg(made.IsErr(), "cancelled URL dial fails before connection attempt");
   let error: HttpClientError = (made.get_if<HttpClientError>()) as HttpClientError;
-  client_assert(
+  AssertTrueMsg(
     error.stage == HttpClientStage.Resolve
       && error.transport_error != nil
       && (error.transport_error as NetError).kind == NetErrorKind.Cancelled
       && error.stats.request_bytes_sent == 0u64,
     "cancel cause/stage preserved before any request bytes"
   );
-  client_assert(
+  AssertTrueMsg(
     HttpTcpClient.Open(
-      url_test("https://localhost/"),
+      HttpUrl.TestParse("https://localhost/"),
       "GET",
       new <HttpField>[0],
       NetBuffer{},
@@ -251,7 +251,7 @@ func test_http_url_dial_and_open_preflight_controls() {
   );
   var fields: owned <HttpField>[] = new <HttpField>[1];
   fields[0] = HttpField{name: "Host", value: "evil"};
-  client_assert(
+  AssertTrueMsg(
     HttpTcpClient.Open(
       url,
       "GET",
@@ -265,7 +265,7 @@ func test_http_url_dial_and_open_preflight_controls() {
     "routing override rejected before DNS/connect"
   );
   made = url.Dial(resolver, HttpDialOptions{family: IpFamily.V6}, NetOperationOptions{});
-  client_assert(
+  AssertTrueMsg(
     made.IsErr()
       && (
         ((made.get_if<HttpClientError>()) as HttpClientError).transport_error as NetError
@@ -276,7 +276,7 @@ func test_http_url_dial_and_open_preflight_controls() {
 
 @test(tag = "http_core")
 func test_http_url_streamed_head_framing_and_ownership() {
-  let url: HttpUrl = url_test("https://[::1]:8443/a%2fb?q#ignored");
+  let url: HttpUrl = HttpUrl.TestParse("https://[::1]:8443/a%2fb?q#ignored");
   var fields: owned <HttpField>[] = new <HttpField>[2];
   fields[0] = HttpField{name: "Expect", value: "100-Continue"};
   fields[1] = HttpField{name: "Trailer", value: "X-End"};
@@ -285,15 +285,16 @@ func test_http_url_streamed_head_framing_and_ownership() {
     fields,
     HttpBodyPlan{kind: HttpBodyKind.Chunked}
   );
-  client_assert(made.IsOk(), "chunked URL producer accepts shared continue/trailer profile");
+  AssertTrueMsg(made.IsOk(), "chunked URL producer accepts shared continue/trailer profile");
   let wire: NetBuffer = (made.get_if<NetBuffer>()) as NetBuffer;
   fields[0].value = "changed";
-  client_assert(
+  AssertTrueMsg(
     string.ViewFrom(
       wire.Bytes().Data() as *const int8,
       wire.Len() as int32
     ).Equal(
-      "POST /a%2fb?q HTTP/1.1\r\nHost: [::1]:8443\r\nTransfer-Encoding: chunked\r\nExpect: 100-Continue\r\nTrailer: X-End\r\n\r\n"
+      "POST /a%2fb?q HTTP/1.1\r\nHost: [::1]:8443\r\nTransfer-Encoding: chunked\r\nExpec"
+        .Concat("t: 100-Continue\r\nTrailer: X-End\r\n\r\n")
     ),
     "head owns fields and canonical routing while preserving escaped target"
   );
@@ -302,19 +303,19 @@ func test_http_url_streamed_head_framing_and_ownership() {
     new <HttpField>[0],
     HttpBodyPlan{kind: HttpBodyKind.ContentLength, length: 9223372036837998591u64}
   );
-  client_assert(fixed.IsOk(), "head construction does not impose caller body budget or buffer payload");
+  AssertTrueMsg(fixed.IsOk(), "head construction does not impose caller body budget or buffer payload");
   let empty: Result<NetBuffer, HttpError> = url.StreamingRequestHead(
     "GET",
     new <HttpField>[0],
     HttpBodyPlan{}
   );
-  client_assert(empty.IsOk(), "default plan generates explicit zero-length request");
+  AssertTrueMsg(empty.IsOk(), "default plan generates explicit zero-length request");
 }
 
 @test(tag = "http_core")
 func test_http_url_streamed_head_rejects_ambiguous_producers() {
-  let url: HttpUrl = url_test("http://localhost/");
-  client_assert(
+  let url: HttpUrl = HttpUrl.TestParse("http://localhost/");
+  AssertTrueMsg(
     url.StreamingRequestHead(
       "POST",
       new <HttpField>[0],
@@ -326,12 +327,13 @@ func test_http_url_streamed_head_rejects_ambiguous_producers() {
     ).IsErr() && url.StreamingRequestHead("POST", new <HttpField>[0], HttpBodyPlan{kind: HttpBodyKind.Tunnel}).IsErr(),
     "request cannot use response/tunnel framing"
   );
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead(
       "POST",
       new <HttpField>[0],
       HttpBodyPlan{kind: HttpBodyKind.Chunked, length: 1u64}
-    ).IsErr() && url.StreamingRequestHead("POST", new <HttpField>[0], HttpBodyPlan{length: 1u64}).IsErr() && url.StreamingRequestHead(
+    ).IsErr() && url.StreamingRequestHead("POST", new <HttpField>[0], HttpBodyPlan{length: 1u64}).IsErr()
+      && url.StreamingRequestHead(
       "POST",
       new <HttpField>[0],
       HttpBodyPlan{close_connection: true}
@@ -340,31 +342,31 @@ func test_http_url_streamed_head_rejects_ambiguous_producers() {
   );
   var fields: owned <HttpField>[] = new <HttpField>[1];
   fields[0] = HttpField{name: "eXpEcT", value: "100-continue"};
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead("POST", fields, HttpBodyPlan{}).IsErr(),
     "known-empty producer rejects continue"
   );
   fields[0].value = "other";
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead("POST", fields, HttpBodyPlan{kind: HttpBodyKind.Chunked}).IsErr(),
     "unknown expectation rejected before I/O"
   );
   var duplicates: owned <HttpField>[] = new <HttpField>[2];
   duplicates[0] = HttpField{name: "Expect", value: "100-continue"};
   duplicates[1] = duplicates[0];
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead("POST", duplicates, HttpBodyPlan{kind: HttpBodyKind.Chunked}).IsErr(),
     "duplicate expectation rejected by shared exchange"
   );
   fields[0] = HttpField{name: "Host", value: "evil"};
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead("POST", fields, HttpBodyPlan{}).IsErr(),
     "streamed routing cannot be overridden"
   );
   fields[0] = HttpField{name: "Transfer-Encoding", value: "chunked"};
-  client_assert(url.StreamingRequestHead("POST", fields, HttpBodyPlan{}).IsErr(), "caller framing rejected");
+  AssertTrueMsg(url.StreamingRequestHead("POST", fields, HttpBodyPlan{}).IsErr(), "caller framing rejected");
   fields[0] = HttpField{name: "Upgrade", value: "websocket"};
-  client_assert(
+  AssertTrueMsg(
     url.StreamingRequestHead("POST", fields, HttpBodyPlan{}).IsErr() && url.StreamingRequestHead(
       "CONNECT",
       new <HttpField>[0],
@@ -377,7 +379,7 @@ func test_http_url_streamed_head_rejects_ambiguous_producers() {
 @test(tag = "http_core")
 // Reject malformed streamed request metadata before a DNS operation can consume resolver capacity.
 func test_http_url_streamed_open_validates_before_resolution() {
-  let url: HttpUrl = url_test("http://unresolved.invalid/");
+  let url: HttpUrl = HttpUrl.TestParse("http://unresolved.invalid/");
   var resolver: AsyncResolver = AsyncResolver{};
   var token: NetCancellation = NetCancellation.New();
   token.Cancel();
@@ -392,7 +394,7 @@ func test_http_url_streamed_open_validates_before_resolution() {
     NetOperationOptions{cancellation: token},
     80
   );
-  client_assert(
+  AssertTrueMsg(
     made.IsErr()
       && (
         ((made.get_if<HttpClientError>()) as HttpClientError).transport_error as NetError
@@ -410,7 +412,7 @@ func test_http_url_streamed_open_validates_before_resolution() {
     NetOperationOptions{},
     -1
   );
-  client_assert(
+  AssertTrueMsg(
     made.IsErr()
       && (
         ((made.get_if<HttpClientError>()) as HttpClientError).protocol_error as HttpError
@@ -428,16 +430,16 @@ func test_http_url_streamed_open_validates_before_resolution() {
     NetOperationOptions{},
     80
   );
-  client_assert(
+  AssertTrueMsg(
     made.IsErr()
       && (
         ((made.get_if<HttpClientError>()) as HttpClientError).protocol_error as HttpError
       ).kind == HttpErrorKind.LimitExceeded,
     "body budget validates before closed resolver"
   );
-  client_assert(
+  AssertTrueMsg(
     HttpTcpClient.OpenStreaming(
-      url_test("https://localhost/"),
+      HttpUrl.TestParse("https://localhost/"),
       "GET",
       new <HttpField>[0],
       HttpBodyPlan{},

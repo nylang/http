@@ -7,6 +7,7 @@ part "head_selftest.ny";
 part "body_selftest.ny";
 part "framing_selftest.ny";
 import "stdlib:stdlib.ny";
+import "ntest:ntest.ny";
 import "net_core:net_core.ny";
 import "interface/http.ni";
 import "interface/client.ni";

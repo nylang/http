@@ -8,6 +8,7 @@ part "url_selftest.ny";
 part "redirect_selftest.ny";
 part "upload_selftest.ny";
 import "stdlib:stdlib.ny";
+import "ntest:ntest.ny";
 import "net_core:net_core.ny";
 import "interface/http.ni";
 import "interface/client.ni";

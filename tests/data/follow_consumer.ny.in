@@ -58,10 +58,10 @@ func main() -> int32 {
   var token: NetCancellation = NetCancellation.New();
   var options: NetOperationOptions = NetOperationOptions{
     cancellation: token,
-    deadline: NetDeadline.After(NetClock.NowNanoseconds(), 8000000000u64)
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 8000000000u64)
   };
   if n == 11 {
-    options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 1000000000u64);
+    options.deadline = NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 1000000000u64);
   }
 
   var settings: TlsClientConfig = TlsClientConfig{ca_file: string.ViewFrom(
@@ -102,7 +102,7 @@ func main() -> int32 {
   }
 
   settings.ca_file = "discarded-after-construction";
-  options.deadline = NetDeadline.After(NetClock.NowNanoseconds(), 1u64);
+  options.deadline = NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 1u64);
   var content: StringBuffer = StringBuffer.New();
   var heads: int32 = 0;
   var status: int32 = 0;

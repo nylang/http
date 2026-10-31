@@ -35,19 +35,18 @@ pub struct HttpTcpClient {
   cell: arc<HttpTcpData>?;
 }
 
-func http_tcp_protocol(s: arc<HttpTcpData>, error: HttpError) -> HttpClientError {
-  return HttpClientError{protocol_error: error, stage: s.exchange.Stage(), stats: s.exchange.Stats()};
+method(HttpTcpData) ProtocolError(error: HttpError) -> HttpClientError {
+  return HttpClientError{protocol_error: error, stage: self.exchange.Stage(), stats: self.exchange.Stats()};
 }
 
-func http_tcp_network(s: arc<HttpTcpData>, error: NetError) -> HttpClientError {
-  return HttpClientError{transport_error: error, stage: s.exchange.Stage(), stats: s.exchange.Stats()};
+method(HttpTcpData) NetworkError(error: NetError) -> HttpClientError {
+  return HttpClientError{transport_error: error, stage: self.exchange.Stage(), stats: self.exchange.Stats()};
 }
 
-func http_tcp_fail(state: arc<HttpTcpData>, error: HttpClientError) -> HttpClientError {
-  var s: arc<HttpTcpData> = state;
-  let ignored: Result<Unit, NetError> = s.connection.Close();
-  s.failure = error;
-  s.exchange = HttpClientExchange{};
+method(HttpTcpData) Fail(error: HttpClientError) -> HttpClientError {
+  let ignored: Result<Unit, NetError> = self.connection.Close();
+  self.failure = error;
+  self.exchange = HttpClientExchange{};
 
   return error;
 }
@@ -66,7 +65,7 @@ pub static method(HttpTcpClient) New(
   limits: ref HttpClientLimits,
   options: ref NetOperationOptions
 ) -> Result<HttpTcpClient, HttpClientError> {
-  let control: Result<Unit, NetError> = options.Check(NetClock.NowNanoseconds());
+  let control: Result<Unit, NetError> = options.CheckNow();
   if control.IsErr() {
     return HttpClientError{transport_error:(control.get_if<NetError>()) as NetError};
   }
@@ -117,7 +116,7 @@ pub method(HttpTcpClient) operator drop() -> void {
  */
 pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
   if self.cell == nil {
-    return HttpClientError{protocol_error: HttpMakeError(HttpErrorKind.Closed)};
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.Closed}};
   }
 
   var s: arc<HttpTcpData> = self.cell as arc<HttpTcpData>;
@@ -130,43 +129,43 @@ pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
   }
 
   if s.streaming {
-    return http_tcp_stream_next(s);
+    return (s).NextStreamEvent();
   }
 
   while true {
-    let control: Result<Unit, NetError> = s.options.Check(NetClock.NowNanoseconds());
+    let control: Result<Unit, NetError> = s.options.CheckNow();
     if control.IsErr() {
-      return http_tcp_fail(s, http_tcp_network(s,(control.get_if<NetError>()) as NetError));
+      return (s).Fail((s).NetworkError((control.get_if<NetError>()) as NetError));
     }
 
     if !s.exchange.RequestComplete() {
       let output: Result<NetBuffer, HttpError> = s.exchange.Output();
       if output.IsErr() {
-        return http_tcp_fail(s, http_tcp_protocol(s,(output.get_if<HttpError>()) as HttpError));
+        return (s).Fail((s).ProtocolError((output.get_if<HttpError>()) as HttpError));
       }
 
       let block: NetBuffer = (output.get_if<NetBuffer>()) as NetBuffer;
-      if block.Len() == (0 as intptr) {
+      if block.Len() == (0ip) {
         if s.exchange.RequestComplete() {
           continue;
         }
 
-        return http_tcp_fail(s, http_tcp_protocol(s, HttpMakeError(HttpErrorKind.InvalidState)));
+        return (s).Fail((s).ProtocolError(HttpError{kind: HttpErrorKind.InvalidState}));
       }
 
       let sent: Result<intptr, NetError> = s.connection.Write(block.Bytes(), s.options);
       if sent.IsErr() {
-        return http_tcp_fail(s, http_tcp_network(s,(sent.get_if<NetError>()) as NetError));
+        return (s).Fail((s).NetworkError((sent.get_if<NetError>()) as NetError));
       }
 
       let count: intptr = (sent.get_if<intptr>()) as intptr;
-      if count == (0 as intptr) {
-        return http_tcp_fail(s, http_tcp_network(s, NetError{kind: NetErrorKind.ConnectionAborted}));
+      if count == (0ip) {
+        return (s).Fail((s).NetworkError(NetError{kind: NetErrorKind.ConnectionAborted}));
       }
 
       let acknowledged: Result<Unit, HttpError> = s.exchange.AcknowledgeOutput(count);
       if acknowledged.IsErr() {
-        return http_tcp_fail(s, http_tcp_protocol(s,(acknowledged.get_if<HttpError>()) as HttpError));
+        return (s).Fail((s).ProtocolError((acknowledged.get_if<HttpError>()) as HttpError));
       }
 
       continue;
@@ -174,14 +173,14 @@ pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
 
     let advanced: Result<HttpClientEvent, HttpError> = s.exchange.NextResponse();
     if advanced.IsErr() {
-      return http_tcp_fail(s, http_tcp_protocol(s,(advanced.get_if<HttpError>()) as HttpError));
+      return (s).Fail((s).ProtocolError((advanced.get_if<HttpError>()) as HttpError));
     }
 
     let event: HttpClientEvent = (advanced.get_if<HttpClientEvent>()) as HttpClientEvent;
     if event.kind != HttpClientEventKind.NeedInput {
-      let final_control: Result<Unit, NetError> = s.options.Check(NetClock.NowNanoseconds());
+      let final_control: Result<Unit, NetError> = s.options.CheckNow();
       if final_control.IsErr() {
-        return http_tcp_fail(s, http_tcp_network(s,(final_control.get_if<NetError>()) as NetError));
+        return (s).Fail((s).NetworkError((final_control.get_if<NetError>()) as NetError));
       }
 
       s.published_complete = event.complete;
@@ -191,27 +190,27 @@ pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
 
     let range: NetMutableBytes = (NetMutableBytes.FromRaw(
       &mut s.incoming[0],
-      16384 as intptr
+      16384ip
     ).get_if<NetMutableBytes>()) as NetMutableBytes;
     let read: Result<intptr, NetError> = s.connection.Read(range, s.options);
     if read.IsErr() {
-      return http_tcp_fail(s, http_tcp_network(s,(read.get_if<NetError>()) as NetError));
+      return (s).Fail((s).NetworkError((read.get_if<NetError>()) as NetError));
     }
 
     let count: intptr = (read.get_if<intptr>()) as intptr;
-    let bytes: NetBytes = (range.AsReadOnly().Slice(0 as intptr, count).get_if<NetBytes>()) as NetBytes;
+    let bytes: NetBytes = (range.AsReadOnly().Slice(0ip, count).get_if<NetBytes>()) as NetBytes;
     let copied: Result<NetBuffer, NetError> = NetBuffer.CopyFrom(bytes);
     if copied.IsErr() {
-      var error: HttpClientError = http_tcp_network(s,(copied.get_if<NetError>()) as NetError);
+      var error: HttpClientError = (s).NetworkError((copied.get_if<NetError>()) as NetError);
       error.stats.response_bytes_received = error.stats.response_bytes_received + (count as uint64);
 
-      return http_tcp_fail(s, error);
+      return (s).Fail(error);
     }
 
     let buffer: NetBuffer = (copied.get_if<NetBuffer>()) as NetBuffer;
-    let received: Result<Unit, HttpError> = s.exchange.Receive(buffer, count == (0 as intptr));
+    let received: Result<Unit, HttpError> = s.exchange.Receive(buffer, count == (0ip));
     if received.IsErr() {
-      return http_tcp_fail(s, http_tcp_protocol(s,(received.get_if<HttpError>()) as HttpError));
+      return (s).Fail((s).ProtocolError((received.get_if<HttpError>()) as HttpError));
     }
   }
 }
@@ -223,7 +222,7 @@ pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
  */
 pub method(HttpTcpClient) TrailerCount() -> Result<int32, HttpClientError> {
   if self.cell == nil {
-    return HttpClientError{protocol_error: HttpMakeError(HttpErrorKind.Closed)};
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.Closed}};
   }
 
   let s: arc<HttpTcpData> = self.cell as arc<HttpTcpData>;
@@ -233,7 +232,7 @@ pub method(HttpTcpClient) TrailerCount() -> Result<int32, HttpClientError> {
 
   let result: Result<int32, HttpError> = s.exchange.TrailerCount();
   if result.IsErr() {
-    return http_tcp_protocol(s,(result.get_if<HttpError>()) as HttpError);
+    return (s).ProtocolError((result.get_if<HttpError>()) as HttpError);
   }
 
   return (result.get_if<int32>()) as int32;
@@ -246,7 +245,7 @@ pub method(HttpTcpClient) TrailerCount() -> Result<int32, HttpClientError> {
  */
 pub method(HttpTcpClient) TrailerAt(index: int32) -> Result<HttpField, HttpClientError> {
   if self.cell == nil {
-    return HttpClientError{protocol_error: HttpMakeError(HttpErrorKind.Closed)};
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.Closed}};
   }
 
   let s: arc<HttpTcpData> = self.cell as arc<HttpTcpData>;
@@ -256,7 +255,7 @@ pub method(HttpTcpClient) TrailerAt(index: int32) -> Result<HttpField, HttpClien
 
   let result: Result<HttpField, HttpError> = s.exchange.TrailerAt(index);
   if result.IsErr() {
-    return http_tcp_protocol(s,(result.get_if<HttpError>()) as HttpError);
+    return (s).ProtocolError((result.get_if<HttpError>()) as HttpError);
   }
 
   return (result.get_if<HttpField>()) as HttpField;
@@ -270,9 +269,6 @@ pub method(HttpTcpClient) Close() -> void {
 
   let s: arc<HttpTcpData> = self.cell as arc<HttpTcpData>;
   if s.failure == nil {
-    let ignored: HttpClientError = http_tcp_fail(
-      s,
-      http_tcp_protocol(s, HttpMakeError(HttpErrorKind.Closed))
-    );
+    let ignored: HttpClientError = (s).Fail((s).ProtocolError(HttpError{kind: HttpErrorKind.Closed}));
   }
 }

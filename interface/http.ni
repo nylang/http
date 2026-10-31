@@ -181,9 +181,6 @@ pub method(HttpHeadParser) Head() -> Result<HttpHead, HttpError>;
  */
 pub method(HttpHeadParser) EndInput() -> Result<HttpHead, HttpError>;
 
-/** @brief HTTP/1.1 head serialization with the same strict parser validation and default limits. */
-pub struct HttpWriter {
-}
 
 /**
  * @brief Validate method, origin-form/OPTIONS-* target and fields; mandatory single Host. No
@@ -191,7 +188,7 @@ pub struct HttpWriter {
  * @returns Ok with NetBuffer on success; Err with HttpError on the failure paths described
  *   above.
  */
-pub static method(HttpWriter) Request(
+pub static method(HttpHead) EncodeRequest(
   verb: ref string,
   target: ref string,
   fields: ref <HttpField>[]
@@ -202,7 +199,7 @@ pub static method(HttpWriter) Request(
  * @returns Ok with NetBuffer on success; Err with HttpError on the failure paths described
  *   above.
  */
-pub static method(HttpWriter) Response(
+pub static method(HttpHead) EncodeResponse(
   status: int32,
   reason: ref string,
   fields: ref <HttpField>[],

@@ -34,10 +34,9 @@ pub struct HttpResponseParser {
   cell: arc<HttpResponseData>?;
 }
 
-func http_response_fail(state: arc<HttpResponseData>, kind: HttpErrorKind, offset: int64) -> HttpError {
-  var cell: arc<HttpResponseData> = state;
+method(HttpResponseData) Fail(kind: HttpErrorKind, offset: int64) -> HttpError {
   let error: HttpError = HttpError{kind: kind, offset: offset};
-  cell.failure = error;
+  self.failure = error;
 
   return error;
 }
@@ -64,7 +63,7 @@ pub static method(HttpResponseParser) New(
     || caps.max_informational > 64
     || caps.max_total_head_bytes < 1
     || caps.max_total_head_bytes > 16777216 {
-    return HttpMakeError(HttpErrorKind.InvalidArgument);
+    return HttpError{kind: HttpErrorKind.InvalidArgument};
   }
 
   var made: Result<HttpHeadParser, HttpError> = HttpHeadParser.NewResponse(request_method, caps.head);
@@ -110,7 +109,7 @@ pub method(HttpResponseParser) operator drop() -> void {
  */
 pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseProgress, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   var state: arc<HttpResponseData> = self.cell as arc<HttpResponseData>;
@@ -122,7 +121,7 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
     return HttpResponseProgress{state: HttpResponseState.Final};
   }
 
-  if bytes.Len() == (0 as intptr) {
+  if bytes.Len() == (0ip) {
     return HttpResponseProgress{state: HttpResponseState.NeedInput};
   }
 
@@ -132,7 +131,7 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
       state.limits.head
     );
     if made.IsErr() {
-      return http_response_fail(state,((made.get_if<HttpError>()) as HttpError).kind, state.total);
+      return (state).Fail(((made.get_if<HttpError>()) as HttpError).kind, state.total);
     }
 
     state.parser = move((made.get_if<HttpHeadParser>()) as HttpHeadParser);
@@ -142,8 +141,8 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
   }
 
   let budget: int64 = (state.limits.max_total_head_bytes as int64) - state.total;
-  if budget == (0 as int64) {
-    return http_response_fail(state, HttpErrorKind.LimitExceeded, state.total);
+  if budget == (0i64) {
+    return (state).Fail(HttpErrorKind.LimitExceeded, state.total);
   }
 
   var count: intptr = bytes.Len();
@@ -151,19 +150,19 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
     count = budget as intptr;
   }
 
-  let range: NetBytes = (bytes.Slice(0 as intptr, count).get_if<NetBytes>()) as NetBytes;
+  let range: NetBytes = (bytes.Slice(0ip, count).get_if<NetBytes>()) as NetBytes;
   let fed: Result<intptr, HttpError> = state.parser.Push(range);
   if fed.IsErr() {
     let error: HttpError = (fed.get_if<HttpError>()) as HttpError;
 
-    return http_response_fail(state, error.kind, state.head_start + error.offset);
+    return (state).Fail(error.kind, state.head_start + error.offset);
   }
 
   let consumed: intptr = (fed.get_if<intptr>()) as intptr;
   state.total = state.total + (consumed as int64);
   if !state.parser.IsComplete() {
     if count < bytes.Len() {
-      return http_response_fail(state, HttpErrorKind.LimitExceeded, state.total);
+      return (state).Fail(HttpErrorKind.LimitExceeded, state.total);
     }
 
     return HttpResponseProgress{consumed: consumed, state: HttpResponseState.NeedInput};
@@ -172,7 +171,7 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
   let head: HttpHead = (state.parser.Head().get_if<HttpHead>()) as HttpHead;
   if head.Status() < 200 && head.Status() != 101 {
     if state.informationals >= state.limits.max_informational {
-      return http_response_fail(state, HttpErrorKind.LimitExceeded, state.total);
+      return (state).Fail(HttpErrorKind.LimitExceeded, state.total);
     }
 
     state.head = head;
@@ -195,7 +194,7 @@ pub method(HttpResponseParser) Push(bytes: ref NetBytes) -> Result<HttpResponseP
  */
 pub method(HttpResponseParser) Head() -> Result<HttpHead, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let state: arc<HttpResponseData> = self.cell as arc<HttpResponseData>;
@@ -204,7 +203,7 @@ pub method(HttpResponseParser) Head() -> Result<HttpHead, HttpError> {
   }
 
   if state.head.MinorVersion() < 0 {
-    return HttpMakeError(HttpErrorKind.InvalidState);
+    return HttpError{kind: HttpErrorKind.InvalidState};
   }
 
   return state.head;
@@ -242,7 +241,7 @@ pub method(HttpResponseParser) InformationalCount() -> int32 {
  */
 pub method(HttpResponseParser) EndInput() -> Result<HttpHead, HttpError> {
   if self.cell == nil {
-    return HttpMakeError(HttpErrorKind.Closed);
+    return HttpError{kind: HttpErrorKind.Closed};
   }
 
   let state: arc<HttpResponseData> = self.cell as arc<HttpResponseData>;
@@ -251,7 +250,7 @@ pub method(HttpResponseParser) EndInput() -> Result<HttpHead, HttpError> {
   }
 
   if !state.complete {
-    return http_response_fail(state, HttpErrorKind.UnexpectedEof, state.total);
+    return (state).Fail(HttpErrorKind.UnexpectedEof, state.total);
   }
 
   return state.head;
