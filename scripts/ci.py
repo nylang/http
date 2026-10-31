@@ -58,7 +58,15 @@ def main():
         report['sdk_archive_verified']=not bool(a.sdk)
         package_root=out/'packages';package_root.mkdir()
         if kind=='http_tls':
-            http=clone('http',*manifest_dependency(owner,'http'));adapter=clone('http_tls',str(owner),revision(owner));tls=clone('tls',*manifest_dependency(owner,'tls'))
+            http_origin,http_api=manifest_dependency(owner,'http')
+            tooling=lock.get('ci_tooling',{'url':http_origin,'commit':http_api})
+            if tooling['url']!=http_origin or not re.fullmatch('[0-9a-f]{40}',tooling['commit']):raise ValueError('invalid HTTP CI tooling pin')
+            http=clone('http',tooling['url'],tooling['commit'])
+            if tooling['commit']!=http_api:
+                run('http-api-fetch',['git','-C',http,'fetch','--depth','1','origin',http_api])
+                run('http-api-equivalence',['git','-C',http,'diff','--exit-code',http_api,tooling['commit'],'--','package.yaml','*.ny','*.ni','*.nk','*.c','*.h'])
+                report['http_api_commit']=http_api;report['http_ci_tooling_commit']=tooling['commit']
+            adapter=clone('http_tls',str(owner),revision(owner));tls=clone('tls',*manifest_dependency(owner,'tls'))
             if manifest_dependency(http,'net_core')!=manifest_dependency(owner,'net_core') or manifest_dependency(tls,'net_core')!=manifest_dependency(owner,'net_core'):raise ValueError('incoherent shared dependency pin')
         else:http=clone('http',str(PACKAGE),revision(PACKAGE))
         net=clone('net_core',*manifest_dependency(owner,'net_core'))
