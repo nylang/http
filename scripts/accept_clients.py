@@ -193,7 +193,7 @@ def main():
                 if semantic_helpers(old)!=semantic_helpers(current.read_bytes()):raise ValueError('test generator/peer inputs changed; cannot reuse cases')
         report['resume_original_tooling_commit']=a.resume_source_commit
         completed={row['name'] for row in prior['commands'][:-1]}
-        report['commands']=list(prior['commands'])
+        report['commands']=list(prior['commands'][:-1])
         report['previous_attempt']=prior
         report['resume_scope']='Reuse complete core/build prerequisites; retry interrupted compilation and run connected behavior cases.'
     def save():(out/'acceptance.json').write_text(json.dumps(report,indent=2)+'\n')
