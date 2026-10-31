@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse, json, os, platform, socket, ssl, subprocess, sys, threading, time
 from pathlib import Path
 from accept import digest, sources
+from sdk_layout import sdk_package
 PACKAGE=Path(__file__).resolve().parents[1]
 CASES={1:'post-302-get',2:'post-307-replay-opt-in',3:'post-307-rejected',4:'cross-origin-filter',5:'cross-origin-rejected',6:'cycle-hop-limit',7:'duplicate-location',8:'cancel-before-follow',9:'relative-303-no-body-drain',10:'malformed-location',11:'original-deadline',12:'missing-location-terminal'}
 
@@ -102,7 +103,7 @@ def main():
     suffix='.exe' if platform.system()=='Windows' else '';host={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64');kit=sdk/'hosts'/host/'llvm/bin'
     env={k:v for k,v in os.environ.items() if not k.startswith(('NYRA','DYLD_','LD_')) and k!='LLVM_PREFIX'};env.update(PATH=str(kit)+os.pathsep+env.get('PATH',''),NYRA_SDK_ROOT=str(sdk),NYRA_KERNEL_ROOT=str(out/'source-fallback-disabled'))
     if platform.system()=='Darwin':
-        target=next(line.split(':',1)[1].strip().strip('\"') for line in (sdk/'targets'/host/'stdlib/manifest.yaml').read_text().splitlines() if line.startswith('target:'))
+        target=next(line.split(':',1)[1].strip().strip('\"') for line in (sdk_package(sdk, host, 'stdlib') / 'manifest.yaml').read_text().splitlines() if line.startswith('target:'))
         env.update(SDKROOT=subprocess.check_output(['xcrun','--show-sdk-path'],text=True).strip(),MACOSX_DEPLOYMENT_TARGET=target.split('-apple-macosx',1)[1])
     packages={'http':PACKAGE,'net_core':PACKAGE.parent/'net_core'}
     if secure:packages|={'http_tls':a.http_tls.resolve(),'tls':a.tls.resolve()}

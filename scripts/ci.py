@@ -14,7 +14,7 @@ def manifest_dependency(path,name):
     if not match:raise ValueError('missing immutable Git dependency: '+name)
     return match.groups()
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out-dir',type=Path,required=True);p.add_argument('--adapter-root',type=Path);a=p.parse_args();out=a.out_dir.resolve()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out-dir',type=Path,required=True);p.add_argument('--sdk',type=Path,help='Reuse a local SDK, still checked against release.lock hashes');p.add_argument('--openssl-root',type=Path,help='Reuse the matching managed static OpenSSL provider');p.add_argument('--adapter-root',type=Path);a=p.parse_args();out=a.out_dir.resolve()
     if out.exists():p.error('new external output required')
     out.mkdir(parents=True);owner=a.adapter_root.resolve() if a.adapter_root else PACKAGE;kind='http_tls' if a.adapter_root else 'http'
     win=os.name=='nt';suffix='.exe' if win else '';host={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()]+'-'+('arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64')
@@ -28,25 +28,31 @@ def main():
     def clone(name,url,ref):
         dest=out/'packages'/name;run(name+'-init',['git','init',dest]);run(name+'-eol',['git','-C',dest,'config','core.autocrlf','false']);run(name+'-remote',['git','-C',dest,'remote','add','origin',url]);run(name+'-fetch',['git','-C',dest,'fetch','--depth','1','origin',ref]);run(name+'-checkout',['git','-C',dest,'checkout','--detach','FETCH_HEAD']);assert revision(dest)==ref;return dest
     try:
-        archive=out/(name+('.zip' if win else '.tar.gz'))
-        with urllib.request.urlopen('https://github.com/nylang/sdk/releases/download/v'+sdk_lock['version']+'/'+archive.name,timeout=180) as source,archive.open('wb') as target:shutil.copyfileobj(source,target,1024*1024)
-        if digest(archive)!=pin['archive_sha256']:raise ValueError('SDK archive mismatch')
-        extracted=out/'sdk';extracted.mkdir()
-        if win:
-            with zipfile.ZipFile(archive) as bundle:
-                for member in bundle.infolist():
-                    parts=PurePosixPath(member.filename).parts
-                    if not parts or parts[0]!=name or '..' in parts or '\\' in member.filename or ':' in member.filename or (member.external_attr>>16)&0o170000==0o120000:raise ValueError('unsafe SDK archive')
-                bundle.extractall(extracted)
+        run('sdk-layout-unit',[sys.executable,PACKAGE/'tests/tools/test_sdk_layout.py'])
+        if a.sdk:
+            sdk=a.sdk.expanduser().resolve()
         else:
-            with tarfile.open(archive) as bundle:
-                for member in bundle.getmembers():
-                    parts=PurePosixPath(member.name).parts
-                    if not parts or parts[0]!=name or '..' in parts or '\\' in member.name:raise ValueError('unsafe SDK archive')
-                bundle.extractall(extracted,filter='data')
-        sdk=extracted/name;meta=json.loads((sdk/'manifest.json').read_text());compiler=(sdk/meta['tools']['nyrac']['path']).resolve()
+            archive=out/(name+('.zip' if win else '.tar.gz'))
+            with urllib.request.urlopen('https://github.com/nylang/sdk/releases/download/v'+sdk_lock['version']+'/'+archive.name,timeout=180) as source,archive.open('wb') as target:shutil.copyfileobj(source,target,1024*1024)
+            if digest(archive)!=pin['archive_sha256']:raise ValueError('SDK archive mismatch')
+            extracted=out/'sdk';extracted.mkdir()
+            if win:
+                with zipfile.ZipFile(archive) as bundle:
+                    for member in bundle.infolist():
+                        parts=PurePosixPath(member.filename).parts
+                        if not parts or parts[0]!=name or '..' in parts or '\\' in member.filename or ':' in member.filename or (member.external_attr>>16)&0o170000==0o120000:raise ValueError('unsafe SDK archive')
+                    bundle.extractall(extracted)
+            else:
+                with tarfile.open(archive) as bundle:
+                    for member in bundle.getmembers():
+                        parts=PurePosixPath(member.name).parts
+                        if not parts or parts[0]!=name or '..' in parts or '\\' in member.name:raise ValueError('unsafe SDK archive')
+                    bundle.extractall(extracted,filter='data')
+            sdk=extracted/name
+        meta=json.loads((sdk/'manifest.json').read_text());compiler=(sdk/meta['tools']['nyrac']['path']).resolve()
         if sdk.resolve() not in compiler.parents or digest(sdk/'manifest.json')!=pin['manifest_sha256'] or meta['version']!=sdk_lock['version'] or meta['host']!=host or digest(compiler)!=meta['tools']['nyrac']['sha256']:raise ValueError('SDK identity mismatch')
         report['compiler_sha256']=digest(compiler)
+        report['sdk_archive_verified']=not bool(a.sdk)
         package_root=out/'packages';package_root.mkdir()
         if kind=='http_tls':
             http=clone('http',*manifest_dependency(owner,'http'));adapter=clone('http_tls',str(owner),revision(owner));tls=clone('tls',*manifest_dependency(owner,'tls'))
@@ -57,8 +63,11 @@ def main():
         if kind=='http_tls':
             provider_env=os.environ.copy()
             if sys.platform=='darwin':provider_env['MACOSX_DEPLOYMENT_TARGET']='14.0'
-            run('openssl',[sys.executable,tls/'scripts/build_openssl.py','--out-dir',out/'openssl','--perl','C:/Strawberry/perl/bin/perl.exe' if win else 'perl','--build-cli','--jobs','4'],provider_env)
-            provider=out/'openssl'/('openssl-'+json.loads((tls/'openssl.lock.json').read_text())['version'])
+            if a.openssl_root:
+                provider=a.openssl_root.expanduser().resolve()
+            else:
+                run('openssl',[sys.executable,tls/'scripts/build_openssl.py','--out-dir',out/'openssl','--perl','C:/Strawberry/perl/bin/perl.exe' if win else 'perl','--build-cli','--jobs','4'],provider_env)
+                provider=out/'openssl'/('openssl-'+json.loads((tls/'openssl.lock.json').read_text())['version'])
             run('accept',[sys.executable,http/'scripts/accept_stream_follow.py','--sdk',sdk,'--openssl-root',provider,'--out-dir',out/'acceptance'])
             accepted=json.loads((out/'acceptance/acceptance.json').read_text());client=accepted['base']['base']['base']['base']['base']['base'];core=client['core']
             assert len(accepted['cases'])==45 and len(accepted['base']['cases'])==50

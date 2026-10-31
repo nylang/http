@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 
+from sdk_layout import sdk_package
 PACKAGE = Path(__file__).resolve().parents[1]
 
 def digest(path: Path) -> str:
@@ -48,7 +49,7 @@ def main() -> int:
     compiler = args.compiler.expanduser().resolve() if args.compiler else sdk_compiler
     if not compiler.is_file():
         parser.error('compiler is missing')
-    toolkit = sdk / 'hosts' / host / 'llvm/bin'; stdlib = sdk / 'targets' / host / 'stdlib'
+    toolkit = sdk / 'hosts' / host / 'llvm/bin'; stdlib = sdk_package(sdk, host, 'stdlib')
     output.mkdir(parents=True, exist_ok=True)
     environment = {k: v for k, v in os.environ.items() if not k.startswith(('NYRA', 'DYLD_', 'LD_')) and k != 'LLVM_PREFIX'}
     environment.update(CC=str(toolkit / ('clang' + suffix)), AR=str(toolkit / ('llvm-ar' + suffix)),

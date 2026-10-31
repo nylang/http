@@ -18,6 +18,7 @@ import threading
 import time
 from accept import digest, sources
 
+from sdk_layout import sdk_package
 PACKAGE=Path(__file__).resolve().parents[1]
 CASES={1:'302-post-get-rewrite',2:'307-two-explicit-fixed-replays',3:'308-chunked-trailer-replay',
        4:'never-replay-rejected',5:'unsafe-replay-opt-in-required',6:'early-307-before-100',
@@ -123,7 +124,7 @@ def main()->int:
     env={k:v for k,v in os.environ.items() if not k.startswith(('NYRA','DYLD_','LD_')) and k!='LLVM_PREFIX'}
     env.update(PATH=str(kit)+os.pathsep+env.get('PATH',''),NYRA_SDK_ROOT=str(sdk),NYRA_KERNEL_ROOT=str(out/'source-fallback-disabled'))
     if platform.system()=='Darwin':
-        target=next(line.split(':',1)[1].strip().strip('"') for line in (sdk/'targets'/host/'stdlib/manifest.yaml').read_text().splitlines() if line.startswith('target:'))
+        target=next(line.split(':',1)[1].strip().strip('"') for line in (sdk_package(sdk, host, 'stdlib') / 'manifest.yaml').read_text().splitlines() if line.startswith('target:'))
         env.update(SDKROOT=subprocess.check_output(['xcrun','--show-sdk-path'],text=True).strip(),MACOSX_DEPLOYMENT_TARGET=target.split('-apple-macosx',1)[1])
     packages={name:PACKAGE.parent/name for name in ('http','http_tls','tls','net_core')}
     report={'format':'nyra-http-stream-follow-v1','status':'running','host':host,'sdk_version':meta['version'],'sdk_manifest_sha256':digest(sdk/'manifest.json'),'compiler_sha256':digest(compiler),'compiler_origin':'public-sdk','source_fallback_disabled':True,'source_sha256':{name:sources(path) for name,path in packages.items()},'commands':[],'cases':[],'scope':'Explicit streamed replay and automatic redirects; no transport retry, payload buffering, connection reuse or downgrade.'}

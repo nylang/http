@@ -8,6 +8,7 @@ import argparse, hashlib, json, os
 from pathlib import Path
 import platform, shutil, socket, ssl, subprocess, sys, threading, time
 from accept import digest, sources
+from sdk_layout import sdk_package
 PACKAGE=Path(__file__).resolve().parents[1]
 COMMON={1:'fixed-informational',2:'chunked-upload-trailers',3:'eof-body',4:'truncated-fixed',5:'framing-conflict',6:'upgrade-rejected',8:'cancelled-constructor',9:'expired-constructor',10:'cancel-buffered-body',11:'expire-buffered-body',12:'retained-options',17:'durable-completion',18:'response-body-cap',19:'informational-cap',20:'missing-final',22:'ipv4-identity',23:'dns-case',25:'deadline-native-wait',27:'invalid-request-adoption',28:'expect-rejected',29:'streaming-large-response',40:'url-dns-open',41:'url-numeric-bypass',42:'url-unspecified-family',43:'url-escaped-query',44:'url-native-deadline',45:'url-retained-options'}
 SECURE={7:'unauthenticated-eof',13:'host-peer-mismatch',14:'certificate-name-mismatch',15:'trust-unavailable',16:'alpn-offer-rejected',24:'ipv6-identity',31:'alpn-absent',32:'certificate-untrusted'}
@@ -167,7 +168,7 @@ def main():
     if secure and a.openssl_root is None:p.error('--openssl-root is required for HTTPS')
     if PACKAGE==out or PACKAGE in out.parents:p.error('outputs must be outside package')
     out.mkdir(parents=True,exist_ok=True);win=platform.system()=='Windows';suffix='.exe' if win else '';os_name={'Darwin':'darwin','Linux':'linux','Windows':'windows'}[platform.system()];arch='arm64' if platform.machine().lower() in ('arm64','aarch64') else 'x86_64';host=os_name+'-'+arch
-    kit=sdk/'hosts'/host/'llvm/bin';runtime=sdk/'targets'/host/'stdlib';net=PACKAGE.parent/'net_core'
+    kit=sdk/'hosts'/host/'llvm/bin';runtime=sdk_package(sdk, host, 'stdlib');net=PACKAGE.parent/'net_core'
     env={k:v for k,v in os.environ.items() if not k.startswith(('NYRA','DYLD_','LD_')) and k!='LLVM_PREFIX'};env.update(CC=str(kit/('clang'+suffix)),AR=str(kit/('llvm-ar'+suffix)),PATH=str(kit)+os.pathsep+env.get('PATH',''),NYRA_SDK_ROOT=str(sdk),NYRA_KERNEL_ROOT=str(out/'source-fallback-disabled'))
     if os_name=='darwin':
         target=next(line.split(':',1)[1].strip().strip('\"') for line in (runtime/'manifest.yaml').read_text().splitlines() if line.startswith('target:'))

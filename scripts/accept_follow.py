@@ -14,6 +14,7 @@ import sys
 from accept import digest, sources
 from accept_redirects import RedirectPeer, CASES
 
+from sdk_layout import sdk_package
 PACKAGE = Path(__file__).resolve().parents[1]
 
 
@@ -36,7 +37,7 @@ def main() -> int:
     env = {k: v for k, v in os.environ.items() if not k.startswith(('NYRA', 'DYLD_', 'LD_')) and k != 'LLVM_PREFIX'}
     env.update(PATH=str(kit)+os.pathsep+env.get('PATH', ''), NYRA_SDK_ROOT=str(sdk), NYRA_KERNEL_ROOT=str(out/'source-fallback-disabled'))
     if platform.system() == 'Darwin':
-        env.update(SDKROOT=subprocess.check_output(['xcrun', '--show-sdk-path'], text=True).strip(), MACOSX_DEPLOYMENT_TARGET=next(line.split(':',1)[1].strip().strip('\"') for line in (sdk/'targets'/host/'stdlib/manifest.yaml').read_text().splitlines() if line.startswith('target:')).split('-apple-macosx',1)[1])
+        env.update(SDKROOT=subprocess.check_output(['xcrun', '--show-sdk-path'], text=True).strip(), MACOSX_DEPLOYMENT_TARGET=next(line.split(':',1)[1].strip().strip('\"') for line in (sdk_package(sdk, host, 'stdlib') / 'manifest.yaml').read_text().splitlines() if line.startswith('target:')).split('-apple-macosx',1)[1])
     packages = {name: PACKAGE.parent/name for name in ('http', 'http_tls', 'tls', 'net_core')}
     manifest = json.loads((sdk/'manifest.json').read_text())
     official = sdk/manifest['tools']['nyrac']['path']
