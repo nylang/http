@@ -35,3 +35,10 @@ Resource operations borrow the actual HttpParserData, HttpBodyData, HttpWriteDat
 HttpResponseData, HttpExchangeData, HttpTcpData and RedirectChainData owners. Each
 owner retains its cursor, admission and sticky failure invariants. URI dot-segment
 policy belongs to immutable HttpUriPath, independently of OS path handling.
+
+WebSocket is a separate HTTP/1.1 upgrade path. The session TU owns exact
+HTTP read-ahead, frame/message state and close handling. The TCP adapter owns
+the socket and implements the session's ordered transport contract. Opening
+challenge computation and OS entropy are private to the WebSocket feature.
+The optional http_tls package implements the same transport contract over its
+verified TLS stream.

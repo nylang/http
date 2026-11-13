@@ -17,3 +17,6 @@ import "private/writer.ny";
 import "private/body.ny";
 import "private/body_writer.ny";
 import "private/response.ny";
+export "interface/websocket.ni";
+import "private/websocket.ny";
+import "private/websocket_tcp.ny";

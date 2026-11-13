@@ -622,3 +622,28 @@ published 1.0.4 analyzer does not implement them. `import: default` inherits
 the selected workspace profile when present, otherwise analyzer SDK defaults.
 No sibling source path is required. Run `nyra-analyzer lint . --json`. Lint checks
 coding rules; runtime qualification is a separate gate.
+
+## WebSocket over HTTP/1.1
+
+Import `http:http.ny` and call `WebSocket.Open` with a `ws://` URL, an
+`AsyncResolver`, and the original deadline and cancellation options. For a
+certificate-verified `wss://` client, also import `http_tls:http_tls.ny` and
+call `WebSocket.OpenSecure` with an explicit PEM trust file.
+
+The move-only session sends text, binary and Ping with `SendText`,
+`SendBinary` and `Ping`. `Receive` reassembles fragmented messages, answers
+Ping automatically and reports text, binary, Pong or Close with an owned
+payload. `StartClose` sends a close frame. Continue calling `Receive` under
+a finite deadline until the peer's Close, or use `Abort` for immediate
+teardown. Operations run serially on the caller thread. The caller supplies
+controls for each operation. Frame and message limits default to 16 MiB each.
+
+On the server, parse the request with `HttpHeadParser.NewRequest`, authorize
+the route and Origin, then call `WebSocket.AcceptTcp` with the accepted socket,
+parsed head and any unread bytes already buffered after the head. The
+upgrade takes ownership of the socket. A TLS-terminating reverse proxy can
+forward the upgrade to this entry point. An application with its own secure
+transport can implement `WebSocketTransport` and use `WebSocket.Accept`.
+
+This HTTP/1.1 profile uses RFC 6455 version 13. Compression, extensions and
+subprotocol negotiation are outside this profile.
