@@ -72,11 +72,43 @@ final/101 head is terminal even after complete informational responses.
 
 Automatic redirect following is available through the optional
 [http_tls facade](https://github.com/nylang/http_tls/blob/main/README.md#automatic-redirects). IDNA, connection
-pooling, HTTP/2 and HTTP/3 remain future work. Strict URL orchestration and
+pooling for HTTP/1.1 and HTTP/3 remain future work. Strict URL orchestration and
 explicit redirect decisions are described below.
 Upgrade/Tunnel is an explicit handoff; body construction rejects these plans.
 Content-Length metadata can span uint64; decoder construction applies its own
 budget and does not allocate that length.
+
+## HTTP/2 client
+
+Import `http:http2.ny` with SDK 1.1.2. `Http2Client.Open(url, provider_file,
+resolver, dial, limits, options)` opens a cleartext connection to a peer
+known to accept an HTTP/2 preface directly. For HTTPS with verified
+`h2` ALPN, use `Http2Client.OpenSecure` from `http_tls:http2_tls.ny`.
+
+Call `Submit` with the URL, method, headers and a `ByteBuffer`. You can queue
+several requests to the opening origin before calling `Receive` with a
+stream ID. All streams progress on that connection. Each response owns its
+status, headers, body and trailers. A reset ends its stream and leaves
+the connection available. Pass the same absolute deadline and cancellation
+controls to open and receive to bound the overall operation.
+
+This API buffers request and response bodies. The defaults are eight retained
+streams and 8 MiB per body, with ceilings of 16 streams and 16 MiB per body.
+HTTP/2 server push, CONNECT, automatic redirects and HTTP/1.1 fallback are
+outside this client API.
+
+Build the native bridge as a shared library using nghttp2 headers and library.
+For example, on macOS with nghttp2 discoverable through pkg-config:
+
+```sh
+cc -std=c11 -fvisibility=hidden -dynamiclib $(pkg-config --cflags libnghttp2) \
+  private/native/http2_client.c $(pkg-config --libs libnghttp2) \
+  -o /path/to/libnyra_http2.dylib
+```
+
+On ELF platforms use `-fPIC -shared` and a `.so` output. Use a trusted full
+path to the bridge as `provider_file`. The bridge is loaded when opening
+HTTP/2; HTTP/1.1 programs only use their existing native link inputs.
 
 ## Connected single-request clients
 
