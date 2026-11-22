@@ -1,0 +1,102 @@
+// Copyright (c) 2026 tangxiangjiang
+// SPDX-License-Identifier: MIT
+
+import "stdlib:stdlib.ny";
+import "net_core:net_core.ny";
+import "http:http.ny";
+
+@extern("C") func HttpFixturePort() -> int32;
+@extern("C") func HttpFixtureCase() -> int32;
+
+func request_buffer(text: ref string) -> NetBuffer {
+  return NetBuffer.CopyFrom(NetBytes.FromString(text)).get_if<NetBuffer>()!;
+}
+
+// One call consumes the whole response while retaining a body event beyond reuse.
+func response_body(client: ref mut HttpTcpClient) -> Result<NetBuffer, HttpClientError> {
+  var retained: NetBuffer = NetBuffer{};
+  while true {
+    let next = client.Next();
+    if next.IsErr() {
+      return next.get_if<HttpClientError>()!;
+    }
+
+    let event = next.get_if<HttpClientEvent>()!;
+    if event.kind == HttpClientEventKind.Body {
+      retained = event.buffer;
+    }
+
+    if event.complete {
+      return retained;
+    }
+  }
+}
+
+func main() -> int32 {
+  let scenario = HttpFixtureCase();
+  let endpoint = NetEndpoint.New(IpAddress.V4(127u8, 0u8, 0u8, 1u8), HttpFixturePort()).get_if<NetEndpoint>()!;
+  let token = NetCancellation.New();
+  let options = NetOperationOptions{
+    deadline: NetDeadline.After(Instant.Now().ToDurationSinceEpochish().ToNanoseconds(), 5000000000u64),
+    cancellation: token
+  };
+  var opened = TcpConnection.Dial(endpoint, options);
+  if opened.IsErr() {
+    return 1;
+  }
+
+  var connection = move(opened.get_if<TcpConnection>()!);
+  let close = scenario == 4 ? "Connection: close\r\n" : "";
+  let first_head = request_buffer("GET /one HTTP/1.1\r\nHost: example.test\r\n".Concat(close).Concat("\r\n"));
+  var created = HttpTcpClient.New(connection, first_head, NetBuffer{}, HttpClientLimits{}, options);
+  if created.IsErr() {
+    return 2;
+  }
+
+  var client = move(created.get_if<HttpTcpClient>()!);
+  let next_head = request_buffer("GET /two HTTP/1.1\r\nHost: example.test\r\n\r\n");
+  if client.NextRequest(next_head, NetBuffer{}, HttpClientLimits{}, options).IsOk() {
+    return 3;
+  }
+
+  let first = response_body(client);
+  if first.IsErr() {
+    return 4;
+  }
+
+  if scenario == 3 || scenario == 4 {
+    return client.NextRequest(next_head, NetBuffer{}, HttpClientLimits{}, options).IsErr() ? 0 : 5;
+  }
+
+  if scenario == 5 {
+    let wrong = request_buffer("GET /two HTTP/1.1\r\nHost: other.test\r\n\r\n");
+    if client.NextRequest(wrong, NetBuffer{}, HttpClientLimits{}, options).IsOk()
+        || client.NextRequest(request_buffer("bad"), NetBuffer{}, HttpClientLimits{}, options).IsOk() {
+      return 6;
+    }
+  }
+
+  if scenario == 6 {
+    let cancelled = NetCancellation.New();
+    cancelled.Cancel();
+    let blocked = NetOperationOptions{cancellation: cancelled};
+    if client.NextRequest(next_head, NetBuffer{}, HttpClientLimits{}, blocked).IsOk() {
+      return 7;
+    }
+  }
+
+  if client.NextRequest(next_head, NetBuffer{}, HttpClientLimits{}, options).IsErr() {
+    return 8;
+  }
+
+  let second = response_body(client);
+  if second.IsErr() {
+    return 9;
+  }
+
+  let old_body = first.get_if<NetBuffer>()!;
+  let new_body = second.get_if<NetBuffer>()!;
+  let old_text = string.ViewFrom(old_body.Bytes().Data() as *const int8, old_body.Len() as int32);
+  let new_text = string.ViewFrom(new_body.Bytes().Data() as *const int8, new_body.Len() as int32);
+  return old_text == "one" && new_text == "two" ? 0 : 10;
+}

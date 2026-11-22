@@ -28,8 +28,7 @@ struct HttpTcpData {
 }
 
 /**
- * @brief Single-threaded, move-only connected TCP client for one request; no hidden workers or
- *   reuse.
+ * @brief Single-threaded, move-only connected TCP client with explicit sequential request reuse.
  */
 pub struct HttpTcpClient {
   cell: arc<HttpTcpData>?;
@@ -86,6 +85,62 @@ pub static method(HttpTcpClient) New(
   }};
 }
 
+// The connected API has no DNS or TLS authority selection. Keep successive
+// requests on the exact originally validated Host, including its explicit port.
+method(HttpHead) TcpAuthority() -> string {
+  var index: int32 = 0;
+  while index < self.FieldCount() {
+    let field = self.FieldAt(index).get_if<HttpField>() as HttpField;
+    if field.name.EqualAsciiIgnoreCase("Host") {
+      return field.value;
+    }
+
+    index += 1;
+  }
+
+  return "";
+}
+
+pub method(HttpTcpClient) NextRequest(
+  head: ref NetBuffer, body: ref NetBuffer, limits: ref HttpClientLimits, options: ref NetOperationOptions
+) -> Result<Unit, HttpClientError> {
+  if self.cell == nil {
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.Closed}};
+  }
+
+  let state = self.cell as arc<HttpTcpData>;
+  if state.failure != nil {
+    return state.failure as HttpClientError;
+  }
+
+  if !state.published_complete || !state.exchange.CanReuseConnection() || !state.connection.IsOpen() {
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.InvalidState}};
+  }
+
+  let control = options.CheckNow();
+  if control.IsErr() {
+    return HttpClientError{transport_error: control.get_if<NetError>() as NetError};
+  }
+
+  var next = HttpClientExchange.New(head, body, limits);
+  if next.IsErr() {
+    return HttpClientError{protocol_error: next.get_if<HttpError>() as HttpError};
+  }
+
+  var exchange = next.get_if<HttpClientExchange>() as HttpClientExchange;
+  let previous_head = state.exchange.RequestHead().get_if<HttpHead>() as HttpHead;
+  let next_head = exchange.RequestHead().get_if<HttpHead>() as HttpHead;
+  if !previous_head.TcpAuthority().EqualAsciiIgnoreCase(next_head.TcpAuthority()) {
+    return HttpClientError{protocol_error: HttpError{kind: HttpErrorKind.InvalidArgument}};
+  }
+
+  state.exchange = move(exchange);
+  state.options = options;
+  state.published_complete = false;
+
+  return Unit{};
+}
+
 /**
  * @brief Transfer the owned connection and exchange.
  * @returns The HttpTcpClient value described above, retaining the documented ownership and
@@ -112,7 +167,7 @@ pub method(HttpTcpClient) operator drop() -> void {
  *   writes.
  * @note Errors retire the connection and preserve committed counts. Successful completion is
  *   durable; later Next returns Complete without I/O until explicit Close. Close/drop after
- *   completion; the socket is not pooled.
+ *   completion, or start a validated sequential request with NextRequest.
  */
 pub method(HttpTcpClient) Next() -> Result<HttpClientEvent, HttpClientError> {
   if self.cell == nil {

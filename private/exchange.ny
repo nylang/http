@@ -465,9 +465,8 @@ method(HttpExchangeData) Event(
  * @note Immutable requests require completed upload; streamed requests permit early responses
  *   after head acknowledgement. Only 100 releases Expect; drain buffered heads before writing
  *   again.
- * @note Protocol failures are sticky. Upgrade/tunnel responses are Unsupported. This exchange is
- *   never reusable: extra received bytes remain quarantined until drop. No pool/request queue is
- *   implemented.
+ * @note Protocol failures are sticky. Upgrade/tunnel responses are Unsupported.
+ *   Extra received bytes remain quarantined and disqualify the connection from reuse.
  */
 pub method(HttpClientExchange) NextResponse() -> Result<HttpClientEvent, HttpError> {
   if self.cell == nil {
@@ -607,6 +606,34 @@ pub method(HttpClientExchange) RequestHead() -> Result<HttpHead, HttpError> {
   }
 
   return (self.cell as arc<HttpExchangeData>).request;
+}
+
+pub method(HttpClientExchange) CanReuseConnection() -> bool {
+  if self.cell == nil {
+    return false;
+  }
+
+  let state = self.cell as arc<HttpExchangeData>;
+  if state.failure != nil || !state.complete || state.streaming || state.eof
+      || state.input_cursor != state.input.Len() || !self.RequestComplete() {
+    return false;
+  }
+
+  let request = state.request.BodyPlan();
+  let response = state.response.Head();
+  if request.IsErr() || response.IsErr() {
+    return false;
+  }
+
+  let plan = (response.get_if<HttpHead>() as HttpHead).BodyPlan();
+  if plan.IsErr() {
+    return false;
+  }
+
+  let body = plan.get_if<HttpBodyPlan>() as HttpBodyPlan;
+  return !(request.get_if<HttpBodyPlan>() as HttpBodyPlan).close_connection
+    && !body.close_connection && (body.kind == HttpBodyKind.None
+      || body.kind == HttpBodyKind.ContentLength || body.kind == HttpBodyKind.Chunked);
 }
 
 /**

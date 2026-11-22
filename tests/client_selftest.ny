@@ -3,6 +3,38 @@
 
 part of HttpClientTests;
 
+@test(tag = "http_core")
+func test_http_connection_reuse_requires_exact_completion_and_persistent_framing() {
+  var exchange = HttpClientExchange.TestNew("GET / HTTP/1.1\r\nHost: example.test\r\n\r\n", "", HttpClientLimits{});
+  AssertTrue(!exchange.CanReuseConnection());
+  let output = exchange.Output().get_if<NetBuffer>()!;
+  AssertTrue(exchange.AcknowledgeOutput(output.Len()).IsOk());
+  AssertTrue(exchange.Receive(NetBuffer.HttpTestFromString("HTTP/1.1 200 OK\r\nContent-Length: 1\r\n\r\na"), false).IsOk());
+  AssertTrue(exchange.NextResponse().IsOk());
+  AssertTrue(!exchange.CanReuseConnection());
+  AssertTrue(exchange.NextResponse().get_if<HttpClientEvent>()!.complete);
+  AssertTrue(exchange.CanReuseConnection());
+}
+
+@test(tag = "http_core")
+func test_http_connection_reuse_rejects_read_ahead_close_and_eof() {
+  let responses: <string>[3] = {
+    "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\nextra",
+    "HTTP/1.1 200 OK\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+    "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n"
+  };
+  var index: int32 = 0;
+  while index < 3 {
+    var exchange = HttpClientExchange.TestNew("GET / HTTP/1.1\r\nHost: example.test\r\n\r\n", "", HttpClientLimits{});
+    let output = exchange.Output().get_if<NetBuffer>()!;
+    AssertTrue(exchange.AcknowledgeOutput(output.Len()).IsOk());
+    AssertTrue(exchange.Receive(NetBuffer.HttpTestFromString(responses[index]), index == 2).IsOk());
+    AssertTrue(exchange.NextResponse().get_if<HttpClientEvent>()!.complete);
+    AssertTrue(!exchange.CanReuseConnection());
+    index += 1;
+  }
+}
+
 /** @brief Shared client exchange ownership and exact acknowledgement. */
 
 

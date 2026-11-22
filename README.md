@@ -70,6 +70,25 @@ heads and 1 MiB cumulative head bytes; hard caps are 64 heads and 16 MiB. Per-he
 limits remain active, and aggregate bytes include the final head. EOF before a
 final/101 head is terminal even after complete informational responses.
 
+## Query, form and cookie codecs
+
+Import `http:forms.ny`, `http:cookies.ny`, or the `http:http.ny` barrel.
+`HttpForm.Parse(text, limits)` decodes UTF-8 URL-encoded bodies into ordered
+`HttpField` pairs. `ParseQuery` reads the query from a request target.
+Duplicates and empty names/values survive decoding. Plus represents space,
+while `%2B` represents a literal plus. `Encode` writes the same pair sequence
+using uppercase percent escapes. Malformed escapes and invalid UTF-8 fail.
+`HttpFormLimits{}` selects 1 MiB and 1024 pairs, and limits apply before a
+complete result is returned. The codec borrows its input and owns its results.
+
+`HttpCookie.Parse(text, limits)` reads one Cookie request field with ordered
+duplicate names. Cookie values retain their raw bytes and percent escapes.
+`Encode` writes one Cookie field. `Set(cookie, settings)` writes one
+Set-Cookie field with Domain, Path, Max-Age, Secure, HttpOnly and SameSite
+attributes. Keep multiple Set-Cookie fields separate in the response.
+The writer checks header syntax and the Secure and Host prefix requirements.
+Applications own cookie storage, expiry and origin selection.
+
 Automatic redirect following is available through the optional
 [http_tls facade](https://github.com/nylang/http_tls/blob/main/README.md#automatic-redirects). IDNA, connection
 pooling for HTTP/1.1 and HTTP/3 remain future work. Strict URL orchestration and
@@ -110,7 +129,7 @@ On ELF platforms use `-fPIC -shared` and a `.so` output. Use a trusted full
 path to the bridge as `provider_file`. The bridge is loaded when opening
 HTTP/2; HTTP/1.1 programs only use their existing native link inputs.
 
-## Connected single-request clients
+## Connected HTTP/1.1 clients
 
 `HttpClientExchange` drives one validated HTTP/1.1 request and response without
 transport operations. Supply an immutable head buffer containing exactly one
@@ -140,7 +159,14 @@ HTTP plaintext acceptance/receive progress, not peer acknowledgement. Response
 trailers are available separately after completion.
 
 Completion remains observable without new I/O until explicit `Close()` or drop.
-Connections are never reused or pooled; any received suffix is quarantined.
+The immutable connected TCP client supports explicit sequential reuse with
+`NextRequest(head, body, limits, options)`. Drain the preceding response through
+its complete event first. The new request must keep the same Host authority,
+including port. Its own deadline and cancellation are checked before replacing
+the exchange. Invalid admission leaves the completed response available.
+Connection-close heads, EOF-delimited responses, read-ahead suffixes, incomplete
+uploads and protocol failures prevent reuse. A subsequent transport failure is
+reported without automatic retry. Caller code owns idle lifetime and pooling.
 The immutable constructor rejects Expect/100-continue. CONNECT
 and Upgrade requests are unsupported. A 101/tunnel response fails rather than
 transferring the live socket. Close/drop after consuming the response. HTTPS

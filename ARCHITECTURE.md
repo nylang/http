@@ -14,10 +14,16 @@ transport ownership. The product faces remain transport/provider independent.
 - `private/body.ny` owns incoming-body framing; `body_writer.ny` separately owns
   outgoing payload/chunk/trailer framing. Neither sees the other's cursor layout.
 - `private/response.ny` owns informational/final head sequencing for one request.
+- `private/forms.ny` owns strict UTF-8 URL-encoded ordered field values and their
+  byte/count bounds. Query extraction and form bodies use the same codec.
+- `private/cookies.ny` owns Cookie pair grammar and Set-Cookie serialization.
+  Cookie storage, expiry and origin selection belong to applications.
 - `private/exchange.ny` with `upload.ny` owns request/response progress, producer
   admission and early-final behavior. Both parts mutate one exchange state machine.
 - `private/tcp_client.ny` with `tcp_upload.ny` owns the plain TCP adapter and its
-  flush/read scheduling. HTTP grammar remains in the protocol modules.
+  flush/read scheduling. The exchange reports whether its fully consumed framing
+  permits sequential reuse. The adapter checks same-authority admission and new
+  caller controls before replacing it. HTTP grammar remains in the protocol modules.
 - `private/url.ny` owns validated immutable URL values and request-head association.
 - `private/url_reference.ny` owns URI-reference resolution and origin comparison,
   consuming the URL operation contract without accessing URL storage.

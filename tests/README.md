@@ -1,5 +1,32 @@
 # HTTP protocol acceptance
 
+## Form, cookie and sequential reuse regressions
+
+`form_cookie_selftest.ny` and the reuse cases in `client_selftest.ny` use the
+existing `http_core` tag. Ordinary package tests and the core acceptance runner
+discover them alongside the framing cases. They cover UTF-8 form round trips,
+duplicate and empty values, malformed escapes, size bounds, Cookie injection,
+Set-Cookie attributes and completed persistent framing.
+
+For live reuse, copy `data/keepalive_consumer.ny.in` into an external consumer
+package as `main.ny`. Declare both `http` and `net_core` dependencies and prepare
+them with the normal Git or workspace workflow. Build it with the same SDK and
+native inputs as the connected-client fixture: the SDK platform archive,
+`libnet_core_native.a`, and an object compiled from `data/client_fixture.c`.
+Use the desktop system link libraries required by net_core. Pass the resulting
+executable to the peer runner:
+
+```sh
+python3 tests/tools/check_keepalive.py --binary /path/to/consumer --report /path/to/keepalive.json
+```
+
+The runner exercises two responses on one TCP connection with fixed and chunked
+framing, request and response close refusal, authority and malformed-request
+admission, cancellation, and body ownership retained across reuse. It does not
+qualify TLS reuse or connection pooling.
+
+## Historical increments
+
 The first increment contains 18 controlled Nyra cases, each also replayed in its
 own invocation. They exercise every split of a representative head and every
 incomplete EOF prefix, reused byte storage and lifetime after parser drop,

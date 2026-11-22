@@ -118,8 +118,8 @@ pub method(HttpClientExchange) Output() -> Result<NetBuffer, HttpError>;
  * @brief Acknowledge only actual transport acceptance; invalid counts do not change the cursor.
  * @returns Ok with Unit on success; Err with HttpError on the failure paths described above.
  * @note Report every completed write before admitting/parsing a response. Do not leave
- *   unreported in-flight writes when parsing an early final response. Retire the transport after
- *   completion.
+ *   unreported in-flight writes when parsing an early final response. Consult CanReuseConnection
+ *   after full completion before reusing a transport.
  */
 pub method(HttpClientExchange) AcknowledgeOutput(count: intptr) -> Result<Unit, HttpError>;
 
@@ -149,9 +149,8 @@ pub method(HttpClientExchange) Receive(buffer: ref NetBuffer, eof: bool) -> Resu
  * @note Immutable requests require completed upload; streamed requests permit early responses
  *   after head acknowledgement. Only 100 releases Expect; drain buffered heads before writing
  *   again.
- * @note Protocol failures are sticky. Upgrade/tunnel responses are Unsupported. This exchange is
- *   never reusable: extra received bytes remain quarantined until drop. No pool/request queue is
- *   implemented.
+ * @note Protocol failures are sticky. Upgrade/tunnel responses are Unsupported.
+ *   Extra received bytes remain quarantined and disqualify the connection from reuse.
  */
 pub method(HttpClientExchange) NextResponse() -> Result<HttpClientEvent, HttpError>;
 
@@ -209,8 +208,7 @@ pub struct HttpClientError {
 }
 
 /**
- * @brief Single-threaded, move-only connected TCP client for one request; no hidden workers or
- *   reuse.
+ * @brief Single-threaded, move-only connected TCP client with explicit sequential request reuse.
  */
 pub struct HttpTcpClient;
 
@@ -270,6 +268,21 @@ pub method(HttpTcpClient) TrailerAt(index: int32) -> Result<HttpField, HttpClien
 
 /** @brief Close once; prior failures and their committed progress remain stable. */
 pub method(HttpTcpClient) Close() -> void;
+
+/** @brief Whether the completed exchange permits another request on its connection.
+ * @note Requires fully sent request bytes, fully consumed fixed/chunked response framing,
+ *       persistent heads and no received suffix, EOF, early response or protocol failure.
+ *       A true result does not guarantee that the peer is still connected. */
+pub method(HttpClientExchange) CanReuseConnection() -> bool;
+
+/** @brief Start another immutable request on this completed TCP client.
+ * @note The Host field must match the previous authority including port. Validation and
+ *       caller controls run before replacing the exchange. Failure preserves the old exchange.
+ *       The caller supplies a new deadline/cancellation policy for this request. A later
+ *       transport failure is reported without retrying or replaying the request. */
+pub method(HttpTcpClient) NextRequest(
+  head: ref NetBuffer, body: ref NetBuffer, limits: ref HttpClientLimits, options: ref NetOperationOptions
+) -> Result<Unit, HttpClientError>;
 
 /**
  * @brief Streamed upload scheduling; response parsing takes priority over further request

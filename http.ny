@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: MIT
 
 /** @brief Transport-independent HTTP framing; import http:http.ny. */
+export "interface/forms.ni";
+import "private/forms.ny";
+export "interface/cookies.ni";
+import "private/cookies.ny";
 export "interface/http.ni";
 import "interface/http.ni";
 import "private/http.ny";
