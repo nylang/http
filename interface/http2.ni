@@ -56,14 +56,18 @@ pub interface Http2Transport {
 pub struct Http2Client;
 
 /** @brief Connect to http:// using cleartext prior knowledge.
- * @param provider_file Trusted path to the native HTTP/2 bridge shared library. */
+ * @param provider_file Trusted path to the native HTTP/2 bridge shared library.
+ * @returns An owned client or an argument, network or provider error.
+ */
 pub static method(Http2Client) Open(
   url: ref HttpUrl, provider_file: ref string, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions,
   limits: ref Http2Limits, options: ref NetOperationOptions
 ) -> Result<Http2Client, Http2Error>;
 
 /** @brief Take exclusive ownership of an already connected HTTP/2 transport.
- * @note The URL fixes the scheme and origin. On failure the transport is aborted. */
+ * @note The URL fixes the scheme and origin. On failure the transport is aborted.
+ * @returns An owned client or an argument, provider or allocation error.
+ */
 pub static method(Http2Client) Adopt(
   transport: Http2Transport, url: ref HttpUrl, provider_file: ref string, limits: ref Http2Limits
 ) -> Result<Http2Client, Http2Error>;
@@ -71,14 +75,18 @@ pub static method(Http2Client) Adopt(
 /** @brief Queue a request and return its stream ID. The provider copies its body.
  * @note Requests on one connection share the opening origin. Include additional request
  * headers as lowercase or mixed case. The library owns pseudo headers and Content-Length.
- * Submit several requests before driving Receive to multiplex. */
+ * Submit several requests before driving Receive to multiplex.
+ * @returns A stream identifier or an argument, provider or connection error.
+ */
 pub method(Http2Client) Submit(
   url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref ByteBuffer
 ) -> Result<int32, Http2Error>;
 
 /** @brief Drive the connection until the selected stream finishes and take its response once.
  * @note Other streams progress on the same connection. An I/O or connection error retires
- * the client; a stream reset retires only its stream. */
+ * the client; a stream reset retires only its stream.
+ * @returns An owned response or a stream, transport, limit or operation-control error.
+ */
 pub method(Http2Client) Receive(
   stream_id: int32, options: ref NetOperationOptions
 ) -> Result<Http2Response, Http2Error>;
@@ -95,5 +103,7 @@ pub method(Http2Client) operator drop() -> void;
 /** @brief Abort the connection and release pending streams. */
 pub method(Http2Client) Close() -> void;
 
-/** @brief Validate public HTTP/2 session limits without network I/O. */
+/** @brief Validate public HTTP/2 session limits without network I/O.
+ * @returns True when all limits are usable, including supported zero defaults.
+ */
 pub method(Http2Limits) IsValid() -> bool;

@@ -25,11 +25,17 @@ pub struct Http2Client {
   cell: arc<Http2State>?;
 }
 
+/** @brief Validate the HTTP/2 resource limits.
+ * @returns True when all limits are usable, including supported zero defaults.
+ */
 pub method(Http2Limits) IsValid() -> bool {
   return self.max_streams >= 0 && self.max_streams <= 16 &&
     self.max_body_bytes >= 0 && self.max_body_bytes <= 16777216;
 }
 
+/** @brief Adopt exclusive ownership of a transport for HTTP/2.
+ * @returns An owned client or an argument, provider or allocation error.
+ */
 pub static method(Http2Client) Adopt(
   transport: Http2Transport, url: ref HttpUrl, provider_file: ref string, limits: ref Http2Limits
 ) -> Result<Http2Client, Http2Error> {
@@ -69,6 +75,8 @@ pub method(Http2Client) operator drop() -> void {
   self.Close();
 }
 
+/** @brief Close the HTTP/2 provider state and abort the owned transport.
+ */
 pub method(Http2Client) Close() -> void {
   let cell = self.cell;
   self.cell = nil;
@@ -79,6 +87,9 @@ pub method(Http2Client) Close() -> void {
   }
 }
 
+/** @brief Drive a submitted stream until its response completes.
+ * @returns An owned response or a stream, transport, limit or operation-control error.
+ */
 pub method(Http2Client) Receive(
   stream_id: int32, options: ref NetOperationOptions
 ) -> Result<Http2Response, Http2Error> {

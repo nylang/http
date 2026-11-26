@@ -35,7 +35,9 @@ pub struct WebSocketLimits {
   max_message_bytes: int32;
 }
 
-/** @brief Whether both limits are usable by the session. */
+/** @brief Whether both limits are usable by the session.
+ * @returns True when both limits are within the supported bounds.
+ */
 pub method(WebSocketLimits) IsValid() -> bool;
 
 /** @brief Events returned by Receive. Incoming Ping frames are answered automatically. */
@@ -87,7 +89,9 @@ pub static method(WebSocket) Open(
 
 /** @brief Run the client upgrade over an exclusively supplied, already connected byte transport.
  * @note Use ParseUrl to obtain the HTTP(S) routing URL. This operation takes over the transport
- * even when the handshake fails. No extensions or subprotocols are offered. */
+ * even when the handshake fails. No extensions or subprotocols are offered.
+ * @returns An owned session or an opening error; the transport is consumed on either path.
+ */
 pub static method(WebSocket) Connect(
   transport: WebSocketTransport, url: ref HttpUrl, limits: ref WebSocketLimits,
   options: ref NetOperationOptions
@@ -95,35 +99,49 @@ pub static method(WebSocket) Connect(
 
 /** @brief Adopt TCP and upgrade an already parsed, application-approved request.
  * @note The caller admits the route, authentication and Origin before calling. Pass any bytes
- * read after the HTTP head as prefix. The socket is consumed even when the upgrade fails. */
+ * read after the HTTP head as prefix. The socket is consumed even when the upgrade fails.
+ * @returns An owned session or an opening error; the socket is consumed on either path.
+ */
 pub static method(WebSocket) AcceptTcp(
   connection: ref mut TcpConnection, request: ref HttpHead, prefix: ref NetBuffer,
   limits: ref WebSocketLimits, options: ref NetOperationOptions
 ) -> Result<WebSocket, WebSocketError>;
 
 /** @brief Upgrade an application-approved request on a caller-provided byte transport.
- * @note The same admission and ownership contract as AcceptTcp applies. */
+ * @note The same admission and ownership contract as AcceptTcp applies.
+ * @returns An owned session or an opening error; the transport is consumed on either path.
+ */
 pub static method(WebSocket) Accept(
   transport: WebSocketTransport, request: ref HttpHead, prefix: ref NetBuffer,
   limits: ref WebSocketLimits, options: ref NetOperationOptions
 ) -> Result<WebSocket, WebSocketError>;
 
-/** @brief Write one UTF-8 text message using the supplied operation deadline and cancellation. */
+/** @brief Write one UTF-8 text message using the supplied operation deadline and cancellation.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) SendText(text: ref string, options: ref NetOperationOptions) -> Result<Unit, WebSocketError>;
 
-/** @brief Write one complete binary message. The input is borrowed only for this call. */
+/** @brief Write one complete binary message. The input is borrowed only for this call.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) SendBinary(bytes: ref NetBytes, options: ref NetOperationOptions) -> Result<Unit, WebSocketError>;
 
-/** @brief Send a Ping control frame with up to 125 bytes. */
+/** @brief Send a Ping control frame with up to 125 bytes.
+ * @returns Success after sending, or a size, transport or operation-control error.
+ */
 pub method(WebSocket) Ping(bytes: ref NetBytes, options: ref NetOperationOptions) -> Result<Unit, WebSocketError>;
 
 /** @brief Receive a reassembled message, Pong or the peer's Close. Replies to Ping and Close.
  * @note EOF without a Close frame is an error. An I/O or peer-protocol failure retires the
- * connection. A received Close event ends the session. */
+ * connection. A received Close event ends the session.
+ * @returns An owned event or a protocol, limit, transport or operation-control error.
+ */
 pub method(WebSocket) Receive(options: ref NetOperationOptions) -> Result<WebSocketMessage, WebSocketError>;
 
 /** @brief Send Close with a valid code and up to 123 UTF-8 reason bytes.
- * @note Drive Receive to complete the close handshake under a finite deadline, or call Abort. */
+ * @note Drive Receive to complete the close handshake under a finite deadline, or call Abort.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) StartClose(
   code: int32, reason: ref string, options: ref NetOperationOptions
 ) -> Result<Unit, WebSocketError>;

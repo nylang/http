@@ -41,6 +41,7 @@ method(WebSocketTestTransport) Abort() -> void {
   state.aborted = true;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Build a fixed HTTP request for these wire tests.
 func websocket_request() -> HttpHead {
   var made = HttpHeadParser.NewRequest(HttpHeadLimits{});
   var parser = move(made.get_if<HttpHeadParser>() as HttpHeadParser);
@@ -51,6 +52,7 @@ func websocket_request() -> HttpHead {
   return parser.Head().get_if<HttpHead>() as HttpHead;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Copy test byte views without a session owner.
 func websocket_text(bytes: ref NetBytes) -> string {
   unsafe {
     return copy(string.ViewFrom(bytes.Data() as *const int8, bytes.Len() as int32));
@@ -125,11 +127,13 @@ func test_http_websocket_rejects_unmasked_and_oversized_frames() {
   check_rejected_frame(request, missing_continuation, WebSocketErrorKind.Protocol, options);
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Copy fixture octets without a live session.
 func websocket_buffer(bytes: ref <uint8>[]) -> NetBuffer {
   let input = NetBytes.FromRaw(&bytes[0], bytes.length as intptr).get_if<NetBytes>() as NetBytes;
   return NetBuffer.CopyFrom(input).get_if<NetBuffer>() as NetBuffer;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Share malformed-frame assertions in this test TU.
 func check_rejected_frame(
   request: ref HttpHead, wire: ref <uint8>[], expected: WebSocketErrorKind,
   options: ref NetOperationOptions

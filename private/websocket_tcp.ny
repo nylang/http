@@ -48,6 +48,9 @@ method(WebSocketTcp) Abort() -> void {
   self.connection.Close();
 }
 
+/** @brief Resolve and connect a cleartext WebSocket URL.
+ * @returns An owned session or a URL, network or opening-handshake error.
+ */
 pub static method(WebSocket) Open(
   url: ref string, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions,
   limits: ref WebSocketLimits, options: ref NetOperationOptions
@@ -73,6 +76,9 @@ pub static method(WebSocket) Open(
   return WebSocket.Connect(move(adapter), route, limits, options);
 }
 
+/** @brief Adopt accepted TCP and upgrade an application-approved request.
+ * @returns An owned session or an opening error; the socket is consumed on either path.
+ */
 pub static method(WebSocket) AcceptTcp(
   connection: ref mut TcpConnection, request: ref HttpHead, prefix: ref NetBuffer,
   limits: ref WebSocketLimits, options: ref NetOperationOptions

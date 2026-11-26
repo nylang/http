@@ -43,6 +43,8 @@ pub method(WebSocket) operator drop() -> void {
   self.Abort();
 }
 
+/** @brief Immediately retire the session and abort its owned transport.
+ */
 pub method(WebSocket) Abort() -> void {
   let cell = self.cell;
   self.cell = nil;
@@ -69,6 +71,9 @@ static method(WebSocket) Adopt(
   }};
 }
 
+/** @brief Validate the WebSocket frame and message limits.
+ * @returns True when both limits are within the supported bounds.
+ */
 pub method(WebSocketLimits) IsValid() -> bool {
   return self.max_frame_bytes >= 0 && self.max_message_bytes >= 0
     && self.max_message_bytes <= kWebSocketMaxMessage;
@@ -114,6 +119,9 @@ method(WebSocketState) ReadExact(
   return UnitValue();
 }
 
+/** @brief Send one UTF-8 text message under the supplied operation controls.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) SendText(text: ref string, options: ref NetOperationOptions) -> Result<Unit, WebSocketError> {
   if !text.IsValidUtf8() {
     return WebSocketError{kind: WebSocketErrorKind.InvalidUtf8};
@@ -122,10 +130,16 @@ pub method(WebSocket) SendText(text: ref string, options: ref NetOperationOption
   return self.Send(1u8, NetBytes.FromString(text), options);
 }
 
+/** @brief Send one binary message while borrowing its bytes.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) SendBinary(bytes: ref NetBytes, options: ref NetOperationOptions) -> Result<Unit, WebSocketError> {
   return self.Send(2u8, bytes, options);
 }
 
+/** @brief Send a Ping control frame with at most 125 payload bytes.
+ * @returns Success after sending, or a size, transport or operation-control error.
+ */
 pub method(WebSocket) Ping(bytes: ref NetBytes, options: ref NetOperationOptions) -> Result<Unit, WebSocketError> {
   if bytes.Len() > 125ip {
     return WebSocketError{kind: WebSocketErrorKind.InvalidArgument};
@@ -161,6 +175,9 @@ method(WebSocket) Send(
   return written;
 }
 
+/** @brief Send a Close frame with a valid code and UTF-8 reason.
+ * @returns Success after sending, or a validation, transport or operation-control error.
+ */
 pub method(WebSocket) StartClose(
   code: int32, reason: ref string, options: ref NetOperationOptions
 ) -> Result<Unit, WebSocketError> {
@@ -181,6 +198,9 @@ pub method(WebSocket) StartClose(
   return self.Send(8u8, payload, options);
 }
 
+/** @brief Receive a reassembled message or control event and answer Ping/Close.
+ * @returns An owned event or a protocol, limit, transport or operation-control error.
+ */
 pub method(WebSocket) Receive(options: ref NetOperationOptions) -> Result<WebSocketMessage, WebSocketError> {
   let cell = self.cell;
   if cell == nil {

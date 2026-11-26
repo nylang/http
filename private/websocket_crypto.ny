@@ -13,7 +13,9 @@ pub struct WebSocketEntropy {
 @target("macos", "linux", "ios") {
   @extern("C") func getentropy(output: *mut uint8, size: uintptr) -> int32;
 
-  /** @brief Fill a fresh 4- or 16-byte value from OS entropy. */
+  /** @brief Fill a fresh 4- or 16-byte value from OS entropy.
+   * @returns True on complete success; false when the entropy provider fails.
+   */
   pub method(WebSocketEntropy) Fill(size: int32) -> bool {
     unsafe {
       return getentropy((&mut self.words[0]) as *mut uint8, size as uintptr) == 0;
@@ -47,7 +49,9 @@ pub struct WebSocketEntropy {
 @target("windows") {
   @extern("C") func rand_s(output: *mut uint32) -> int32;
 
-  /** @brief Fill a fresh 4- or 16-byte value from OS entropy. */
+  /** @brief Fill a fresh 4- or 16-byte value from OS entropy.
+   * @returns True on complete success; false when the entropy provider fails.
+   */
   pub method(WebSocketEntropy) Fill(size: int32) -> bool {
     var i: int32 = 0;
     while i < size / 4 {
@@ -61,7 +65,9 @@ pub struct WebSocketEntropy {
   }
 }
 
-/** @brief Borrow the generated octets for the lifetime of this value. */
+/** @brief Borrow the generated octets for the lifetime of this value.
+ * @returns A view of the requested bytes, valid only for the lifetime of this value.
+ */
 pub method(WebSocketEntropy) Bytes(size: int32) -> string {
   unsafe {
     return string.ViewFrom((&self.words[0]) as *const int8, size);
@@ -73,7 +79,9 @@ pub struct WebSocketKey {
   readonly text: string;
 }
 
-/** @brief Validate the canonical Base64 encoding of exactly 16 bytes. */
+/** @brief Validate the canonical Base64 encoding of exactly 16 bytes.
+ * @returns True only for a canonical 24-byte WebSocket key.
+ */
 pub method(WebSocketKey) IsValid() -> bool {
   if self.text.length != 24 {
     return false;
@@ -95,7 +103,9 @@ struct WebSocketDigest {
 }
 
 /** @brief Compute the accept digest for a validated key.
- * @note The 24-byte key plus the 36-byte GUID always form two padded SHA-1 blocks. */
+ * @note The 24-byte key plus the 36-byte GUID always form two padded SHA-1 blocks.
+ * @returns An owned Base64 SHA-1 digest of the key and protocol GUID.
+ */
 pub method(WebSocketKey) Accept() -> string {
   let input = self.text.Concat("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
   var digest = WebSocketDigest{};

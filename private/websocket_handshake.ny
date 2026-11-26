@@ -3,6 +3,9 @@
 
 part of WebSocketSession;
 
+/** @brief Parse an absolute ws/wss URL for HTTP routing.
+ * @returns The corresponding HTTP(S) URL or an invalid URL error.
+ */
 pub static method(WebSocket) ParseUrl(url: ref string) -> Result<HttpUrl, WebSocketError> {
   if url.Contains("#") {
     return WebSocketError{kind: WebSocketErrorKind.InvalidArgument};
@@ -25,6 +28,9 @@ pub static method(WebSocket) ParseUrl(url: ref string) -> Result<HttpUrl, WebSoc
   return result.get_if<HttpUrl>() as HttpUrl;
 }
 
+/** @brief Run the client upgrade on an exclusively supplied byte transport.
+ * @returns An owned session or an opening error; the transport is consumed on either path.
+ */
 pub static method(WebSocket) Connect(
   transport: WebSocketTransport, url: ref HttpUrl, limits: ref WebSocketLimits,
   options: ref NetOperationOptions
@@ -136,6 +142,9 @@ method(WebSocketState) ReadResponse(options: ref NetOperationOptions) -> Result<
   return WebSocketError{kind: WebSocketErrorKind.Handshake};
 }
 
+/** @brief Upgrade an application-approved request on the supplied transport.
+ * @returns An owned session or an opening error; the transport is consumed on either path.
+ */
 pub static method(WebSocket) Accept(
   transport: WebSocketTransport, request: ref HttpHead, prefix: ref NetBuffer,
   limits: ref WebSocketLimits, options: ref NetOperationOptions
@@ -231,6 +240,7 @@ static method(WebSocketUpgrade) From(head: ref HttpHead) -> WebSocketUpgrade {
   return result;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Pure comma-token scan without session state.
 func contains_token(value: ref string, token: ref string) -> bool {
   var start: int32 = 0;
   var end: int32 = 0;

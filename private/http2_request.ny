@@ -3,6 +3,9 @@
 
 part of Http2ClientProtocol;
 
+/** @brief Submit a request with the supplied headers and body.
+ * @returns A stream identifier or an argument, provider or connection error.
+ */
 pub method(Http2Client) Submit(
   url: ref HttpUrl, verb: ref string, fields: ref <HttpField>[], body: ref ByteBuffer
 ) -> Result<int32, Http2Error> {

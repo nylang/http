@@ -6,6 +6,8 @@ module Http2NativeProvider;
 import "stdlib:stdlib.ny";
 import "interface/http2.ni";
 
+/** @brief Borrowed native HTTP/2 header field used at the provider ABI boundary.
+ */
 pub struct Http2NativeField {
   name: *const uint8;
   value: *const uint8;
@@ -15,6 +17,8 @@ pub struct Http2NativeField {
 
 typedef OpenHttp2Provider = cfn<(int32, *mut Http2ProviderApi) -> int32>;
 
+/** @brief Versioned native HTTP/2 function table retained by the loaded provider.
+ */
 pub struct Http2ProviderApi {
   create_session: cfn<(int32, int32) -> *mut int8>;
   drop_session: cfn<(*mut int8) -> void>;
@@ -27,19 +31,26 @@ pub struct Http2ProviderApi {
   release_stream: cfn<(*mut int8, int32) -> void>;
 }
 
+/** @brief Owner of the dynamic library and its validated HTTP/2 function table.
+ */
 pub struct Http2Provider {
   library: DynamicLibrary;
   api: Http2ProviderApi;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Noncapturing Result.visit success callback.
 func symbol_address(value: *mut void) -> uintptr {
   return value as uintptr;
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Noncapturing Result.visit error callback.
 func missing_symbol(_error: FfiError) -> uintptr {
   return 0up;
 }
 
+/** @brief Load and validate the versioned native HTTP/2 provider entry.
+ * @returns An owned provider or a dynamic-library, symbol or version error.
+ */
 pub static method(Http2Provider) Load(path: ref string) -> Result<Http2Provider, Http2Error> {
   var loaded = DynamicLibrary.Load(path);
   if loaded.IsErr() {

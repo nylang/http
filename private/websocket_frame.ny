@@ -270,6 +270,7 @@ method(WebSocketState) WriteFrame(
   return UnitValue();
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Copy a payload without access to session state.
 func own_message(
   kind: WebSocketMessageKind, bytes: ref NetBytes, code: int32?
 ) -> Result<WebSocketMessage, WebSocketError> {
@@ -281,6 +282,7 @@ func own_message(
   return WebSocketMessage{kind: kind, payload: result.get_if<NetBuffer>() as NetBuffer, close_code: code};
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Pure UTF-8 validation of borrowed wire bytes.
 func valid_text(bytes: ref NetBytes) -> bool {
   if bytes.Len() == 0ip {
     return true;
@@ -291,6 +293,7 @@ func valid_text(bytes: ref NetBytes) -> bool {
   }
 }
 
+// nyra-lint-allow: prefer-type-owned-functions -- Pure RFC close-code predicate without state.
 func valid_close_code(code: int32) -> bool {
   return (code >= 1000 && code <= 1014 && code != 1004 && code != 1005 && code != 1006)
     || (code >= 3000 && code <= 4999);

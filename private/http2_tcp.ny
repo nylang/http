@@ -50,6 +50,9 @@ method(Http2Tcp) Abort() -> void {
   self.connection.Close();
 }
 
+/** @brief Dial a cleartext HTTP/2 connection and load the native provider.
+ * @returns An owned client or an argument, network or provider error.
+ */
 pub static method(Http2Client) Open(
   url: ref HttpUrl, provider_file: ref string, resolver: ref mut AsyncResolver, dial: ref HttpDialOptions,
   limits: ref Http2Limits, options: ref NetOperationOptions
